@@ -24,7 +24,7 @@ class DatabaseManager(context: Context) {
     }
 
     fun readDbData(): ArrayList<Note> {
-        val notesList = ArrayList<Note>()
+        val notesArrayList = ArrayList<Note>()
         val cursor = sqLiteDatabase?.query(
             DatabaseConstant.NOTES_TABLE, null, null,
             null, null, null, null
@@ -42,11 +42,11 @@ class DatabaseManager(context: Context) {
             note.description = dataDescription
             note.date = dataDate
 
-            notesList.add(note)
+            notesArrayList.add(note)
         }
         cursor.close()
 
-        return notesList
+        return notesArrayList
     }
 
     fun closeDb() {
