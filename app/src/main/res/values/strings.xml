@@ -3,4 +3,7 @@
     <string name="add_note">Добавить заметку</string>
     <string name="no_internet">Нет интернета</string>
     <string name="no_data">Нет данных</string>
+    <string name="title">Заголовок</string>
+    <string name="description">Описание</string>
+    <string name="date">Дата</string>
 </resources>
