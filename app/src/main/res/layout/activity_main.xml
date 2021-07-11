@@ -13,11 +13,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:contentDescription="@string/add_note"
         android:focusable="true"
+        android:onClick="onClickAddFab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24"
-        android:contentDescription="@string/add_note" />
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notes_recycler_view"
