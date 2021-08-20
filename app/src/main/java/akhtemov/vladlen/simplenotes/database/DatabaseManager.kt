@@ -4,6 +4,7 @@ import akhtemov.vladlen.simplenotes.Note
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.provider.BaseColumns
 
 class DatabaseManager(context: Context) {
 
@@ -16,12 +17,18 @@ class DatabaseManager(context: Context) {
 
     fun insertToDatabase(title: String, description: String, date: String) {
         val values = ContentValues().apply {
-            put(DatabaseConstant.TITLE_COLUMN, title)
-            put(DatabaseConstant.DESCRIPTION_COLUMN, description)
-            put(DatabaseConstant.DATE_COLUMN, date)
+            put(DatabaseConstant.COLUMN_TITLE, title)
+            put(DatabaseConstant.COLUMN_DESCRIPTION, description)
+            put(DatabaseConstant.COLUMN_DATE, date)
         }
 
         sqLiteDatabase?.insert(DatabaseConstant.NOTES_TABLE, null, values)
+    }
+
+    fun removeFromDatabase(id: String) {
+        val whereClause = BaseColumns._ID + "=$id"
+
+        sqLiteDatabase?.delete(DatabaseConstant.NOTES_TABLE, whereClause, null)
     }
 
     fun readDatabaseData(): ArrayList<Note> {
@@ -32,13 +39,15 @@ class DatabaseManager(context: Context) {
         )
 
         while (cursor?.moveToNext()!!) {
-            val dataTitle = cursor.getString(cursor.getColumnIndex(DatabaseConstant.TITLE_COLUMN))
+            val dataId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID))
+            val dataTitle = cursor.getString(cursor.getColumnIndex(DatabaseConstant.COLUMN_TITLE))
             val dataDescription =
-                cursor.getString(cursor.getColumnIndex(DatabaseConstant.DESCRIPTION_COLUMN))
+                cursor.getString(cursor.getColumnIndex(DatabaseConstant.COLUMN_DESCRIPTION))
             val dataDate =
-                cursor.getString(cursor.getColumnIndex(DatabaseConstant.DATE_COLUMN))
-            val note = Note
+                cursor.getString(cursor.getColumnIndex(DatabaseConstant.COLUMN_DATE))
+            val note = Note()
 
+            note.id = dataId
             note.title = dataTitle
             note.description = dataDescription
             note.date = dataDate
@@ -54,4 +63,16 @@ class DatabaseManager(context: Context) {
     fun closeDatabase() {
         databaseHelper.close()
     }
+
+    fun updateItem(title: String, description: String, date: String, pos: String) {
+        val values = ContentValues().apply {
+            put(DatabaseConstant.COLUMN_TITLE, title)
+            put(DatabaseConstant.COLUMN_DESCRIPTION, description)
+            put(DatabaseConstant.COLUMN_DATE, date)
+        }
+        val whereClause = BaseColumns._ID + "=$pos"
+        sqLiteDatabase?.update(DatabaseConstant.NOTES_TABLE, values, whereClause, null)
+    }
+
+
 }

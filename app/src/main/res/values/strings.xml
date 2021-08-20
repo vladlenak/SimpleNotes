@@ -10,4 +10,7 @@
     <string name="title">Заголовок</string>
     <string name="description">Описание</string>
     <string name="date">Дата</string>
+    <string name="save_button">save button</string>
+    <string name="content_description_save_button">content description save button</string>
+    <string name="page_title">Page Title</string>
 </resources>

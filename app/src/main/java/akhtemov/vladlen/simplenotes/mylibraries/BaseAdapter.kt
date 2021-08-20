@@ -28,6 +28,12 @@ abstract class BaseAdapter<P>: RecyclerView.Adapter<BaseViewHolder<P>>() {
         notifyItemInserted(mDataList.size - 1)
     }
 
+    fun removeItem(pos: Int) {
+        mDataList.removeAt(pos)
+        notifyItemRangeChanged(0, mDataList.size)
+        notifyItemRemoved(pos)
+    }
+
     fun addItemToTop(newItem: P) {
         mDataList.add(0, newItem)
         notifyItemInserted(0)
