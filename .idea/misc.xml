@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_edit_note.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/note_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/top_app_bar.xml" value="0.28229166666666666" />
       </map>

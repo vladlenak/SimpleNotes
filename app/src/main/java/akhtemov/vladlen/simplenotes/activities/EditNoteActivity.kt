@@ -55,7 +55,7 @@ class EditNoteActivity : AppCompatActivity() {
     private fun onClickSaveNoteButton() {
         val title = titleEditText.text.toString()
         val desc = descriptionEditText.text.toString()
-        val date = titleEditText.text.toString()
+        val date = "дата (в разработке)"
         val databaseManager = DatabaseManager(this)
 
         databaseManager.openDatabase()
