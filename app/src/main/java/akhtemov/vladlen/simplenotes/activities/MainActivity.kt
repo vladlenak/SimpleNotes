@@ -8,9 +8,10 @@ import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.database.DatabaseManager
 import android.content.Context
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
+import android.icu.util.GregorianCalendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -113,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         addFab.setOnClickListener {
             val title = getString(R.string.new_note)
             val description = ""
-            val data = getDate()
+            val data = getCurrentDate()
 
             databaseManager.insertToDatabase(title, description, data)
 
@@ -125,8 +126,13 @@ class MainActivity : AppCompatActivity() {
         notesAdapter.updateItems(databaseManager.readDatabaseData())
     }
 
-    private fun getDate() : String {
-        return "дата (в разработке)"
+    private fun getCurrentDate() : String {
+        val calendar = GregorianCalendar()
+        val simpleDateFormat = SimpleDateFormat(Const.DATE_PATTERN)
+
+        simpleDateFormat.calendar = calendar
+
+        return simpleDateFormat.format(calendar.time)
     }
 
     private fun checkInternetConnection() {

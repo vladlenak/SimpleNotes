@@ -8,4 +8,6 @@ object Const {
     const val REQUEST_CODE = 101
 
     const val POSITION = "position"
+
+    const val DATE_PATTERN = "dd-M-yyyy HH:mm"
 }

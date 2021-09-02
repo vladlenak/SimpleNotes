@@ -2,6 +2,9 @@ package akhtemov.vladlen.simplenotes
 
 import akhtemov.vladlen.musicspeakercontrol.mylibraries.BaseAdapter
 import akhtemov.vladlen.musicspeakercontrol.mylibraries.BaseViewHolder
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
+import android.icu.util.GregorianCalendar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +24,41 @@ class NotesAdapter : BaseAdapter<Note>() {
         override fun bind(model: Note) {
             titleTextView.text = model.title
             descriptionTextView.text = model.description
-            dateTextView.text = model.date
+            dateTextView.text = getCorrectDateFormat(model.date)
 
 
         }
+
+        private fun getCorrectDateFormat(dateFromDatabase: String) : String {
+            val simpleDateFormat = SimpleDateFormat(Const.DATE_PATTERN)
+            val date = simpleDateFormat.parse(dateFromDatabase)
+            val calendar = GregorianCalendar()
+            calendar.time = date
+
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
+
+            val dayOfMonthNow = GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            val monthNow = GregorianCalendar.getInstance().get(Calendar.MONTH)
+            val yearNow = GregorianCalendar.getInstance().get(Calendar.YEAR)
+
+            if (dayOfMonth == dayOfMonthNow && month == monthNow && year == yearNow) {
+                return calendar.get(Calendar.HOUR_OF_DAY).toString() + ":" + calendar.get(Calendar.MINUTE)
+            } else {
+                return calendar.get(Calendar.DAY_OF_MONTH).toString() + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+            }
+        }
+
+//        private fun dateFormatForToday(dateFromDatabase: String) : String {
+//            val simpleDateFormat = SimpleDateFormat("dd-M-yyyy hh:mm")
+//            val date = simpleDateFormat.parse(dateFromDatabase)
+//            val calendar = GregorianCalendar()
+//            calendar.time = date
+//
+//            val dateString = calendar.get(Calendar.HOUR).toString() + ":" + calendar.get(Calendar.MINUTE)
+//            return dateString
+//        }
 
     }
 
