@@ -6,6 +6,7 @@ import akhtemov.vladlen.simplenotes.Note
 import akhtemov.vladlen.simplenotes.NotesAdapter
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.database.DatabaseManager
+import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         addFab.setOnClickListener {
             val title = getString(R.string.new_note)
             val description = ""
-            val data = getCurrentDate()
+            val data = CalendarHelper().getCurrentDate(Const.DATE_PATTERN)
 
             databaseManager.insertToDatabase(title, description, data)
 
@@ -124,15 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun fillAdapter() {
         notesAdapter.updateItems(databaseManager.readDatabaseData())
-    }
-
-    private fun getCurrentDate() : String {
-        val calendar = GregorianCalendar()
-        val simpleDateFormat = SimpleDateFormat(Const.DATE_PATTERN)
-
-        simpleDateFormat.calendar = calendar
-
-        return simpleDateFormat.format(calendar.time)
     }
 
     private fun checkInternetConnection() {

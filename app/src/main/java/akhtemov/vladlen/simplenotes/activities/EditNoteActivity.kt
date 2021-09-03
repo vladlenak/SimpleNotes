@@ -3,13 +3,11 @@ package akhtemov.vladlen.simplenotes.activities
 import akhtemov.vladlen.simplenotes.Const
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.database.DatabaseManager
-import android.content.Intent
+import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 private const val TAG = "EditNoteActivity"
 
@@ -17,7 +15,10 @@ class EditNoteActivity : AppCompatActivity() {
 
     private lateinit var titleEditText: TextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
+
     private var id = ""
+    private var title: String? = ""
+    private var desc: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +35,21 @@ class EditNoteActivity : AppCompatActivity() {
         val intent = intent
 
         id = intent.getStringExtra(Const.POSITION)!!
-        Log.d(TAG, "getIntentData: $id")
-        titleEditText.setText(intent.getStringExtra(Const.TITLE_KEY))
-        descriptionEditText.setText(intent.getStringExtra(Const.DESCRIPTION_KEY))
+        title = intent.getStringExtra(Const.TITLE_KEY)
+        desc = intent.getStringExtra(Const.DESCRIPTION_KEY)
+
+        titleEditText.setText(title)
+        descriptionEditText.setText(desc)
     }
 
     private fun onMenuItemClickListener() {
         val topAppBar = findViewById<MaterialToolbar>(R.id.topAppBar)
+
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.save_button -> {
                     onClickSaveNoteButton()
+
                     true
                 }
                 else -> false
@@ -53,14 +58,17 @@ class EditNoteActivity : AppCompatActivity() {
     }
 
     private fun onClickSaveNoteButton() {
-        val title = titleEditText.text.toString()
-        val desc = descriptionEditText.text.toString()
-        val date = "дата (в разработке)"
-        val databaseManager = DatabaseManager(this)
+        val newTitle = titleEditText.text.toString()
+        val newDesc = descriptionEditText.text.toString()
 
-        databaseManager.openDatabase()
-        databaseManager.updateItem(title, desc, date, id)
-        databaseManager.closeDatabase()
+        if (title != newTitle || desc != newDesc) {
+            val newDate = CalendarHelper().getCurrentDate(Const.DATE_PATTERN)
+            val databaseManager = DatabaseManager(this)
+
+            databaseManager.openDatabase()
+            databaseManager.updateItem(newTitle, newDesc, newDate, id)
+            databaseManager.closeDatabase()
+        }
 
         finish()
     }
