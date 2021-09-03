@@ -9,6 +9,8 @@ import akhtemov.vladlen.simplenotes.database.DatabaseManager
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.icu.text.SimpleDateFormat
 import android.icu.util.GregorianCalendar
 import androidx.appcompat.app.AppCompatActivity
