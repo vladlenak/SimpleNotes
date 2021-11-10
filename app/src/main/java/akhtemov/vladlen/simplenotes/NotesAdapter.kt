@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.util.*
 
 
 class NotesAdapter : BaseAdapter<Note>() {
@@ -27,8 +28,9 @@ class NotesAdapter : BaseAdapter<Note>() {
             dateTextView.text = getCorrectDateFormat(model.date)
         }
 
+
         private fun getCorrectDateFormat(dateFromDatabase: String) : String {
-            val simpleDateFormat = SimpleDateFormat(Const.DATE_PATTERN)
+            val simpleDateFormat = SimpleDateFormat(Const.DATE_PATTERN, Locale.getDefault())
             val date = simpleDateFormat.parse(dateFromDatabase)
             val calendar = GregorianCalendar()
             calendar.time = date
