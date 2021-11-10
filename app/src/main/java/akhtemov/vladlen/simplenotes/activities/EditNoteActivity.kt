@@ -3,29 +3,29 @@ package akhtemov.vladlen.simplenotes.activities
 import akhtemov.vladlen.simplenotes.Const
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.database.DatabaseManager
+import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
+import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 
 private const val TAG = "EditNoteActivity"
 
 class EditNoteActivity : AppCompatActivity() {
-
-    private lateinit var titleEditText: TextInputEditText
-    private lateinit var descriptionEditText: TextInputEditText
-
     private var id = ""
     private var title: String? = ""
     private var desc: String? = ""
 
+    private lateinit var binding: ActivityEditNoteBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_note)
-
-        titleEditText = findViewById(R.id.title_text_field)
-        descriptionEditText = findViewById(R.id.description_text_field)
+        binding = ActivityEditNoteBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         getIntentData()
         onMenuItemClickListener()
@@ -38,8 +38,8 @@ class EditNoteActivity : AppCompatActivity() {
         title = intent.getStringExtra(Const.TITLE_KEY)
         desc = intent.getStringExtra(Const.DESCRIPTION_KEY)
 
-        titleEditText.setText(title)
-        descriptionEditText.setText(desc)
+        binding.titleTextField.setText(title)
+        binding.descriptionTextField.setText(desc)
     }
 
     private fun onMenuItemClickListener() {
@@ -58,8 +58,8 @@ class EditNoteActivity : AppCompatActivity() {
     }
 
     private fun onClickSaveNoteButton() {
-        val newTitle = titleEditText.text.toString()
-        val newDesc = descriptionEditText.text.toString()
+        val newTitle = binding.titleTextField.text.toString()
+        val newDesc = binding.descriptionTextField.text.toString()
 
         if (title != newTitle || desc != newDesc) {
             val newDate = CalendarHelper().getCurrentDate(Const.DATE_PATTERN)

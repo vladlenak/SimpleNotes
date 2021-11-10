@@ -6,6 +6,8 @@ import akhtemov.vladlen.simplenotes.Note
 import akhtemov.vladlen.simplenotes.NotesAdapter
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.database.DatabaseManager
+import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
+import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import android.content.Context
 import android.content.Intent
@@ -26,6 +28,7 @@ import android.net.NetworkCapabilities
 
 import android.net.ConnectivityManager
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -34,28 +37,28 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     private var databaseManager = DatabaseManager(this)
     private var notesAdapter = NotesAdapter()
-    private lateinit var notesRecyclerView: RecyclerView
-    private lateinit var addFab: FloatingActionButton
-    private lateinit var internetStatusTextView: TextView
+
+//    val binding: ActivityMainBinding by lazy {
+//        DataBindingUtil.setContentView(this, R.layout.activity_main)
+//    }
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        init()
+        binding.notesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = notesAdapter
+        }
+
+        val swapHelper = getSwapMg()
+        swapHelper.attachToRecyclerView(binding.notesRecyclerView)
 
         checkInternetConnection()
-    }
-
-    private fun init() {
-        notesRecyclerView = findViewById(R.id.notes_recycler_view)
-        notesRecyclerView.layoutManager = LinearLayoutManager(this)
-        val swapHelper = getSwapMg()
-        swapHelper.attachToRecyclerView(notesRecyclerView)
-        notesRecyclerView.adapter = notesAdapter
-
-        addFab = findViewById(R.id.add_fab)
-        internetStatusTextView = findViewById(R.id.internet_status_text_view)
     }
 
     private fun addRecyclerViewItemClickListener() {
@@ -114,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addFabClickListener() {
-        addFab.setOnClickListener {
+        binding.addFab.setOnClickListener {
             val title = getString(R.string.new_note)
             val description = ""
             val data = CalendarHelper().getCurrentDate(Const.DATE_PATTERN)
@@ -133,14 +136,14 @@ class MainActivity : AppCompatActivity() {
         val status = checkForInternet(this)
 
         if (status) {
-            internetStatusTextView.visibility = View.GONE
+            binding.internetStatusTextView.visibility = View.GONE
             addFabClickListener()
             addRecyclerViewItemClickListener()
         } else {
-            addFab.visibility = View.GONE
-            notesRecyclerView.visibility = View.GONE
-            internetStatusTextView.visibility = View.VISIBLE
-            internetStatusTextView.text = "Нет интернета"
+            binding.addFab.visibility = View.GONE
+            binding.notesRecyclerView.visibility = View.GONE
+            binding.internetStatusTextView.visibility = View.VISIBLE
+            binding.internetStatusTextView.text = "Нет интернета"
         }
     }
 
