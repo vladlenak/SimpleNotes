@@ -1,6 +1,7 @@
 package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.*
+import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.persistence.Note

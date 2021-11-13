@@ -1,5 +1,6 @@
-package akhtemov.vladlen.simplenotes
+package akhtemov.vladlen.simplenotes.adapter
 
+import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.persistence.Note
 import android.view.LayoutInflater
 import android.view.View
