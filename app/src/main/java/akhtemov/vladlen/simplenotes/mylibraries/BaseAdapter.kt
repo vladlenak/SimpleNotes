@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
 abstract class BaseAdapter<P>: RecyclerView.Adapter<BaseViewHolder<P>>() {
+
     protected var mDataList: MutableList<P> = ArrayList()
     private var mCallback: BaseAdapterCallback<P>? = null
 

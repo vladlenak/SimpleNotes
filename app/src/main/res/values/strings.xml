@@ -2,7 +2,6 @@
     <string name="app_name">Simple Notes</string>
 
     <string name="add_note">Добавить заметку</string>
-    <string name="new_note">Новая заметка</string>
 
     <string name="no_internet">Нет интернета</string>
     <string name="no_data">Нет данных</string>
@@ -13,4 +12,10 @@
     <string name="save_button">save button</string>
     <string name="content_description_save_button">content description save button</string>
     <string name="page_title">Simple Notes</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hint_word">Word…</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Note not saved because it is empty.</string>
+    <string name="add_word">Add word</string>
 </resources>

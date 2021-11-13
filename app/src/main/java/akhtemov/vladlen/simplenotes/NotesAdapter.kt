@@ -2,6 +2,7 @@ package akhtemov.vladlen.simplenotes
 
 import akhtemov.vladlen.musicspeakercontrol.mylibraries.BaseAdapter
 import akhtemov.vladlen.musicspeakercontrol.mylibraries.BaseViewHolder
+import akhtemov.vladlen.simplenotes.persistence.Note
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.icu.util.GregorianCalendar
