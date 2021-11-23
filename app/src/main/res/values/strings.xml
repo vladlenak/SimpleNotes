@@ -1,21 +1,9 @@
 <resources>
-    <string name="app_name">Simple Notes</string>
-
-    <string name="add_note">Добавить заметку</string>
-
-    <string name="no_internet">Нет интернета</string>
-    <string name="no_data">Нет данных</string>
-
-    <string name="title">Заголовок</string>
-    <string name="description">Описание</string>
-    <string name="date">Дата</string>
-    <string name="save_button">save button</string>
-    <string name="content_description_save_button">content description save button</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="hint_word">Word…</string>
-    <string name="button_save">Save</string>
-    <string name="empty_not_saved">Note not saved because it is empty.</string>
-    <string name="add_word">Add word</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Notes</string>
+    <string name="add_note">Add Note</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="save">Save</string>
+    <string name="title_cannot_be_empty">Title cannot be empty</string>
 </resources>

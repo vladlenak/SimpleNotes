@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.widget.Toast
 
 class AddNoteActivity : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ class AddNoteActivity : AppCompatActivity() {
         val replyIntent = Intent()
 
         if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
-            setResult(Activity.RESULT_CANCELED, replyIntent)
+            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
         } else {
             val newTitle = binding.titleTextField.text.toString()
             val newDesc = binding.descriptionTextField.text.toString()
@@ -41,9 +42,9 @@ class AddNoteActivity : AppCompatActivity() {
             replyIntent.putExtra(TITLE_EXTRA_REPLY, newTitle)
             replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, newDesc)
             setResult(Activity.RESULT_OK, replyIntent)
-        }
 
-        finish()
+            finish()
+        }
     }
 
     companion object {

@@ -5,8 +5,8 @@
     <item
         android:id="@+id/save_button"
         android:icon="@drawable/ic_done_black_24dp"
-        android:title="@string/save_button"
-        android:contentDescription="@string/content_description_save_button"
+        android:title="@string/save"
+        android:contentDescription="@string/save"
         app:showAsAction="ifRoom" />
 
 </menu>

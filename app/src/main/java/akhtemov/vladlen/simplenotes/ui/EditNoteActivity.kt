@@ -6,6 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.Toast
 
 class EditNoteActivity : AppCompatActivity() {
 
@@ -49,16 +51,17 @@ class EditNoteActivity : AppCompatActivity() {
         val newTitle = binding.titleTextField.text.toString()
         val newDesc = binding.descriptionTextField.text.toString()
 
-        if (newTitle != title || newDesc != desc) {
+        if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
+            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+        } else if (newTitle != title || newDesc != desc) {
             replyIntent.putExtra(ID, id)
             replyIntent.putExtra(TITLE, newTitle)
             replyIntent.putExtra(DESCRIPTION, newDesc)
-            setResult(Activity.RESULT_OK, replyIntent)
-        } else {
-            setResult(Activity.RESULT_CANCELED, replyIntent)
-        }
 
-        finish()
+            setResult(Activity.RESULT_OK, replyIntent)
+
+            finish()
+        }
     }
 
     companion object {
