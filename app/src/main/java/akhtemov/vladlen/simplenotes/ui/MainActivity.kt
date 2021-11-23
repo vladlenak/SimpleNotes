@@ -1,5 +1,6 @@
 package akhtemov.vladlen.simplenotes.ui
 
+import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
 import akhtemov.vladlen.simplenotes.*
 import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
@@ -9,21 +10,26 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.activity.viewModels
-
-private const val TAG = "MainActivity"
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 
 class MainActivity : AppCompatActivity() {
     private var noteListAdapter = NoteListAdapter()
 
     private lateinit var binding: ActivityMainBinding
 
-    private val newWordActivityRequestCode = 1
+    private val addNoteActivityRequestCode = 1
+    private val editNoteActivityRequestCode = 2
+
     private val noteViewModel: NoteViewModel by viewModels {
         NoteViewModelFactory((application as NotesApplication).repository)
     }
+
+    lateinit var myNotes: List<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,114 +45,83 @@ class MainActivity : AppCompatActivity() {
         noteViewModel.allNotes.observe(this) { notes ->
             // Update the cached copy of the words in the adapter.
             notes.let { noteListAdapter.submitList(it) }
+            myNotes = notes
         }
 
-//        val swapHelper = getSwapMg()
-//        swapHelper.attachToRecyclerView(binding.notesRecyclerView)
+        val swapHelper = getSwapMg()
+        swapHelper.attachToRecyclerView(binding.notesRecyclerView)
 
-        binding.addFab.setOnClickListener {
+        binding.addNoteFab.setOnClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
-            startActivityForResult(intent, newWordActivityRequestCode)
+            startActivityForResult(intent, addNoteActivityRequestCode)
         }
+
+
+        /*
+        Add Ads
+         */
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+
+        addRecyclerViewItemClickListener()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
         super.onActivityResult(requestCode, resultCode, intentData)
 
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
+        if (requestCode == addNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
             val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
-            val descriptionReplay = intentData?.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
+            val descriptionReplay = intentData.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
             val note = Note(titleReplay, descriptionReplay, CalendarHelper().getCurrentDate())
             noteViewModel.insert(note)
+        } else if (requestCode == editNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            val myId = intentData?.getStringExtra(EditNoteActivity.ID)!!
+            val myTitle = intentData.getStringExtra(EditNoteActivity.TITLE)!!
+            val myDesc = intentData.getStringExtra(EditNoteActivity.DESCRIPTION)!!
+            val myDate = CalendarHelper().getCurrentDate()
+
+            val note = Note(myId, myTitle, myDesc, myDate)
+            noteViewModel.updateNote(note)
         } else {
-            Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
+            //Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
         }
     }
 
-//    private fun addRecyclerViewItemClickListener() {
-//
-//        noteListAdapter.attachCallback(object: BaseAdapterCallback<Note> {
-//            override fun onItemClick(model: Note, view: View) {
-//                val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
-//                    putExtra(Const.POSITION, model.id.toString())
-//                    putExtra(Const.TITLE_KEY, model.title)
-//                    putExtra(Const.DESCRIPTION_KEY, model.description)
-//                    putExtra(Const.DATE_KEY, model.date)
-//                }
-//
-//                startActivity(myIntent)
-//            }
-//
-//            override fun onLongClick(model: Note, view: View): Boolean {
-//                TODO("Not yet implemented")
-//            }
-//        })
-//    }
+    private fun addRecyclerViewItemClickListener() {
+        noteListAdapter.attachCallback(object: BaseAdapterCallback<Note> {
+            override fun onItemClick(position: Int) {
+                val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
+                    val note = myNotes[position]
 
-//    private fun getSwapMg() : ItemTouchHelper {
-//        return ItemTouchHelper(object:ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                return false
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                val list = databaseManager.readDatabaseData()
-//                val pos = viewHolder.adapterPosition
-//                val id = list[pos].id.toString()
-//
-//                databaseManager.removeFromDatabase(id)
-//                adapter.removeItem(viewHolder.adapterPosition)
-//
-//            }
-//        })
-//    }
+                    putExtra(EditNoteActivity.ID, note.id)
+                    putExtra(EditNoteActivity.TITLE, note.title)
+                    putExtra(EditNoteActivity.DESCRIPTION, note.description)
+                    putExtra(EditNoteActivity.DATE, note.date)
+                }
 
+                startActivityForResult(myIntent, editNoteActivityRequestCode)
+            }
+        })
+    }
 
-//    private fun fillAdapter() {
-//        adapter.updateItems(databaseManager.readDatabaseData())
-//    }
+    private fun getSwapMg() : ItemTouchHelper {
+        return ItemTouchHelper(object:ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
 
-//    private fun checkInternetConnection() {
-//        val status = checkForInternet(this)
-//
-//        if (status) {
-//            binding.internetStatusTextView.visibility = View.GONE
-//            addFabClickListener()
-//            addRecyclerViewItemClickListener()
-//        } else {
-//            binding.addFab.visibility = View.GONE
-//            binding.notesRecyclerView.visibility = View.GONE
-//            binding.internetStatusTextView.visibility = View.VISIBLE
-//            binding.internetStatusTextView.text = "Нет интернета"
-//        }
-//    }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val pos = viewHolder.adapterPosition
+                val note: Note = myNotes[pos]
 
-//    private fun checkForInternet(context: Context): Boolean {
-//        // register activity with the connectivity manager service
-//        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//
-//        // Returns a Network object corresponding to
-//        // the currently active default data network.
-//        val network = connectivityManager.activeNetwork ?: return false
-//
-//        // Representation of the capabilities of an active network.
-//        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-//
-//        return when {
-//            // Indicates this network uses a Wi-Fi transport,
-//            // or WiFi has network connectivity
-//            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-//
-//            // Indicates this network uses a Cellular transport. or
-//            // Cellular has network connectivity
-//            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-//
-//            // else return false
-//            else -> false
-//        }
-//    }
+                noteViewModel.deleteNote(note)
+            }
+        })
+    }
+
 }

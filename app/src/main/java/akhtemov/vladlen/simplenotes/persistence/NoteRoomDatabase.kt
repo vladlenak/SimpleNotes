@@ -19,7 +19,7 @@ abstract class NoteRoomDatabase : RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { database ->
+            INSTANCE?.let {
                 scope.launch {
 //                    var noteDao = database.noteDao()
 

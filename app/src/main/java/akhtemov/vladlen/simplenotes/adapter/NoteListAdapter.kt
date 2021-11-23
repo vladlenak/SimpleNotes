@@ -1,5 +1,6 @@
 package akhtemov.vladlen.simplenotes.adapter
 
+import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.persistence.Note
 import android.view.LayoutInflater
@@ -12,6 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NotesComparator()) {
 
+    private var mCallback: BaseAdapterCallback<Note>? = null
+
+    fun attachCallback(callback: BaseAdapterCallback<Note>) {
+        this.mCallback = callback
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.create(parent)
     }
@@ -19,6 +26,10 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NotesC
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current.title, current.description, current.date)
+
+        holder.itemView.setOnClickListener {
+            mCallback?.onItemClick(position)
+        }
     }
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
