@@ -61,6 +61,8 @@ class EditNoteActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, replyIntent)
 
             finish()
+        } else if (newTitle == title && newDesc == desc) {
+            finish()
         }
     }
 
