@@ -2,17 +2,13 @@ package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.ActivityAddNoteBinding
+import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import android.app.Activity
 import android.content.Intent
-import android.icu.util.Calendar
-import android.icu.util.TimeZone
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class AddNoteActivity : AppCompatActivity() {
@@ -36,27 +32,20 @@ class AddNoteActivity : AppCompatActivity() {
         }
 
         binding.datePickerTextView.setOnClickListener {
-            // A date range picker can be instantiated with
             val datePicker = MaterialDatePicker.Builder.datePicker()
-                    .setTitleText(R.string.add_due_date)
-                // Opens the date picker with today's date selected.
-                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    .build()
+                .setTitleText(R.string.add_due_date)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-            // To show the picker to the user:
             datePicker.show(supportFragmentManager, DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
-                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-                calendar.timeInMillis = it
-                binding.datePickerTextView.text = calendar.time.toString()
+                binding.datePickerTextView.text = CalendarHelper().getDateFromMilliseconds(it)
             }
         }
     }
 
     private fun onClickSaveNoteButton() {
-        val replyIntent = Intent()
-
         if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
         } else {
@@ -64,6 +53,7 @@ class AddNoteActivity : AppCompatActivity() {
             val desc = binding.descriptionTextField.text.toString()
             val deadline = binding.datePickerTextView.text.toString()
 
+            val replyIntent = Intent()
             replyIntent.putExtra(TITLE_EXTRA_REPLY, title)
             replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, desc)
             replyIntent.putExtra(DEADLINE_EXTRA_REPLY, deadline)
@@ -74,8 +64,6 @@ class AddNoteActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val TAG = "AddNoteActivity"
-
         const val TITLE_EXTRA_REPLY = "title_extra_reply"
         const val DESCRIPTION_EXTRA_REPLY = "description_extra_reply"
         const val DEADLINE_EXTRA_REPLY = "deadline_extra_reply"

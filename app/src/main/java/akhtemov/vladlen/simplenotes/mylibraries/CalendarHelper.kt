@@ -5,16 +5,17 @@ import android.icu.util.GregorianCalendar
 import java.util.*
 
 class CalendarHelper {
-    fun getCurrentDate() : String {
+    fun getDateFromMilliseconds(timeInMillis: Long): String {
         val calendar = GregorianCalendar()
-        val simpleDateFormat = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
+        calendar.timeInMillis = timeInMillis
 
+        val simpleDateFormat = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
         simpleDateFormat.calendar = calendar
 
         return simpleDateFormat.format(calendar.time)
     }
 
     companion object {
-        const val DATE_PATTERN = "dd-M-yyyy HH:mm"
+        const val DATE_PATTERN = "yyyy-M-dd"
     }
 }
