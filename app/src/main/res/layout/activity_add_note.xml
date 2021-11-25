@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
-            app:title="@string/app_name"></com.google.android.material.appbar.MaterialToolbar>
+            app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -35,7 +35,8 @@
         android:hint="@string/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title_text_field"
@@ -43,26 +44,22 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/date_picker_text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/deadline"
+        android:text="@string/add_due_date"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/deadlineEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -74,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_text_view">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description_text_field"
@@ -82,5 +79,7 @@
             android:layout_height="match_parent"
             android:gravity="top" />
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
