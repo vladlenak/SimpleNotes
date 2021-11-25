@@ -3,12 +3,21 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
+
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="LightBlue500">#03a9f4</color>
-    <color name="LightBlue100">#b3e5fc</color>
-    <color name="LightBlueSurface">#11181b</color>
+
+
+    <color name="primaryColor">#b3e5fc</color>
+    <color name="primaryLightColor">#e6ffff</color>
+    <color name="primaryDarkColor">#82b3c9</color>
+    <color name="secondaryColor">#ffecb3</color>
+    <color name="secondaryLightColor">#ffffe5</color>
+    <color name="secondaryDarkColor">#cbba83</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
 </resources>

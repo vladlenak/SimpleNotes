@@ -16,7 +16,7 @@ class EditNoteActivity : AppCompatActivity() {
     private lateinit var id: String
     private lateinit var title: String
     private lateinit var desc: String
-    private lateinit var date: String
+    private lateinit var deadline: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +36,14 @@ class EditNoteActivity : AppCompatActivity() {
 
         val intent = intent
 
-        id = intent.getStringExtra(ID).toString()
-        title = intent.getStringExtra(TITLE).toString()
-        desc = intent.getStringExtra(DESCRIPTION).toString()
-        date = intent.getStringExtra(DATE).toString()
+        id = intent.getStringExtra(ID_EXTRA_REPLY).toString()
+        title = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
+        desc = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
+        deadline = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
 
         binding.titleTextField.setText(title)
         binding.descriptionTextField.setText(desc)
+        binding.deadlineEditText.setText(deadline)
     }
 
     private fun onClickSaveNoteButton() {
@@ -50,26 +51,28 @@ class EditNoteActivity : AppCompatActivity() {
 
         val newTitle = binding.titleTextField.text.toString()
         val newDesc = binding.descriptionTextField.text.toString()
+        val newDeadline = binding.deadlineEditText.text.toString()
 
         if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
-        } else if (newTitle != title || newDesc != desc) {
-            replyIntent.putExtra(ID, id)
-            replyIntent.putExtra(TITLE, newTitle)
-            replyIntent.putExtra(DESCRIPTION, newDesc)
+        } else if (newTitle != title || newDesc != desc || newDeadline != deadline) {
+            replyIntent.putExtra(ID_EXTRA_REPLY, id)
+            replyIntent.putExtra(TITLE_EXTRA_REPLY, newTitle)
+            replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, newDesc)
+            replyIntent.putExtra(DEADLINE_EXTRA_REPLY, newDeadline)
 
             setResult(Activity.RESULT_OK, replyIntent)
 
             finish()
-        } else if (newTitle == title && newDesc == desc) {
+        } else if (newTitle == title && newDesc == desc && newDeadline == deadline) {
             finish()
         }
     }
 
     companion object {
-        const val ID = "id_edit"
-        const val TITLE = "title_edit"
-        const val DESCRIPTION = "description_edit"
-        const val DATE = "date_edit"
+        const val ID_EXTRA_REPLY = "id_extra_reply"
+        const val TITLE_EXTRA_REPLY = "title_extra_reply"
+        const val DESCRIPTION_EXTRA_REPLY = "description_extra_reply"
+        const val DEADLINE_EXTRA_REPLY = "date_extra_reply"
     }
 }

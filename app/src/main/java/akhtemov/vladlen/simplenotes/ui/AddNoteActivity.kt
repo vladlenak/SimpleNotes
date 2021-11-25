@@ -36,11 +36,13 @@ class AddNoteActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
         } else {
-            val newTitle = binding.titleTextField.text.toString()
-            val newDesc = binding.descriptionTextField.text.toString()
+            val title = binding.titleTextField.text.toString()
+            val desc = binding.descriptionTextField.text.toString()
+            val deadline = binding.deadlineEditText.text.toString()
 
-            replyIntent.putExtra(TITLE_EXTRA_REPLY, newTitle)
-            replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, newDesc)
+            replyIntent.putExtra(TITLE_EXTRA_REPLY, title)
+            replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, desc)
+            replyIntent.putExtra(DEADLINE_EXTRA_REPLY, deadline)
             setResult(Activity.RESULT_OK, replyIntent)
 
             finish()
@@ -50,5 +52,6 @@ class AddNoteActivity : AppCompatActivity() {
     companion object {
         const val TITLE_EXTRA_REPLY = "title_extra_reply"
         const val DESCRIPTION_EXTRA_REPLY = "description_extra_reply"
+        const val DEADLINE_EXTRA_REPLY = "deadline_extra_reply"
     }
 }

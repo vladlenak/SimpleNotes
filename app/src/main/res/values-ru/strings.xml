@@ -4,7 +4,8 @@
     <string name="add_note">Добавить заметку</string>
     <string name="title">Заголовок</string>
     <string name="description">Описание</string>
-    <string name="date">Дата</string>
+    <string name="deadline">Дата выполнения</string>
     <string name="save">Сохранить</string>
     <string name="title_cannot_be_empty">Заголовок не может быть пустым</string>
+    <string name="to_do_date">Дата выполнения</string>
 </resources>

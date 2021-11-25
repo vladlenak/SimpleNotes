@@ -4,7 +4,6 @@ import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
 import akhtemov.vladlen.simplenotes.*
 import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
-import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.persistence.Note
 import android.app.Activity
 import android.content.Intent
@@ -60,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         /*
         Add Ads
          */
-        MobileAds.initialize(this) {}
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+//        MobileAds.initialize(this) {}
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
 
         addRecyclerViewItemClickListener()
     }
@@ -73,15 +72,18 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == addNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
             val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
             val descriptionReplay = intentData.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
-            val note = Note(titleReplay, descriptionReplay, CalendarHelper().getCurrentDate())
+            val deadline = intentData.getStringExtra(AddNoteActivity.DEADLINE_EXTRA_REPLY)!!
+
+            val note = Note(titleReplay, descriptionReplay, deadline)
+
             noteViewModel.insert(note)
         } else if (requestCode == editNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            val myId = intentData?.getStringExtra(EditNoteActivity.ID)!!
-            val myTitle = intentData.getStringExtra(EditNoteActivity.TITLE)!!
-            val myDesc = intentData.getStringExtra(EditNoteActivity.DESCRIPTION)!!
-            val myDate = CalendarHelper().getCurrentDate()
+            val myId = intentData?.getStringExtra(EditNoteActivity.ID_EXTRA_REPLY)!!
+            val myTitle = intentData.getStringExtra(EditNoteActivity.TITLE_EXTRA_REPLY)!!
+            val myDesc = intentData.getStringExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
+            val newDeadline = intentData.getStringExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY)!!
 
-            val note = Note(myId, myTitle, myDesc, myDate)
+            val note = Note(myId, myTitle, myDesc, newDeadline)
             noteViewModel.updateNote(note)
         } else {
             //Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
@@ -94,10 +96,10 @@ class MainActivity : AppCompatActivity() {
                 val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
                     val note = myNotes[position]
 
-                    putExtra(EditNoteActivity.ID, note.id)
-                    putExtra(EditNoteActivity.TITLE, note.title)
-                    putExtra(EditNoteActivity.DESCRIPTION, note.description)
-                    putExtra(EditNoteActivity.DATE, note.date)
+                    putExtra(EditNoteActivity.ID_EXTRA_REPLY, note.id)
+                    putExtra(EditNoteActivity.TITLE_EXTRA_REPLY, note.title)
+                    putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.description)
+                    putExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY, note.date)
                 }
 
                 startActivityForResult(myIntent, editNoteActivityRequestCode)
