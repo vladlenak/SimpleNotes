@@ -4,6 +4,7 @@ import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
 import akhtemov.vladlen.simplenotes.*
 import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
+import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.persistence.Note
 import android.app.Activity
 import android.content.Intent
@@ -13,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 
 class MainActivity : AppCompatActivity() {
     private var noteListAdapter = NoteListAdapter()
