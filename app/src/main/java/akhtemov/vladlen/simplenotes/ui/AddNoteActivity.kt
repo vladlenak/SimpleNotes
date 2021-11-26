@@ -31,7 +31,7 @@ class AddNoteActivity : AppCompatActivity() {
             }
         }
 
-        binding.datePickerTextView.setOnClickListener {
+        binding.deadlineTextField.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.add_due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -40,7 +40,7 @@ class AddNoteActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
-                binding.datePickerTextView.text = CalendarHelper().getDateFromMilliseconds(it)
+                binding.deadlineTextField.setText(CalendarHelper().getDateFromMilliseconds(it))
             }
         }
     }
@@ -51,12 +51,13 @@ class AddNoteActivity : AppCompatActivity() {
         } else {
             val title = binding.titleTextField.text.toString()
             val desc = binding.descriptionTextField.text.toString()
-            val deadline = binding.datePickerTextView.text.toString()
+            val deadline = binding.deadlineTextField.text.toString()
 
             val replyIntent = Intent()
             replyIntent.putExtra(TITLE_EXTRA_REPLY, title)
             replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, desc)
             replyIntent.putExtra(DEADLINE_EXTRA_REPLY, deadline)
+
             setResult(Activity.RESULT_OK, replyIntent)
 
             finish()

@@ -30,9 +30,10 @@ class EditNoteActivity : AppCompatActivity() {
         title = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
         desc = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
         deadline = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
+
         binding.titleTextField.setText(title)
         binding.descriptionTextField.setText(desc)
-        binding.datePickerTextView.text = deadline
+        binding.deadlineTextField.setText(deadline)
 
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -44,7 +45,7 @@ class EditNoteActivity : AppCompatActivity() {
             }
         }
 
-        binding.datePickerTextView.setOnClickListener {
+        binding.deadlineTextField.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.add_due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -53,7 +54,7 @@ class EditNoteActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, AddNoteActivity.DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
-                binding.datePickerTextView.text = CalendarHelper().getDateFromMilliseconds(it)
+                binding.deadlineTextField.setText(CalendarHelper().getDateFromMilliseconds(it))
             }
         }
     }
@@ -61,7 +62,7 @@ class EditNoteActivity : AppCompatActivity() {
     private fun onClickSaveNoteButton() {
         val newTitle = binding.titleTextField.text.toString()
         val newDesc = binding.descriptionTextField.text.toString()
-        val newDeadline = binding.datePickerTextView.text.toString()
+        val newDeadline = binding.deadlineTextField.text.toString()
 
         if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
