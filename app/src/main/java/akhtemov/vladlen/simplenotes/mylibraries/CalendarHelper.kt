@@ -4,6 +4,8 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.GregorianCalendar
 import java.util.*
 
+const val DATE_PATTERN = "yyyy-M-dd"
+
 class CalendarHelper {
     fun getDateFromMilliseconds(timeInMillis: Long): String {
         val calendar = GregorianCalendar()
@@ -13,9 +15,5 @@ class CalendarHelper {
         simpleDateFormat.calendar = calendar
 
         return simpleDateFormat.format(calendar.time)
-    }
-
-    companion object {
-        const val DATE_PATTERN = "yyyy-M-dd"
     }
 }

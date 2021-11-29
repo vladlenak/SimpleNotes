@@ -6,8 +6,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
-    android:background="@android:drawable/editbox_background"
-    android:backgroundTint="@color/primaryColor">
+    style="@style/listItemStyle">
 
     <TextView
         android:id="@+id/title_text_view"

@@ -12,12 +12,24 @@
 
 
 
-    <color name="primaryColor">#b3e5fc</color>
-    <color name="primaryLightColor">#e6ffff</color>
-    <color name="primaryDarkColor">#82b3c9</color>
-    <color name="secondaryColor">#ffecb3</color>
-    <color name="secondaryLightColor">#ffffe5</color>
-    <color name="secondaryDarkColor">#cbba83</color>
+<!--    <color name="primaryColor">#b3e5fc</color>-->
+<!--    <color name="primaryLightColor">#e6ffff</color>-->
+<!--    <color name="primaryDarkColor">#82b3c9</color>-->
+<!--    <color name="secondaryColor">#a34d39</color>-->
+<!--    <color name="secondaryLightColor">#d87b64</color>-->
+<!--    <color name="secondaryDarkColor">#6f2112</color>-->
+<!--    <color name="primaryTextColor">#000000</color>-->
+<!--    <color name="secondaryTextColor">#000000</color>-->
+
+    <color name="primaryColor">#90caf9</color>
+    <color name="primaryLightColor">#c3fdff</color>
+    <color name="primaryDarkColor">#5d99c6</color>
+    <color name="secondaryColor">#ffab91</color>
+    <color name="secondaryLightColor">#ffddc1</color>
+    <color name="secondaryDarkColor">#c97b63</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
+
+
+
 </resources>

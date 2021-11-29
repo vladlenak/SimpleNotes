@@ -1,10 +1,9 @@
 package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
-import akhtemov.vladlen.simplenotes.*
+import akhtemov.vladlen.simplenotes.NotesApplication
 import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
-import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.persistence.Note
 import android.app.Activity
 import android.content.Intent
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         noteViewModel.allNotes.observe(this) { notes ->
-            // Update the cached copy of the words in the adapter.
             notes.let { noteListAdapter.submitList(it) }
             myNotes = notes
         }
@@ -53,14 +51,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivityForResult(intent, addNoteActivityRequestCode)
         }
-
-
-        /*
-        Add Ads
-         */
-//        MobileAds.initialize(this) {}
-//        val adRequest = AdRequest.Builder().build()
-//        binding.adView.loadAd(adRequest)
 
         addRecyclerViewItemClickListener()
     }

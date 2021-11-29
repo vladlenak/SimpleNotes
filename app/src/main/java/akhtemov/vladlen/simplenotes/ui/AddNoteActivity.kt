@@ -43,6 +43,7 @@ class AddNoteActivity : AppCompatActivity() {
                 binding.deadlineTextField.setText(CalendarHelper().getDateFromMilliseconds(it))
             }
         }
+
     }
 
     private fun onClickSaveNoteButton() {

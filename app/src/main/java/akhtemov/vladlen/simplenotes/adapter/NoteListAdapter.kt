@@ -46,7 +46,7 @@ class NoteListAdapter : ListAdapter<Note, NoteListAdapter.NoteViewHolder>(NotesC
         companion object {
             fun create(parent: ViewGroup): NoteViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.note_item, parent, false)
+                    .inflate(R.layout.list_item_note, parent, false)
                 return NoteViewHolder(view)
             }
         }

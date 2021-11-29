@@ -13,4 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    
+    <style name="activityBackground">
+        <item name="android:background">?colorOnPrimary</item>
+    </style>
+    
+    <style name="listItemStyle">
+        <item name="android:background">@android:drawable/editbox_background</item>
+        <item name="android:backgroundTint">?colorPrimary</item>
+    </style>
 </resources>
