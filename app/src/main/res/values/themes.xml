@@ -22,4 +22,19 @@
         <item name="android:background">@android:drawable/editbox_background</item>
         <item name="android:backgroundTint">?colorPrimary</item>
     </style>
+
+    <style name="TitleTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DescTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="DateTextStyle">
+        <item name="android:textColor">@color/primaryLightColor</item>
+    </style>
 </resources>

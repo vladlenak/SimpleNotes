@@ -1,7 +1,7 @@
 package akhtemov.vladlen.simplenotes.mylibraries
 
-import android.icu.text.SimpleDateFormat
-import android.icu.util.GregorianCalendar
+
+import java.text.SimpleDateFormat
 import java.util.*
 
 const val DATE_PATTERN = "yyyy-M-dd"
