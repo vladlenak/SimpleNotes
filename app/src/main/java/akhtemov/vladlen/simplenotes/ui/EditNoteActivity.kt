@@ -8,7 +8,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class EditNoteActivity : AppCompatActivity() {
@@ -18,6 +20,8 @@ class EditNoteActivity : AppCompatActivity() {
     private lateinit var title: String
     private lateinit var desc: String
     private lateinit var deadline: String
+
+    private val isDueDateEmpty = MutableLiveData<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +35,21 @@ class EditNoteActivity : AppCompatActivity() {
         desc = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
         deadline = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
 
-        binding.titleTextField.setText(title)
-        binding.descriptionTextField.setText(desc)
-        binding.deadlineTextField.setText(deadline)
+        binding.title.setText(title)
+        binding.description.setText(desc)
+        binding.dueDate.setText(deadline)
+
+        isDueDateEmpty.observe(this) { isDueDateEmpty ->
+            if (isDueDateEmpty) {
+                binding.clearDueDate.visibility = View.GONE
+            } else {
+                binding.clearDueDate.visibility = View.VISIBLE
+            }
+        }
+
+        if (deadline.isNotEmpty()) {
+            isDueDateEmpty.value = false
+        }
 
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -45,26 +61,32 @@ class EditNoteActivity : AppCompatActivity() {
             }
         }
 
-        binding.deadlineTextField.setOnClickListener {
+        binding.dueDate.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(R.string.add_due_date)
+                .setTitleText(R.string.due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
 
             datePicker.show(supportFragmentManager, AddNoteActivity.DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
-                binding.deadlineTextField.setText(CalendarHelper().getDateFromMilliseconds(it))
+                binding.dueDate.setText(CalendarHelper().getDateFromMilliseconds(it))
+                isDueDateEmpty.value = false
             }
+        }
+
+        binding.clearDueDate.setOnClickListener {
+            binding.dueDate.setText("")
+            isDueDateEmpty.value = true
         }
     }
 
     private fun onClickSaveNoteButton() {
-        val newTitle = binding.titleTextField.text.toString()
-        val newDesc = binding.descriptionTextField.text.toString()
-        val newDeadline = binding.deadlineTextField.text.toString()
+        val newTitle = binding.title.text.toString()
+        val newDesc = binding.description.text.toString()
+        val newDeadline = binding.dueDate.text.toString()
 
-        if (TextUtils.isEmpty(binding.titleTextField.text.toString())) {
+        if (TextUtils.isEmpty(binding.title.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
         } else if (newTitle != title || newDesc != desc || newDeadline != deadline) {
             val replyIntent = Intent()

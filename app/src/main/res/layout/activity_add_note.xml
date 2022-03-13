@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/activityBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddNoteActivity"
-    style="@style/activityBackground">
+    tools:context=".ui.AddNoteActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -25,7 +25,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/title_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,62 +38,50 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/title_text_field"
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    <TextView-->
-<!--        android:id="@+id/date_picker_text_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:text="@string/add_due_date"-->
-<!--        android:textSize="20sp"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/imageButton"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />-->
-
-
-<!--    <ImageButton-->
-<!--        android:id="@+id/imageButton"-->
-<!--        style="?android:attr/buttonBarButtonStyle"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:src="@drawable/outline_clear_24"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />-->
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/deadlineInputLayout"
+        android:id="@+id/due_date_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/add_due_date"
+        android:hint="@string/due_date"
         app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@id/clearDueDate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/title_container">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/deadline_text_field"
+            android:id="@+id/due_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
-            android:editable="false"/>
+            android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageButton
+        android:id="@+id/clearDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@null"
+        android:padding="16dp"
+        android:src="@drawable/ic_clear"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/description_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/due_date_container"
+        app:layout_constraintTop_toBottomOf="@id/title_container" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout3"
+        android:id="@+id/description_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -105,13 +93,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deadlineInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/due_date_container">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/description_text_field"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="top" />
+            android:gravity="top"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

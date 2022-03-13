@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ескертпелер</string>
+    <string name="add_note">Ескертпе қосыңыз</string>
+    <string name="title">Тақырыбы</string>
+    <string name="description">Сипаттама</string>
+    <string name="due_date">Яяқталу күні</string>
+    <string name="save">Сақтау</string>
+    <string name="title_cannot_be_empty">Тақырып бос болмауы керек</string>
+    <string name="edit_due_date">Өңдеу күні</string>
+</resources>
