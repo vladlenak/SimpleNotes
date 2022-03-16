@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.persistence
+package akhtemov.vladlen.simplenotes.db
 
 import android.content.Context
 import androidx.room.Database

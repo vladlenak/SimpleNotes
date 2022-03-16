@@ -1,21 +1,22 @@
 package akhtemov.vladlen.simplenotes.ui
 
-import akhtemov.vladlen.simplenotes.mylibraries.BaseAdapterCallback
 import akhtemov.vladlen.simplenotes.NotesApplication
-import akhtemov.vladlen.simplenotes.adapter.NoteListAdapter
+import akhtemov.vladlen.simplenotes.adapter.NoteAdapter
+import akhtemov.vladlen.simplenotes.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
-import akhtemov.vladlen.simplenotes.persistence.Note
+import akhtemov.vladlen.simplenotes.db.Note
+import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModel
+import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModelFactory
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
-    private var noteListAdapter = NoteListAdapter()
+class MainActivity : AppCompatActivity(), NoteCallbacks {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -28,19 +29,23 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var myNotes: List<Note>
 
+    private val noteAdapter = NoteAdapter(mutableListOf())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        noteAdapter.setNoteCallbacks(this)
+
         binding.notesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = noteListAdapter
+            adapter = noteAdapter
         }
 
-        noteViewModel.allNotes.observe(this) { notes ->
-            notes.let { noteListAdapter.submitList(it) }
+        noteViewModel.notes.observe(this) { notes ->
+            noteAdapter.addNotes(notes)
             myNotes = notes
         }
 
@@ -51,8 +56,22 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivityForResult(intent, addNoteActivityRequestCode)
         }
+    }
 
-        addRecyclerViewItemClickListener()
+    override fun onClickNoteContainer(note: Note) {
+        val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
+            putExtra(EditNoteActivity.ID_EXTRA_REPLY, note.id)
+            putExtra(EditNoteActivity.TITLE_EXTRA_REPLY, note.title)
+            putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.description)
+            putExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY, note.date)
+        }
+
+        startActivityForResult(myIntent, editNoteActivityRequestCode)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        noteViewModel.setNotes()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
@@ -77,23 +96,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             //Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun addRecyclerViewItemClickListener() {
-        noteListAdapter.attachCallback(object: BaseAdapterCallback<Note> {
-            override fun onItemClick(position: Int) {
-                val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
-                    val note = myNotes[position]
-
-                    putExtra(EditNoteActivity.ID_EXTRA_REPLY, note.id)
-                    putExtra(EditNoteActivity.TITLE_EXTRA_REPLY, note.title)
-                    putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.description)
-                    putExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY, note.date)
-                }
-
-                startActivityForResult(myIntent, editNoteActivityRequestCode)
-            }
-        })
     }
 
     private fun getSwapMg() : ItemTouchHelper {

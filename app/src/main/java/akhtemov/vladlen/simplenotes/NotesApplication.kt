@@ -1,7 +1,7 @@
 package akhtemov.vladlen.simplenotes
 
-import akhtemov.vladlen.simplenotes.persistence.NoteRepository
-import akhtemov.vladlen.simplenotes.persistence.NoteRoomDatabase
+import akhtemov.vladlen.simplenotes.db.NoteRepository
+import akhtemov.vladlen.simplenotes.db.NoteRoomDatabase
 import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
