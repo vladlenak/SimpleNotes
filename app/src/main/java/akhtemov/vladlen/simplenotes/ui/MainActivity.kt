@@ -1,20 +1,28 @@
 package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.NotesApplication
+import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
 import akhtemov.vladlen.simplenotes.db.Note
+import akhtemov.vladlen.simplenotes.hideKeyboard
+import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
+import akhtemov.vladlen.simplenotes.showKeyboard
 import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModel
 import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModelFactory
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.datepicker.MaterialDatePicker
 
 class MainActivity : AppCompatActivity(), NoteCallbacks {
 
@@ -53,8 +61,64 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
         swapHelper.attachToRecyclerView(binding.notesRecyclerView)
 
         binding.addNoteFab.setOnClickListener {
-            val intent = Intent(this, AddNoteActivity::class.java)
-            startActivityForResult(intent, addNoteActivityRequestCode)
+            binding.createNoteContainer.visibility = View.VISIBLE
+            binding.addNoteFab.visibility = View.GONE
+            binding.noteTitle.requestFocus()
+            showKeyboard(binding.noteTitle)
+        }
+
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.createNoteContainer.visibility == View.VISIBLE) {
+                    binding.createNoteContainer.visibility = View.GONE
+                    binding.addNoteFab.visibility = View.VISIBLE
+                } else {
+                    finish()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+
+        binding.setDueDateChip.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.set_due_date)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+            datePicker.show(supportFragmentManager, DATE_PICKER_TAG)
+
+            datePicker.addOnPositiveButtonClickListener {
+                binding.setDueDateChip.apply {
+                    text = CalendarHelper().getDateFromMilliseconds(it)
+                    isCloseIconVisible = true
+                }
+            }
+        }
+
+        binding.createNote.setOnClickListener {
+            hideKeyboard()
+            val noteTitle = binding.noteTitle.text.toString()
+            val noteDueDate = binding.setDueDateChip.text.toString()
+            val note = Note(noteTitle, "", "")
+
+            if (noteDueDate != getString(R.string.set_due_date)) {
+                note.date = noteDueDate
+            }
+
+            noteViewModel.insert(note)
+
+            binding.noteTitle.text.clear()
+            binding.setDueDateChip.text = getString(R.string.set_due_date)
+            binding.createNoteContainer.visibility = View.GONE
+            binding.addNoteFab.visibility = View.VISIBLE
+
+        }
+
+        binding.setDueDateChip.setOnCloseIconClickListener {
+            binding.setDueDateChip.apply {
+                text = getString(R.string.set_due_date)
+                isCloseIconVisible = false
+            }
         }
     }
 
@@ -78,13 +142,13 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
         super.onActivityResult(requestCode, resultCode, intentData)
 
         if (requestCode == addNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
-            val descriptionReplay = intentData.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
-            val deadline = intentData.getStringExtra(AddNoteActivity.DEADLINE_EXTRA_REPLY)!!
-
-            val note = Note(titleReplay, descriptionReplay, deadline)
-
-            noteViewModel.insert(note)
+//            val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
+//            val descriptionReplay = intentData.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
+//            val deadline = intentData.getStringExtra(AddNoteActivity.DEADLINE_EXTRA_REPLY)!!
+//
+//            val note = Note(titleReplay, descriptionReplay, deadline)
+//
+//            noteViewModel.insert(note)
         } else if (requestCode == editNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
             val myId = intentData?.getStringExtra(EditNoteActivity.ID_EXTRA_REPLY)!!
             val myTitle = intentData.getStringExtra(EditNoteActivity.TITLE_EXTRA_REPLY)!!
@@ -115,6 +179,10 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 noteViewModel.deleteNote(note)
             }
         })
+    }
+
+    companion object {
+        const val DATE_PICKER_TAG = "date_picker_tag"
     }
 
 }

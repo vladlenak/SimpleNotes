@@ -3,8 +3,11 @@
     <string name="add_note">Add Note</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="due_date">Add due date</string>
     <string name="save">Save</string>
     <string name="title_cannot_be_empty">Title cannot be empty</string>
     <string name="edit_due_date">Edit date</string>
+    <string name="note">Note</string>
+    <string name="set_due_date">Set Due Date</string>
+    <string name="delete_due_date">Delete Due Date</string>
+    <string name="show_note_creation_container">Show note creation container</string>
 </resources>

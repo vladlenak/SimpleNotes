@@ -15,7 +15,7 @@ data class Note(
     @ColumnInfo(name = "description")
     val description: String,
     @ColumnInfo(name = "date")
-    val date: String
+    var date: String
 ) {
     constructor(title: String, description: String, date: String) :
             this(UUID.randomUUID().toString(), title, description, date)

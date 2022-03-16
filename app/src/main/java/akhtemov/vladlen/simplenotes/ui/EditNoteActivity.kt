@@ -63,11 +63,11 @@ class EditNoteActivity : AppCompatActivity() {
 
         binding.dueDate.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(R.string.due_date)
+                .setTitleText(R.string.set_due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
 
-            datePicker.show(supportFragmentManager, AddNoteActivity.DATE_PICKER_TAG)
+            datePicker.show(supportFragmentManager, MainActivity.DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
                 binding.dueDate.setText(CalendarHelper().getDateFromMilliseconds(it))
