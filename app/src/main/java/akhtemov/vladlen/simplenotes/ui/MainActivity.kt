@@ -12,10 +12,11 @@ import akhtemov.vladlen.simplenotes.showKeyboard
 import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModel
 import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModelFactory
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -96,22 +97,25 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
         }
 
         binding.createNote.setOnClickListener {
-            hideKeyboard()
-            val noteTitle = binding.noteTitle.text.toString()
-            val noteDueDate = binding.setDueDateChip.text.toString()
-            val note = Note(noteTitle, "", "")
+            if (!TextUtils.isEmpty(binding.noteTitle.text)) {
+                hideKeyboard()
+                val noteTitle = binding.noteTitle.text.toString()
+                val noteDueDate = binding.setDueDateChip.text.toString()
+                val note = Note(noteTitle, "", "")
 
-            if (noteDueDate != getString(R.string.set_due_date)) {
-                note.date = noteDueDate
+                if (noteDueDate != getString(R.string.set_due_date)) {
+                    note.date = noteDueDate
+                }
+
+                noteViewModel.insert(note)
+
+                binding.noteTitle.text.clear()
+                binding.setDueDateChip.text = getString(R.string.set_due_date)
+                binding.createNoteContainer.visibility = View.GONE
+                binding.addNoteFab.visibility = View.VISIBLE
+            } else {
+                Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
             }
-
-            noteViewModel.insert(note)
-
-            binding.noteTitle.text.clear()
-            binding.setDueDateChip.text = getString(R.string.set_due_date)
-            binding.createNoteContainer.visibility = View.GONE
-            binding.addNoteFab.visibility = View.VISIBLE
-
         }
 
         binding.setDueDateChip.setOnCloseIconClickListener {

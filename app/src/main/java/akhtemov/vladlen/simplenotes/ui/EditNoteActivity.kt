@@ -2,7 +2,9 @@ package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
+import akhtemov.vladlen.simplenotes.db.Note
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
+import akhtemov.vladlen.simplenotes.viewmodel.EditNoteViewModel
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,18 +12,13 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
+import androidx.activity.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class EditNoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditNoteBinding
-    private lateinit var id: String
-    private lateinit var title: String
-    private lateinit var desc: String
-    private lateinit var deadline: String
-
-    private val isDueDateEmpty = MutableLiveData<Boolean>()
+    private val viewModel: EditNoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,34 +26,50 @@ class EditNoteActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        init()
+        addObservers()
+        addListeners()
+        checkClearDueDateButtonVisibility()
+    }
+
+    private fun init() {
         val intent = intent
-        id = intent.getStringExtra(ID_EXTRA_REPLY).toString()
-        title = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
-        desc = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
-        deadline = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
+        val noteId = intent.getStringExtra(ID_EXTRA_REPLY).toString()
+        val noteTitle = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
+        val noteDescription = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
+        val noteDueDate = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
+        val note = Note(noteId, noteTitle, noteDescription, noteDueDate)
+        viewModel.note.value = note
+    }
 
-        binding.title.setText(title)
-        binding.description.setText(desc)
-        binding.dueDate.setText(deadline)
+    private fun addObservers() {
+        viewModel.note.observe(this) { note ->
+            binding.title.setText(note.title)
+            binding.description.setText(note.description)
+            binding.dueDate.setText(note.date)
+        }
 
-        isDueDateEmpty.observe(this) { isDueDateEmpty ->
+        viewModel.isDueDateEmpty.observe(this) { isDueDateEmpty ->
             if (isDueDateEmpty) {
                 binding.clearDueDate.visibility = View.GONE
             } else {
                 binding.clearDueDate.visibility = View.VISIBLE
             }
         }
+    }
 
-        if (deadline.isNotEmpty()) {
-            isDueDateEmpty.value = false
-        }
-
+    private fun addListeners() {
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.save_button -> {
                     onClickSaveNoteButton()
                     true
                 }
+
+//                R.id.delete_note_button -> {
+//                    onClickDeleteNoteButton()
+//                    true
+//                }
                 else -> false
             }
         }
@@ -71,13 +84,19 @@ class EditNoteActivity : AppCompatActivity() {
 
             datePicker.addOnPositiveButtonClickListener {
                 binding.dueDate.setText(CalendarHelper().getDateFromMilliseconds(it))
-                isDueDateEmpty.value = false
+                viewModel.isDueDateEmpty.value = false
             }
         }
 
         binding.clearDueDate.setOnClickListener {
             binding.dueDate.setText("")
-            isDueDateEmpty.value = true
+            viewModel.isDueDateEmpty.value = true
+        }
+    }
+
+    private fun checkClearDueDateButtonVisibility() {
+        if (viewModel.note.value?.date?.isNotEmpty() == true) {
+            viewModel.isDueDateEmpty.value = false
         }
     }
 
@@ -85,6 +104,10 @@ class EditNoteActivity : AppCompatActivity() {
         val newTitle = binding.title.text.toString()
         val newDesc = binding.description.text.toString()
         val newDeadline = binding.dueDate.text.toString()
+
+        val id = viewModel.note.value?.id
+        val desc = viewModel.note.value?.description
+        val deadline = viewModel.note.value?.date
 
         if (TextUtils.isEmpty(binding.title.text.toString())) {
             Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
@@ -101,6 +124,10 @@ class EditNoteActivity : AppCompatActivity() {
         } else if (newTitle == title && newDesc == desc && newDeadline == deadline) {
             finish()
         }
+    }
+
+    private fun onClickDeleteNoteButton() {
+        // TODO deleteNote fun
     }
 
     companion object {

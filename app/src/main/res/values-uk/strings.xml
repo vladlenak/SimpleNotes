@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Нотатки</string>
+    <string name="app_name">Прості Нотатки</string>
     <string name="add_note">Додати нотатку</string>
     <string name="title">Заголовок</string>
     <string name="description">Опис</string>

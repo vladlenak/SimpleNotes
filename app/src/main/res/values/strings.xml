@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notes</string>
+    <string name="app_name">Simple Notes</string>
     <string name="add_note">Add Note</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
@@ -10,4 +10,5 @@
     <string name="set_due_date">Set Due Date</string>
     <string name="delete_due_date">Delete Due Date</string>
     <string name="show_note_creation_container">Show note creation container</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Нататкі</string>
+    <string name="app_name">Простыя Нататкі</string>
     <string name="add_note">Дадаць нататку</string>
     <string name="title">Загаловак</string>
     <string name="description">Апісанне</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ескертпелер</string>
+    <string name="app_name">Қарапайым жазбалар</string>
     <string name="add_note">Ескертпе қосыңыз</string>
     <string name="title">Тақырыбы</string>
     <string name="description">Сипаттама</string>

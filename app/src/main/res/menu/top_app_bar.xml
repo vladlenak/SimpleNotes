@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--    <item-->
+<!--        android:id="@+id/delete_note_button"-->
+<!--        android:icon="@drawable/ic_delete"-->
+<!--        android:title="@string/delete"-->
+<!--        android:contentDescription="@string/delete"-->
+<!--        app:showAsAction="ifRoom" />-->
+
     <item
         android:id="@+id/save_button"
         android:icon="@drawable/ic_done_black_24dp"
