@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.db
+package com.octopus.inc.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -16,7 +16,4 @@ data class Note(
     val description: String,
     @ColumnInfo(name = "date")
     var date: String
-) {
-//    constructor(title: String, description: String, date: String) :
-//            this(UUID.randomUUID().toString(), title, description, date)
-}
+)

@@ -1,9 +1,14 @@
-package akhtemov.vladlen.simplenotes.db
+package com.octopus.inc.data.room
 
+import com.octopus.inc.data.model.Note
 import com.octopus.inc.domain.models.NoteModel
-import com.octopus.inc.domain.repository.NoteRepository
+import javax.inject.Inject
 
-class NoteRepositoryImpl(private val noteDao: NoteDao): NoteRepository {
+class NoteRoomImpl @Inject constructor(private val noteDao: NoteDao): NoteRoom {
+
+    override suspend fun insertNote(note: NoteModel) {
+        noteDao.insert(mapToNote(note))
+    }
 
     override suspend fun getNotes(): List<NoteModel> {
         val notes = noteDao.getNotes()
@@ -23,10 +28,6 @@ class NoteRepositoryImpl(private val noteDao: NoteDao): NoteRepository {
         return newNoteList
     }
 
-    override suspend fun insertNote(note: NoteModel) {
-        noteDao.insert(mapToNote(note))
-    }
-
     override suspend fun updateNote(note: NoteModel) {
         noteDao.updateNote(mapToNote(note))
     }
@@ -35,21 +36,13 @@ class NoteRepositoryImpl(private val noteDao: NoteDao): NoteRepository {
         noteDao.deleteNote(mapToNote(note))
     }
 
+    // TODO проверить в правильном ли месте находяться
     private fun mapToNote(noteModel: NoteModel): Note {
         return Note(
             id = noteModel.id,
             title = noteModel.title,
             description = noteModel.desc,
             date = noteModel.date
-        )
-    }
-
-    private fun mapToNoteModel(note: Note): NoteModel {
-        return NoteModel(
-            id = note.id,
-            title = note.title,
-            desc = note.description,
-            date = note.date
         )
     }
 }

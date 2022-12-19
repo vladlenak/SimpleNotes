@@ -2,7 +2,6 @@ package akhtemov.vladlen.simplenotes.ui
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
-import akhtemov.vladlen.simplenotes.db.Note
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.viewmodel.EditNoteViewModel
 import android.app.Activity
@@ -14,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.octopus.inc.domain.models.NoteModel
 
 class EditNoteActivity : AppCompatActivity() {
 
@@ -38,14 +38,14 @@ class EditNoteActivity : AppCompatActivity() {
         val noteTitle = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
         val noteDescription = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
         val noteDueDate = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
-        val note = Note(noteId, noteTitle, noteDescription, noteDueDate)
+        val note = NoteModel(noteId, noteTitle, noteDescription, noteDueDate)
         viewModel.note.value = note
     }
 
     private fun addObservers() {
         viewModel.note.observe(this) { note ->
             binding.title.setText(note.title)
-            binding.description.setText(note.description)
+            binding.description.setText(note.desc)
             binding.dueDate.setText(note.date)
         }
 
@@ -106,7 +106,7 @@ class EditNoteActivity : AppCompatActivity() {
         val newDeadline = binding.dueDate.text.toString()
 
         val id = viewModel.note.value?.id
-        val desc = viewModel.note.value?.description
+        val desc = viewModel.note.value?.desc
         val deadline = viewModel.note.value?.date
 
         if (TextUtils.isEmpty(binding.title.text.toString())) {

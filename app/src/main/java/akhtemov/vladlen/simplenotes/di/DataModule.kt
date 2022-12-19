@@ -1,10 +1,12 @@
 package akhtemov.vladlen.simplenotes.di
 
-import akhtemov.vladlen.simplenotes.db.NoteDao
-import akhtemov.vladlen.simplenotes.db.NoteRepositoryImpl
-import akhtemov.vladlen.simplenotes.db.NoteRoomDatabase
 import android.content.Context
 import androidx.room.Room
+import com.octopus.inc.data.repository.NoteRepositoryImpl
+import com.octopus.inc.data.room.NoteDao
+import com.octopus.inc.data.room.NoteRoom
+import com.octopus.inc.data.room.NoteRoomDatabase
+import com.octopus.inc.data.room.NoteRoomImpl
 import com.octopus.inc.domain.repository.NoteRepository
 import dagger.Module
 import dagger.Provides
@@ -17,8 +19,13 @@ import dagger.hilt.components.SingletonComponent
 class DataModule {
 
     @Provides
-    fun provideNoteRepository(noteDao: NoteDao): NoteRepository {
-        return NoteRepositoryImpl(noteDao = noteDao)
+    fun provideNoteRepositoryImpl(noteRoomImpl: NoteRoomImpl): NoteRepository {
+        return NoteRepositoryImpl(noteRoomImpl)
+    }
+
+    @Provides
+    fun provideNoteRoomImpl(noteDao: NoteDao): NoteRoom {
+        return NoteRoomImpl(noteDao)
     }
 
     @Provides

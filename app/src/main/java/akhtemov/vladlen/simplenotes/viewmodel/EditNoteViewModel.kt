@@ -1,10 +1,10 @@
 package akhtemov.vladlen.simplenotes.viewmodel
 
-import akhtemov.vladlen.simplenotes.db.Note
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.octopus.inc.domain.models.NoteModel
 
 class EditNoteViewModel : ViewModel() {
-    val note = MutableLiveData<Note>()
+    val note = MutableLiveData<NoteModel>()
     val isDueDateEmpty = MutableLiveData<Boolean>()
 }

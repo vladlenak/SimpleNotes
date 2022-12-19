@@ -1,3 +1,4 @@
 rootProject.name = "Simple Notes"
 include ':app'
 include ':domain'
+include ':data'

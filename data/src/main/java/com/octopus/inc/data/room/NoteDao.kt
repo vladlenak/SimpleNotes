@@ -1,6 +1,7 @@
-package akhtemov.vladlen.simplenotes.db
+package com.octopus.inc.data.room
 
 import androidx.room.*
+import com.octopus.inc.data.model.Note
 
 @Dao
 interface NoteDao {

@@ -4,7 +4,6 @@ import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
-import akhtemov.vladlen.simplenotes.db.Note
 import akhtemov.vladlen.simplenotes.hideKeyboard
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.showKeyboard

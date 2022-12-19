@@ -1,7 +1,6 @@
 package akhtemov.vladlen.simplenotes.adapter
 
 import akhtemov.vladlen.simplenotes.databinding.ListItemNoteBinding
-import akhtemov.vladlen.simplenotes.db.Note
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.octopus.inc.domain.models.NoteModel

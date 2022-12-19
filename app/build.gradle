@@ -1,8 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-
-    // Room
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
 }
@@ -48,16 +46,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation project(path: ':domain')
+    implementation project(path: ':data')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
-    // Room
-    def room_version = "2.4.2"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    // Room with coroutines
-    implementation "androidx.room:room-ktx:$room_version"
 
     // viewModels
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
@@ -66,4 +58,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
     implementation "androidx.fragment:fragment-ktx:1.5.5"
+
+    // Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
 }
