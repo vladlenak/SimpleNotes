@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleNotes">
         <activity
-            android:name=".ui.EditNoteActivity"
+            android:name=".presentation.notedetail.EditNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.notelist.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,13 +1,13 @@
-package akhtemov.vladlen.simplenotes.ui
+package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
-import akhtemov.vladlen.simplenotes.adapter.NoteAdapter
-import akhtemov.vladlen.simplenotes.adapter.NoteCallbacks
+import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
+import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
-import akhtemov.vladlen.simplenotes.hideKeyboard
-import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
-import akhtemov.vladlen.simplenotes.showKeyboard
-import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModel
+import akhtemov.vladlen.simplenotes.utility.hideKeyboard
+import akhtemov.vladlen.simplenotes.utility.showKeyboard
+import akhtemov.vladlen.simplenotes.presentation.notedetail.EditNoteActivity
+import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NoteCallbacks {
@@ -99,9 +100,8 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 hideKeyboard()
                 val noteTitle = binding.noteTitle.text.toString()
                 val noteDueDate = binding.setDueDateChip.text.toString()
-//                val note = Note(noteTitle, "", "")
                 val note = NoteModel(
-                    id = "",
+                    id = UUID.randomUUID().toString(),
                     title = noteTitle,
                     desc = "",
                     date = ""

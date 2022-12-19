@@ -1,9 +1,9 @@
-package akhtemov.vladlen.simplenotes.ui
+package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
-import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
-import akhtemov.vladlen.simplenotes.viewmodel.EditNoteViewModel
+import akhtemov.vladlen.simplenotes.presentation.notelist.MainActivity
+import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

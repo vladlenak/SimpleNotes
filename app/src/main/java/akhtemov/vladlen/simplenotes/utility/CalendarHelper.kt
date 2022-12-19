@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.mylibraries
+package akhtemov.vladlen.simplenotes.utility
 
 
 import java.text.SimpleDateFormat

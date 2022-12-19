@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.adapter
+package akhtemov.vladlen.simplenotes.presentation.notelist.adapter
 
 import akhtemov.vladlen.simplenotes.databinding.ListItemNoteBinding
 import android.view.View

@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.viewmodel
+package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import androidx.lifecycle.*
 import com.octopus.inc.domain.models.NoteModel

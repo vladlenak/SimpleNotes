@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes
+package akhtemov.vladlen.simplenotes.utility
 
 import android.app.Activity
 import android.content.Context

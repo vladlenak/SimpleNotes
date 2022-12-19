@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.viewmodel
+package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
