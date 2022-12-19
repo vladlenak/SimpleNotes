@@ -17,6 +17,6 @@ data class Note(
     @ColumnInfo(name = "date")
     var date: String
 ) {
-    constructor(title: String, description: String, date: String) :
-            this(UUID.randomUUID().toString(), title, description, date)
+//    constructor(title: String, description: String, date: String) :
+//            this(UUID.randomUUID().toString(), title, description, date)
 }

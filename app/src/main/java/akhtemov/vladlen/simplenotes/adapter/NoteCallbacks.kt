@@ -1,7 +1,7 @@
 package akhtemov.vladlen.simplenotes.adapter
 
-import akhtemov.vladlen.simplenotes.db.Note
+import com.octopus.inc.domain.models.NoteModel
 
 interface NoteCallbacks {
-    fun onClickNoteContainer(note: Note)
+    fun onClickNoteContainer(note: NoteModel)
 }

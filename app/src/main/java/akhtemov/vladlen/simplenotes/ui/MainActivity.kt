@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
 
     private val noteViewModel: NoteViewModel by viewModels()
 
-    lateinit var myNotes: List<Note>
+    lateinit var myNotes: List<NoteModel>
 
     private val noteAdapter = NoteAdapter(mutableListOf())
 
@@ -99,7 +100,13 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 hideKeyboard()
                 val noteTitle = binding.noteTitle.text.toString()
                 val noteDueDate = binding.setDueDateChip.text.toString()
-                val note = Note(noteTitle, "", "")
+//                val note = Note(noteTitle, "", "")
+                val note = NoteModel(
+                    id = "",
+                    title = noteTitle,
+                    desc = "",
+                    date = ""
+                )
 
                 if (noteDueDate != getString(R.string.set_due_date)) {
                     note.date = noteDueDate
@@ -124,11 +131,11 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
         }
     }
 
-    override fun onClickNoteContainer(note: Note) {
+    override fun onClickNoteContainer(note: NoteModel) {
         val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
             putExtra(EditNoteActivity.ID_EXTRA_REPLY, note.id)
             putExtra(EditNoteActivity.TITLE_EXTRA_REPLY, note.title)
-            putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.description)
+            putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.desc)
             putExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY, note.date)
         }
 
@@ -157,7 +164,12 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
             val myDesc = intentData.getStringExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
             val newDeadline = intentData.getStringExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY)!!
 
-            val note = Note(myId, myTitle, myDesc, newDeadline)
+            val note = NoteModel(
+                id = myId,
+                title = myTitle,
+                desc = myDesc,
+                date = newDeadline
+            )
             noteViewModel.updateNote(note)
         } else {
             //Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
@@ -176,8 +188,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                val note: Note = myNotes[pos]
-
+                val note = myNotes[pos]
                 noteViewModel.deleteNote(note)
             }
         })

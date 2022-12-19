@@ -4,20 +4,21 @@ import akhtemov.vladlen.simplenotes.databinding.ListItemNoteBinding
 import akhtemov.vladlen.simplenotes.db.Note
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.octopus.inc.domain.models.NoteModel
 
 class NoteViewHolder(private val binding: ListItemNoteBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     private var noteCallbacks: NoteCallbacks? = null
 
-    fun bind(note: Note) {
+    fun bind(note: NoteModel) {
         binding.titleTextView.text = note.title
 
-        if (note.description == "") {
+        if (note.desc == "") {
             binding.descriptionTextView.visibility = View.GONE
         } else {
             binding.descriptionTextView.visibility = View.VISIBLE
-            binding.descriptionTextView.text = note.description
+            binding.descriptionTextView.text = note.desc
         }
 
         binding.dateTextView.text = note.date

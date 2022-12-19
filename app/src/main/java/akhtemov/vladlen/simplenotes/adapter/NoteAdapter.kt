@@ -6,8 +6,9 @@ import akhtemov.vladlen.simplenotes.db.Note
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.octopus.inc.domain.models.NoteModel
 
-class NoteAdapter(var noteList: MutableList<Note>) : RecyclerView.Adapter<NoteViewHolder>() {
+class NoteAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<NoteViewHolder>() {
 
     private var noteCallbacks: NoteCallbacks? = null
 
@@ -30,7 +31,7 @@ class NoteAdapter(var noteList: MutableList<Note>) : RecyclerView.Adapter<NoteVi
         this.noteCallbacks = noteCallbacks
     }
 
-    fun addNotes(notes: List<Note>) {
+    fun addNotes(notes: List<NoteModel>) {
         noteList.clear()
         noteList.addAll(notes)
         notifyDataSetChanged()
