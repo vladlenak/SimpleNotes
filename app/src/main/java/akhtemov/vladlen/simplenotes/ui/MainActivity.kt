@@ -1,6 +1,5 @@
 package akhtemov.vladlen.simplenotes.ui
 
-import akhtemov.vladlen.simplenotes.NotesApplication
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.adapter.NoteCallbacks
@@ -10,7 +9,6 @@ import akhtemov.vladlen.simplenotes.hideKeyboard
 import akhtemov.vladlen.simplenotes.mylibraries.CalendarHelper
 import akhtemov.vladlen.simplenotes.showKeyboard
 import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModel
-import akhtemov.vladlen.simplenotes.viewmodel.NoteViewModelFactory
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -24,7 +22,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NoteCallbacks {
 
     private lateinit var binding: ActivityMainBinding
@@ -32,9 +32,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
     private val addNoteActivityRequestCode = 1
     private val editNoteActivityRequestCode = 2
 
-    private val noteViewModel: NoteViewModel by viewModels {
-        NoteViewModelFactory((application as NotesApplication).repository)
-    }
+    private val noteViewModel: NoteViewModel by viewModels()
 
     lateinit var myNotes: List<Note>
 

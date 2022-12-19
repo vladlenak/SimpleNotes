@@ -3,9 +3,12 @@ package akhtemov.vladlen.simplenotes.viewmodel
 import akhtemov.vladlen.simplenotes.db.Note
 import akhtemov.vladlen.simplenotes.db.NoteRepository
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
+@HiltViewModel
+class NoteViewModel @Inject constructor(private val repository: NoteRepository) : ViewModel() {
 
     val notes = MutableLiveData<List<Note>>()
 
@@ -26,15 +29,5 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     fun setNotes() = viewModelScope.launch {
         notes.value = repository.getNotes()
-    }
-}
-
-class NoteViewModelFactory(private val repository: NoteRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(NoteViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return NoteViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
