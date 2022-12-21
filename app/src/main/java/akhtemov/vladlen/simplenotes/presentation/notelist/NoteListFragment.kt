@@ -1,22 +1,25 @@
 package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
+import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
+import akhtemov.vladlen.simplenotes.presentation.notedetail.NoteDetailFragment
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
-import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
+import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.hideKeyboard
 import akhtemov.vladlen.simplenotes.utility.showKeyboard
-import akhtemov.vladlen.simplenotes.presentation.notedetail.EditNoteActivity
-import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,9 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), NoteCallbacks {
+class NoteListFragment: Fragment(), NoteCallbacks {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: FragmentNoteListBinding
 
     private val addNoteActivityRequestCode = 1
     private val editNoteActivityRequestCode = 2
@@ -39,20 +42,21 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
 
     private val noteAdapter = NoteAdapter(mutableListOf())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentNoteListBinding.inflate(inflater, container, false)
 
         noteAdapter.setNoteCallbacks(this)
 
         binding.notesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(context)
             adapter = noteAdapter
         }
 
-        noteViewModel.notes.observe(this) { notes ->
+        noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.addNotes(notes)
             myNotes = notes
         }
@@ -73,11 +77,11 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                     binding.createNoteContainer.visibility = View.GONE
                     binding.addNoteFab.visibility = View.VISIBLE
                 } else {
-                    finish()
+                    activity?.finish()
                 }
             }
         }
-        onBackPressedDispatcher.addCallback(this, callback)
+        activity?.onBackPressedDispatcher?.addCallback(requireActivity(), callback)
 
         binding.setDueDateChip.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
 
-            datePicker.show(supportFragmentManager, DATE_PICKER_TAG)
+            datePicker.show(childFragmentManager, DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
                 binding.setDueDateChip.apply {
@@ -118,7 +122,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 binding.createNoteContainer.visibility = View.GONE
                 binding.addNoteFab.visibility = View.VISIBLE
             } else {
-                Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -128,17 +132,22 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
                 isCloseIconVisible = false
             }
         }
+
+        return binding.root
     }
 
     override fun onClickNoteContainer(note: NoteModel) {
-        val myIntent = Intent(this@MainActivity, EditNoteActivity::class.java).apply {
-            putExtra(EditNoteActivity.ID_EXTRA_REPLY, note.id)
-            putExtra(EditNoteActivity.TITLE_EXTRA_REPLY, note.title)
-            putExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY, note.desc)
-            putExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY, note.date)
-        }
+//        val myIntent = Intent(context, NoteDetailFragment::class.java).apply {
+//            putExtra(NoteDetailFragment.ID_EXTRA_REPLY, note.id)
+//            putExtra(NoteDetailFragment.TITLE_EXTRA_REPLY, note.title)
+//            putExtra(NoteDetailFragment.DESCRIPTION_EXTRA_REPLY, note.desc)
+//            putExtra(NoteDetailFragment.DEADLINE_EXTRA_REPLY, note.date)
+//        }
 
-        startActivityForResult(myIntent, editNoteActivityRequestCode)
+//        startActivityForResult(myIntent, editNoteActivityRequestCode)
+
+        val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note.id)
+        findNavController().navigate(action)
     }
 
     override fun onResume() {
@@ -146,8 +155,8 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
         noteViewModel.setNotes()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intentData)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == addNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
 //            val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
@@ -158,10 +167,10 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
 //
 //            noteViewModel.insert(note)
         } else if (requestCode == editNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            val myId = intentData?.getStringExtra(EditNoteActivity.ID_EXTRA_REPLY)!!
-            val myTitle = intentData.getStringExtra(EditNoteActivity.TITLE_EXTRA_REPLY)!!
-            val myDesc = intentData.getStringExtra(EditNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
-            val newDeadline = intentData.getStringExtra(EditNoteActivity.DEADLINE_EXTRA_REPLY)!!
+            val myId = data?.getStringExtra(NoteDetailFragment.ID_EXTRA_REPLY)!!
+            val myTitle = data.getStringExtra(NoteDetailFragment.TITLE_EXTRA_REPLY)!!
+            val myDesc = data.getStringExtra(NoteDetailFragment.DESCRIPTION_EXTRA_REPLY)!!
+            val newDeadline = data.getStringExtra(NoteDetailFragment.DEADLINE_EXTRA_REPLY)!!
 
             val note = NoteModel(
                 id = myId,
@@ -176,7 +185,7 @@ class MainActivity : AppCompatActivity(), NoteCallbacks {
     }
 
     private fun getSwapMg() : ItemTouchHelper {
-        return ItemTouchHelper(object:ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+        return ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,

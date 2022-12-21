@@ -1,10 +1,7 @@
 package akhtemov.vladlen.simplenotes.di
 
 import com.octopus.inc.domain.repository.NoteRepository
-import com.octopus.inc.domain.usecases.DeleteNoteUseCase
-import com.octopus.inc.domain.usecases.GetNoteListUseCase
-import com.octopus.inc.domain.usecases.SaveNoteUseCase
-import com.octopus.inc.domain.usecases.UpdateNoteUseCase
+import com.octopus.inc.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +14,11 @@ class DomainModule {
     @Provides
     fun provideGetNoteListUseCase(noteRepository: NoteRepository): GetNoteListUseCase {
         return GetNoteListUseCase(noteRepository = noteRepository)
+    }
+
+    @Provides
+    fun provideGetNoteUseCase(noteRepository: NoteRepository): GetNoteUseCase {
+        return GetNoteUseCase(noteRepository = noteRepository)
     }
 
     @Provides

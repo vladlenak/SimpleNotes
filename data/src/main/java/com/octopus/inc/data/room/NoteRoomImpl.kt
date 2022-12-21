@@ -15,17 +15,14 @@ class NoteRoomImpl @Inject constructor(private val noteDao: NoteDao): NoteRoom {
         val newNoteList = mutableListOf<NoteModel>()
 
         for (note in notes) {
-            newNoteList.add(
-                NoteModel(
-                    id = note.id,
-                    title = note.title,
-                    desc = note.description,
-                    date = note.date
-                )
-            )
+            newNoteList.add(mapToNoteModel(note))
         }
 
         return newNoteList
+    }
+
+    override suspend fun getNote(noteId: String): NoteModel {
+        return mapToNoteModel(noteDao.getNote(noteId))
     }
 
     override suspend fun updateNote(note: NoteModel) {
@@ -36,13 +33,22 @@ class NoteRoomImpl @Inject constructor(private val noteDao: NoteDao): NoteRoom {
         noteDao.deleteNote(mapToNote(note))
     }
 
-    // TODO проверить в правильном ли месте находяться
+    // TODO проверить в правильном ли месте находяться mappers
     private fun mapToNote(noteModel: NoteModel): Note {
         return Note(
             id = noteModel.id,
             title = noteModel.title,
             description = noteModel.desc,
             date = noteModel.date
+        )
+    }
+
+    private fun mapToNoteModel(note: Note): NoteModel {
+        return NoteModel(
+            id = note.id,
+            title = note.title,
+            desc = note.description,
+            date = note.date
         )
     }
 }

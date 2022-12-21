@@ -15,10 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleNotes">
         <activity
-            android:name=".presentation.notedetail.EditNoteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.notelist.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

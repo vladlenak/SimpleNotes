@@ -10,6 +10,10 @@ class NoteRepositoryImpl(private val noteRoomImpl: NoteRoomImpl): NoteRepository
         return noteRoomImpl.getNotes()
     }
 
+    override suspend fun getNote(noteId: String): NoteModel {
+        return noteRoomImpl.getNote(noteId)
+    }
+
     override suspend fun insertNote(note: NoteModel) {
         noteRoomImpl.insertNote(note)
     }

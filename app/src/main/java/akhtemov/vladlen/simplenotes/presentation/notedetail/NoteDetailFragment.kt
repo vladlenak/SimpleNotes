@@ -1,55 +1,63 @@
 package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
-import akhtemov.vladlen.simplenotes.databinding.ActivityEditNoteBinding
-import akhtemov.vladlen.simplenotes.presentation.notelist.MainActivity
+import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
+import akhtemov.vladlen.simplenotes.presentation.notelist.NoteListFragment
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.octopus.inc.domain.models.NoteModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class EditNoteActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class NoteDetailFragment : Fragment() {
 
-    private lateinit var binding: ActivityEditNoteBinding
-    private val viewModel: EditNoteViewModel by viewModels()
+    private lateinit var binding: FragmentNoteDetailBinding
+    private val viewModel: NoteDetailViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityEditNoteBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentNoteDetailBinding.inflate(inflater, container, false)
 
         init()
         addObservers()
         addListeners()
-        checkClearDueDateButtonVisibility()
+
+        return binding.root
     }
 
     private fun init() {
-        val intent = intent
-        val noteId = intent.getStringExtra(ID_EXTRA_REPLY).toString()
-        val noteTitle = intent.getStringExtra(TITLE_EXTRA_REPLY).toString()
-        val noteDescription = intent.getStringExtra(DESCRIPTION_EXTRA_REPLY).toString()
-        val noteDueDate = intent.getStringExtra(DEADLINE_EXTRA_REPLY).toString()
-        val note = NoteModel(noteId, noteTitle, noteDescription, noteDueDate)
-        viewModel.note.value = note
+        val arguments = arguments
+        val noteId = arguments?.getString("noteId")
+
+        if (noteId != null) {
+            viewModel.getNote(noteId)
+        }
     }
 
     private fun addObservers() {
-        viewModel.note.observe(this) { note ->
+        viewModel.note.observe(viewLifecycleOwner) { note ->
             binding.title.setText(note.title)
             binding.description.setText(note.desc)
             binding.dueDate.setText(note.date)
+
+            checkClearDueDateButtonVisibility()
         }
 
-        viewModel.isDueDateEmpty.observe(this) { isDueDateEmpty ->
+        viewModel.isDueDateEmpty.observe(viewLifecycleOwner) { isDueDateEmpty ->
             if (isDueDateEmpty) {
                 binding.clearDueDate.visibility = View.GONE
             } else {
@@ -80,7 +88,7 @@ class EditNoteActivity : AppCompatActivity() {
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
 
-            datePicker.show(supportFragmentManager, MainActivity.DATE_PICKER_TAG)
+            datePicker.show(childFragmentManager, NoteListFragment.DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
                 binding.dueDate.setText(CalendarHelper().getDateFromMilliseconds(it))
@@ -106,23 +114,26 @@ class EditNoteActivity : AppCompatActivity() {
         val newDeadline = binding.dueDate.text.toString()
 
         val id = viewModel.note.value?.id
+        val title = viewModel.note.value?.title
         val desc = viewModel.note.value?.desc
         val deadline = viewModel.note.value?.date
 
         if (TextUtils.isEmpty(binding.title.text.toString())) {
-            Toast.makeText(this, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
         } else if (newTitle != title || newDesc != desc || newDeadline != deadline) {
-            val replyIntent = Intent()
-            replyIntent.putExtra(ID_EXTRA_REPLY, id)
-            replyIntent.putExtra(TITLE_EXTRA_REPLY, newTitle)
-            replyIntent.putExtra(DESCRIPTION_EXTRA_REPLY, newDesc)
-            replyIntent.putExtra(DEADLINE_EXTRA_REPLY, newDeadline)
+            if (id != null && title != null && desc != null && deadline != null) {
+                val note = NoteModel(
+                    id = id,
+                    title = newTitle,
+                    desc = newDesc,
+                    date = newDeadline
+                )
 
-            setResult(Activity.RESULT_OK, replyIntent)
-
-            finish()
+                viewModel.saveNote(note)
+                findNavController().navigateUp()
+            }
         } else if (newTitle == title && newDesc == desc && newDeadline == deadline) {
-            finish()
+            findNavController().navigateUp()
         }
     }
 
