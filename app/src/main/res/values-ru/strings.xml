@@ -11,4 +11,8 @@
     <string name="set_due_date">Установить дату выполнения</string>
     <string name="delete_due_date">Удалить дату выполнения</string>
     <string name="show_note_creation_container">Показать контейнер для создания заметок</string>
+
+    <string name="delete_note">Удалить заметку?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

@@ -140,11 +140,4 @@ class NoteDetailFragment : Fragment() {
     private fun onClickDeleteNoteButton() {
         // TODO deleteNote fun
     }
-
-    companion object {
-        const val ID_EXTRA_REPLY = "id_extra_reply"
-        const val TITLE_EXTRA_REPLY = "title_extra_reply"
-        const val DESCRIPTION_EXTRA_REPLY = "description_extra_reply"
-        const val DEADLINE_EXTRA_REPLY = "date_extra_reply"
-    }
 }

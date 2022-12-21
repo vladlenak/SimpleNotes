@@ -10,5 +10,7 @@
     <string name="set_due_date">Set Due Date</string>
     <string name="delete_due_date">Delete Due Date</string>
     <string name="show_note_creation_container">Show note creation container</string>
-    <string name="delete">Delete</string>
+    <string name="delete_note">Delete note?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

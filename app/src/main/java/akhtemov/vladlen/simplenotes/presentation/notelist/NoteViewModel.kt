@@ -5,7 +5,6 @@ import com.octopus.inc.domain.models.NoteModel
 import com.octopus.inc.domain.usecases.DeleteNoteUseCase
 import com.octopus.inc.domain.usecases.GetNoteListUseCase
 import com.octopus.inc.domain.usecases.SaveNoteUseCase
-import com.octopus.inc.domain.usecases.UpdateNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,28 +13,28 @@ import javax.inject.Inject
 class NoteViewModel @Inject constructor(
     private val saveNoteUseCase: SaveNoteUseCase,
     private val getNoteListUseCase: GetNoteListUseCase,
-    private val deleteNoteUseCase: DeleteNoteUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
-    val notes = MutableLiveData<List<NoteModel>>()
+    private val _notes = MutableLiveData<List<NoteModel>>()
+    val notes: LiveData<List<NoteModel>> = _notes
 
     fun insert(note: NoteModel) = viewModelScope.launch {
         saveNoteUseCase.execute(note)
         setNotes()
     }
 
-    fun deleteNote(note: NoteModel) = viewModelScope.launch {
-        deleteNoteUseCase.execute(note)
-        setNotes()
-    }
+    fun deleteNoteByPosition(position: Int) = viewModelScope.launch {
+        val note = _notes.value?.get(position)
 
-    fun updateNote(note: NoteModel) = viewModelScope.launch {
-        updateNoteUseCase.execute(note)
+        if (note != null) {
+            deleteNoteUseCase.execute(note)
+        }
+
         setNotes()
     }
 
     fun setNotes() = viewModelScope.launch {
-        notes.value = getNoteListUseCase.execute()
+        _notes.value = getNoteListUseCase.execute()
     }
 }

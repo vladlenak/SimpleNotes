@@ -37,4 +37,19 @@
     <style name="DateTextStyle">
         <item name="android:textColor">@color/primaryLightColor</item>
     </style>
+
+    <style name="TitleDeleteDialog">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="DeleteDialogYes">
+        <item name="android:backgroundTint">@color/red</item>
+    </style>
+
+    <style name="DeleteDialogNo">
+        <item name="android:backgroundTint">@color/green</item>
+    </style>
 </resources>

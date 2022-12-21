@@ -11,4 +11,8 @@
     <string name="set_due_date">Аяқталу күнін орнату</string>
     <string name="delete_due_date">Аяқталу күнін жою</string>
     <string name="show_note_creation_container">Жазбаны жасау контейнерін көрсету</string>
+
+    <string name="delete_note">Жазбаны жою керек пе?</string>
+    <string name="yes">Иә</string>
+    <string name="no">Жоқ</string>
 </resources>

@@ -2,14 +2,13 @@ package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
-import akhtemov.vladlen.simplenotes.presentation.notedetail.NoteDetailFragment
+import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
+import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.hideKeyboard
 import akhtemov.vladlen.simplenotes.utility.showKeyboard
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -29,17 +28,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class NoteListFragment: Fragment(), NoteCallbacks {
+class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
     private lateinit var binding: FragmentNoteListBinding
-
-    private val addNoteActivityRequestCode = 1
-    private val editNoteActivityRequestCode = 2
-
     private val noteViewModel: NoteViewModel by viewModels()
-
-    lateinit var myNotes: List<NoteModel>
-
     private val noteAdapter = NoteAdapter(mutableListOf())
 
     override fun onCreateView(
@@ -49,6 +41,23 @@ class NoteListFragment: Fragment(), NoteCallbacks {
     ): View {
         binding = FragmentNoteListBinding.inflate(inflater, container, false)
 
+        init()
+        addListeners()
+
+        return binding.root
+    }
+
+    override fun onClickNoteContainer(note: NoteModel) {
+        val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note.id)
+        findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        noteViewModel.setNotes()
+    }
+
+    private fun init() {
         noteAdapter.setNoteCallbacks(this)
 
         binding.notesRecyclerView.apply {
@@ -58,7 +67,6 @@ class NoteListFragment: Fragment(), NoteCallbacks {
 
         noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.addNotes(notes)
-            myNotes = notes
         }
 
         val swapHelper = getSwapMg()
@@ -82,7 +90,9 @@ class NoteListFragment: Fragment(), NoteCallbacks {
             }
         }
         activity?.onBackPressedDispatcher?.addCallback(requireActivity(), callback)
+    }
 
+    private fun addListeners() {
         binding.setDueDateChip.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.set_due_date)
@@ -102,6 +112,7 @@ class NoteListFragment: Fragment(), NoteCallbacks {
         binding.createNote.setOnClickListener {
             if (!TextUtils.isEmpty(binding.noteTitle.text)) {
                 hideKeyboard()
+
                 val noteTitle = binding.noteTitle.text.toString()
                 val noteDueDate = binding.setDueDateChip.text.toString()
                 val note = NoteModel(
@@ -132,56 +143,6 @@ class NoteListFragment: Fragment(), NoteCallbacks {
                 isCloseIconVisible = false
             }
         }
-
-        return binding.root
-    }
-
-    override fun onClickNoteContainer(note: NoteModel) {
-//        val myIntent = Intent(context, NoteDetailFragment::class.java).apply {
-//            putExtra(NoteDetailFragment.ID_EXTRA_REPLY, note.id)
-//            putExtra(NoteDetailFragment.TITLE_EXTRA_REPLY, note.title)
-//            putExtra(NoteDetailFragment.DESCRIPTION_EXTRA_REPLY, note.desc)
-//            putExtra(NoteDetailFragment.DEADLINE_EXTRA_REPLY, note.date)
-//        }
-
-//        startActivityForResult(myIntent, editNoteActivityRequestCode)
-
-        val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note.id)
-        findNavController().navigate(action)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        noteViewModel.setNotes()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == addNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-//            val titleReplay = intentData?.getStringExtra(AddNoteActivity.TITLE_EXTRA_REPLY)!!
-//            val descriptionReplay = intentData.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA_REPLY)!!
-//            val deadline = intentData.getStringExtra(AddNoteActivity.DEADLINE_EXTRA_REPLY)!!
-//
-//            val note = Note(titleReplay, descriptionReplay, deadline)
-//
-//            noteViewModel.insert(note)
-        } else if (requestCode == editNoteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            val myId = data?.getStringExtra(NoteDetailFragment.ID_EXTRA_REPLY)!!
-            val myTitle = data.getStringExtra(NoteDetailFragment.TITLE_EXTRA_REPLY)!!
-            val myDesc = data.getStringExtra(NoteDetailFragment.DESCRIPTION_EXTRA_REPLY)!!
-            val newDeadline = data.getStringExtra(NoteDetailFragment.DEADLINE_EXTRA_REPLY)!!
-
-            val note = NoteModel(
-                id = myId,
-                title = myTitle,
-                desc = myDesc,
-                date = newDeadline
-            )
-            noteViewModel.updateNote(note)
-        } else {
-            //Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
-        }
     }
 
     private fun getSwapMg() : ItemTouchHelper {
@@ -195,9 +156,8 @@ class NoteListFragment: Fragment(), NoteCallbacks {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val pos = viewHolder.adapterPosition
-                val note = myNotes[pos]
-                noteViewModel.deleteNote(note)
+                val notePosition = viewHolder.adapterPosition
+                DeleteDialog.showDeleteDialog(notePosition, this@NoteListFragment, childFragmentManager)
             }
         })
     }
@@ -206,4 +166,11 @@ class NoteListFragment: Fragment(), NoteCallbacks {
         const val DATE_PICKER_TAG = "date_picker_tag"
     }
 
+    override fun onClickDeleteDialogYes(position: Int) {
+        noteViewModel.deleteNoteByPosition(position)
+    }
+
+    override fun onClickDeleteDialogNo() {
+        noteViewModel.setNotes()
+    }
 }
