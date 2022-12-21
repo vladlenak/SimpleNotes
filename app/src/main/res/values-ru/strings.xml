@@ -8,7 +8,10 @@
     <string name="title_cannot_be_empty">Заголовок не может быть пустым</string>
     <string name="edit_due_date">Редактировать дату</string>
     <string name="note">Заметка</string>
-    <string name="set_due_date">Установить дату выполнения</string>
+
+    <string name="set_due_date">Дата выполнения</string>
+    <string name="set_due_time">Время выполнения</string>
+
     <string name="delete_due_date">Удалить дату выполнения</string>
     <string name="show_note_creation_container">Показать контейнер для создания заметок</string>
 

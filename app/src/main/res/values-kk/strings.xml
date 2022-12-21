@@ -8,7 +8,10 @@
     <string name="title_cannot_be_empty">Тақырып бос болмауы керек</string>
     <string name="edit_due_date">Өңдеу күні</string>
     <string name="note">Ескерту</string>
+
     <string name="set_due_date">Аяқталу күнін орнату</string>
+    <string name="set_due_time">Мерзімін орнату</string>
+
     <string name="delete_due_date">Аяқталу күнін жою</string>
     <string name="show_note_creation_container">Жазбаны жасау контейнерін көрсету</string>
 

@@ -52,16 +52,12 @@ class NoteDetailFragment : Fragment() {
         viewModel.note.observe(viewLifecycleOwner) { note ->
             binding.title.setText(note.title)
             binding.description.setText(note.desc)
-            binding.dueDate.setText(note.date)
 
-            checkClearDueDateButtonVisibility()
-        }
-
-        viewModel.isDueDateEmpty.observe(viewLifecycleOwner) { isDueDateEmpty ->
-            if (isDueDateEmpty) {
-                binding.clearDueDate.visibility = View.GONE
+            if (note.date.isEmpty()) {
+                binding.setDueDateChip.text = getString(R.string.set_due_date)
             } else {
-                binding.clearDueDate.visibility = View.VISIBLE
+                binding.setDueDateChip.text = note.date
+                binding.setDueDateChip.isCloseIconVisible = true
             }
         }
     }
@@ -82,7 +78,7 @@ class NoteDetailFragment : Fragment() {
             }
         }
 
-        binding.dueDate.setOnClickListener {
+        binding.setDueDateChip.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.set_due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -91,27 +87,21 @@ class NoteDetailFragment : Fragment() {
             datePicker.show(childFragmentManager, NoteListFragment.DATE_PICKER_TAG)
 
             datePicker.addOnPositiveButtonClickListener {
-                binding.dueDate.setText(CalendarHelper().getDateFromMilliseconds(it))
-                viewModel.isDueDateEmpty.value = false
+                binding.setDueDateChip.text = CalendarHelper().getDateFromMilliseconds(it)
+                binding.setDueDateChip.isCloseIconVisible = true
             }
         }
 
-        binding.clearDueDate.setOnClickListener {
-            binding.dueDate.setText("")
-            viewModel.isDueDateEmpty.value = true
-        }
-    }
-
-    private fun checkClearDueDateButtonVisibility() {
-        if (viewModel.note.value?.date?.isNotEmpty() == true) {
-            viewModel.isDueDateEmpty.value = false
+        binding.setDueDateChip.setOnCloseIconClickListener {
+            binding.setDueDateChip.text = getString(R.string.set_due_date)
+            binding.setDueDateChip.isCloseIconVisible = false
         }
     }
 
     private fun onClickSaveNoteButton() {
         val newTitle = binding.title.text.toString()
         val newDesc = binding.description.text.toString()
-        val newDeadline = binding.dueDate.text.toString()
+        val newDeadline = binding.setDueDateChip.text.toString()
 
         val id = viewModel.note.value?.id
         val title = viewModel.note.value?.title
@@ -128,6 +118,10 @@ class NoteDetailFragment : Fragment() {
                     desc = newDesc,
                     date = newDeadline
                 )
+
+                if (note.date == getString(R.string.set_due_date)) {
+                    note.date = ""
+                }
 
                 viewModel.saveNote(note)
                 findNavController().navigateUp()

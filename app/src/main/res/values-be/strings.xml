@@ -8,9 +8,13 @@
     <string name="title_cannot_be_empty">Загаловак не можа быць пустым</string>
     <string name="edit_due_date">Рэдагаваць дату</string>
     <string name="note">Нататка</string>
-    <string name="set_due_date">Усталюйце дату выканання</string>
+
+    <string name="set_due_date">Дата выканання</string>
+    <string name="set_due_time">Належны час</string>
+
     <string name="delete_due_date">Выдаліць тэрмін выканання</string>
     <string name="show_note_creation_container">Паказаць кантэйнер для стварэння нататак</string>
+
     <string name="delete_note">Выдаліць нататку?</string>
     <string name="yes">Так</string>
     <string name="no">Не</string>
