@@ -4,5 +4,6 @@ data class NoteModel(
     val id: String,
     val title: String,
     val desc: String,
-    var date: String
+    var date: String,
+    var time: String
 )

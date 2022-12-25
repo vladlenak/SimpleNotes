@@ -23,12 +23,19 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
 class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
+
+    companion object {
+        const val DATE_PICKER_TAG = "date_picker_tag"
+        const val TIME_PICKER_TAG = "time_picker_tag"
+    }
 
     private lateinit var binding: FragmentNoteListBinding
     private val noteViewModel: NoteViewModel by viewModels()
@@ -57,6 +64,14 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         noteViewModel.setNotes()
     }
 
+    override fun onClickDeleteDialogYes(position: Int) {
+        noteViewModel.deleteNoteByPosition(position)
+    }
+
+    override fun onClickDeleteDialogNo() {
+        noteViewModel.setNotes()
+    }
+
     private fun init() {
         noteAdapter.setNoteCallbacks(this)
 
@@ -66,7 +81,7 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         }
 
         noteViewModel.notes.observe(viewLifecycleOwner) { notes ->
-            noteAdapter.addNotes(notes)
+            noteAdapter.addNotes(sortListByDateThenTime(notes.toMutableList()))
         }
 
         val swapHelper = getSwapMg()
@@ -109,31 +124,21 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
             }
         }
 
-        binding.createNote.setOnClickListener {
-            if (!TextUtils.isEmpty(binding.noteTitle.text)) {
-                hideKeyboard()
+        binding.setDueTimeChip.setOnClickListener {
+            val timePicker = MaterialTimePicker.Builder()
+                .setTitleText(R.string.set_due_time)
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .build()
 
-                val noteTitle = binding.noteTitle.text.toString()
-                val noteDueDate = binding.setDueDateChip.text.toString()
-                val note = NoteModel(
-                    id = UUID.randomUUID().toString(),
-                    title = noteTitle,
-                    desc = "",
-                    date = ""
-                )
+            timePicker.show(childFragmentManager, TIME_PICKER_TAG)
 
-                if (noteDueDate != getString(R.string.set_due_date)) {
-                    note.date = noteDueDate
+            timePicker.addOnPositiveButtonClickListener {
+                binding.setDueTimeChip.apply {
+                    val time = "${timePicker.hour}:${timePicker.minute}"
+
+                    text = time
+                    isCloseIconVisible = true
                 }
-
-                noteViewModel.insert(note)
-
-                binding.noteTitle.text.clear()
-                binding.setDueDateChip.text = getString(R.string.set_due_date)
-                binding.createNoteContainer.visibility = View.GONE
-                binding.addNoteFab.visibility = View.VISIBLE
-            } else {
-                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -143,6 +148,50 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
                 isCloseIconVisible = false
             }
         }
+
+        binding.setDueTimeChip.setOnCloseIconClickListener {
+            binding.setDueTimeChip.apply {
+                text = getString(R.string.set_due_time)
+                isCloseIconVisible = false
+            }
+        }
+
+        binding.createNote.setOnClickListener {
+            if (!TextUtils.isEmpty(binding.noteTitle.text)) {
+                hideKeyboard()
+
+                val noteTitle = binding.noteTitle.text.toString()
+                val noteDate = binding.setDueDateChip.text.toString()
+                val noteTime = binding.setDueTimeChip.text.toString()
+                val note = NoteModel(
+                    id = UUID.randomUUID().toString(),
+                    title = noteTitle,
+                    desc = "",
+                    date = "",
+                    time = ""
+                )
+
+                if (noteDate != getString(R.string.set_due_date)) {
+                    note.date = noteDate
+                }
+
+                if (noteTime != getString(R.string.set_due_time)) {
+                    note.time = noteTime
+                }
+
+                noteViewModel.insert(note)
+
+                binding.noteTitle.text.clear()
+                binding.setDueDateChip.text = getString(R.string.set_due_date)
+                binding.setDueTimeChip.text = getString(R.string.set_due_time)
+                binding.createNoteContainer.visibility = View.GONE
+                binding.addNoteFab.visibility = View.VISIBLE
+            } else {
+                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
     }
 
     private fun getSwapMg() : ItemTouchHelper {
@@ -162,15 +211,8 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         })
     }
 
-    companion object {
-        const val DATE_PICKER_TAG = "date_picker_tag"
-    }
-
-    override fun onClickDeleteDialogYes(position: Int) {
-        noteViewModel.deleteNoteByPosition(position)
-    }
-
-    override fun onClickDeleteDialogNo() {
-        noteViewModel.setNotes()
+    private fun sortListByDateThenTime(list: MutableList<NoteModel>): List<NoteModel> {
+        list.toMutableList().sortWith(compareBy<NoteModel> { it.date }.thenBy { it.time })
+        return list
     }
 }

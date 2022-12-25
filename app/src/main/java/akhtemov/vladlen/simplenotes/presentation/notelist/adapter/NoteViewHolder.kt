@@ -21,6 +21,7 @@ class NoteViewHolder(private val binding: ListItemNoteBinding) :
         }
 
         binding.dateTextView.text = note.date
+        binding.timeTv.text = note.time
 
         binding.noteContainer.setOnClickListener {
             noteCallbacks?.onClickNoteContainer(note)

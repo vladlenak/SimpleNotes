@@ -34,7 +34,9 @@ class DataModule {
             context,
             NoteRoomDatabase::class.java,
             "note_database"
-        ).build()
+        )
+            .addMigrations(NoteRoomDatabase.migration_1_2)
+            .build()
     }
 
     @Provides

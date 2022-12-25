@@ -39,7 +39,8 @@ class NoteRoomImpl @Inject constructor(private val noteDao: NoteDao): NoteRoom {
             id = noteModel.id,
             title = noteModel.title,
             description = noteModel.desc,
-            date = noteModel.date
+            date = noteModel.date,
+            time = noteModel.time
         )
     }
 
@@ -48,7 +49,8 @@ class NoteRoomImpl @Inject constructor(private val noteDao: NoteDao): NoteRoom {
             id = note.id,
             title = note.title,
             desc = note.description,
-            date = note.date
+            date = note.date,
+            time = note.time
         )
     }
 }
