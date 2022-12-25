@@ -4,7 +4,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+
     <string name="title_cannot_be_empty">Title cannot be empty</string>
+    <string name="date_cannot_be_empty">Date cannot be empty</string>
+
     <string name="edit_due_date">Edit date</string>
     <string name="note">Note</string>
 

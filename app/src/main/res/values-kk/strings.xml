@@ -5,7 +5,10 @@
     <string name="title">Тақырыбы</string>
     <string name="description">Сипаттама</string>
     <string name="save">Сақтау</string>
+
     <string name="title_cannot_be_empty">Тақырып бос болмауы керек</string>
+    <string name="date_cannot_be_empty">Күн бос болмауы керек</string>
+
     <string name="edit_due_date">Өңдеу күні</string>
     <string name="note">Ескерту</string>
 

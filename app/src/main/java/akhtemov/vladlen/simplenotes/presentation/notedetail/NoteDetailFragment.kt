@@ -157,8 +157,17 @@ class NoteDetailFragment : Fragment() {
                         note.time = ""
                     }
 
-                    viewModel.saveNote(note)
-                    findNavController().navigateUp()
+                    if (note.time.isNotEmpty()) {
+                        if (note.date.isNotEmpty()) {
+                            viewModel.saveNote(note)
+                            findNavController().navigateUp()
+                        } else {
+                            Toast.makeText(context, R.string.date_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        viewModel.saveNote(note)
+                        findNavController().navigateUp()
+                    }
                 }
             } else if (newTitle == note.title && newDesc == note.desc && newDate == note.date && newTime == note.time) {
                 findNavController().navigateUp()

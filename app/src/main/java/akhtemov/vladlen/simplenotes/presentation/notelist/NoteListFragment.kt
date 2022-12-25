@@ -174,24 +174,33 @@ class NoteListFragment: Fragment(), NoteCallbacks, DeleteDialogCallbacks {
                 if (noteDate != getString(R.string.set_due_date)) {
                     note.date = noteDate
                 }
-
                 if (noteTime != getString(R.string.set_due_time)) {
                     note.time = noteTime
                 }
 
-                noteViewModel.insert(note)
-
-                binding.noteTitle.text.clear()
-                binding.setDueDateChip.text = getString(R.string.set_due_date)
-                binding.setDueTimeChip.text = getString(R.string.set_due_time)
-                binding.createNoteContainer.visibility = View.GONE
-                binding.addNoteFab.visibility = View.VISIBLE
+                if (note.time.isNotEmpty()) {
+                    if (note.date.isNotEmpty()) {
+                        saveNoteToDb(note)
+                    } else {
+                        Toast.makeText(context, R.string.date_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    saveNoteToDb(note)
+                }
             } else {
                 Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    private fun saveNoteToDb(note: NoteModel) {
+        noteViewModel.insert(note)
 
+        binding.noteTitle.text.clear()
+        binding.setDueDateChip.text = getString(R.string.set_due_date)
+        binding.setDueTimeChip.text = getString(R.string.set_due_time)
+        binding.createNoteContainer.visibility = View.GONE
+        binding.addNoteFab.visibility = View.VISIBLE
     }
 
     private fun getSwapMg() : ItemTouchHelper {

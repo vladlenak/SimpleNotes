@@ -5,7 +5,10 @@
     <string name="title">Заголовок</string>
     <string name="description">Описание</string>
     <string name="save">Сохранить</string>
+
     <string name="title_cannot_be_empty">Заголовок не может быть пустым</string>
+    <string name="date_cannot_be_empty">Дата не может быть пустой</string>
+
     <string name="edit_due_date">Редактировать дату</string>
     <string name="note">Заметка</string>
 
