@@ -2,8 +2,8 @@ package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
-import akhtemov.vladlen.simplenotes.presentation.notelist.NoteListFragment
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
+import akhtemov.vladlen.simplenotes.utility.PickersHelper
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -13,9 +13,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,29 +83,14 @@ class NoteDetailFragment : Fragment() {
         }
 
         binding.setDueDateChip.setOnClickListener {
-            // TODO Вынести в PickerHelper
-            val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(R.string.set_due_date)
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-
-            datePicker.show(childFragmentManager, NoteListFragment.DATE_PICKER_TAG)
-
-            datePicker.addOnPositiveButtonClickListener {
+            PickersHelper.getDatePicker(childFragmentManager).addOnPositiveButtonClickListener {
                 binding.setDueDateChip.text = CalendarHelper().getDateFromMilliseconds(it)
                 binding.setDueDateChip.isCloseIconVisible = true
             }
         }
 
-        // TODO Вынести в PickerHelper
         binding.setDueTimeChip.setOnClickListener {
-            val timePicker = MaterialTimePicker.Builder()
-                .setTitleText(R.string.set_due_time)
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .build()
-
-            timePicker.show(childFragmentManager, NoteListFragment.TIME_PICKER_TAG)
-
+            val timePicker = PickersHelper.getTimePicker(childFragmentManager)
             timePicker.addOnPositiveButtonClickListener {
                 binding.setDueTimeChip.apply {
                     val time = "${timePicker.hour}:${timePicker.minute}"
@@ -132,6 +114,7 @@ class NoteDetailFragment : Fragment() {
         }
     }
 
+    // TODO сохранение модели, сократить код
     private fun onClickSaveNoteButton() {
         val newTitle = binding.title.text.toString()
         val newDesc = binding.description.text.toString()

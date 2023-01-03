@@ -2,39 +2,25 @@ package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
-import akhtemov.vladlen.simplenotes.presentation.MainActivity
 import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notifications.RemindersManager
 import akhtemov.vladlen.simplenotes.utility.*
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -43,8 +29,6 @@ import java.util.*
 class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
     companion object {
-        const val DATE_PICKER_TAG = "date_picker_tag"
-        const val TIME_PICKER_TAG = "time_picker_tag"
         const val NOTIFICATION_ID = 1
         const val CHANNEL_ID = "chanel_id"
         const val CHANNEL_NAME = "chanel_name"
@@ -122,15 +106,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
     private fun addListeners() {
         binding.setDueDateChip.setOnClickListener {
-            // TODO Вынести в PickerHelper
-            val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(R.string.set_due_date)
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-
-            datePicker.show(childFragmentManager, DATE_PICKER_TAG)
-
-            datePicker.addOnPositiveButtonClickListener {
+            PickersHelper.getDatePicker(childFragmentManager).addOnPositiveButtonClickListener {
                 binding.setDueDateChip.apply {
                     text = CalendarHelper().getDateFromMilliseconds(it)
                     isCloseIconVisible = true
@@ -139,14 +115,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         }
 
         binding.setDueTimeChip.setOnClickListener {
-            // TODO Вынести в PickerHelper
-            val timePicker = MaterialTimePicker.Builder()
-                .setTitleText(R.string.set_due_time)
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .build()
-
-            timePicker.show(childFragmentManager, TIME_PICKER_TAG)
-
+            val timePicker = PickersHelper.getTimePicker(childFragmentManager)
             timePicker.addOnPositiveButtonClickListener {
                 binding.setDueTimeChip.apply {
                     val time = "${timePicker.hour}:${timePicker.minute}"
