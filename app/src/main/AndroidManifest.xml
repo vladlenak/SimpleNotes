@@ -5,6 +5,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!--  for setAlarmClock() -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+
     <application
         android:name=".app.NotesApplication"
         android:allowBackup="true"
@@ -23,6 +31,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".presentation.notifications.NoteNotificationService" />
+
+        <receiver
+            android:name=".presentation.notifications.CheckNotificationBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="APP_SPECIFIC_BROADCAST" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".presentation.notifications.AlarmReceiver"
+            android:enabled="true" />
+
+<!--        <receiver-->
+<!--            android:name=".presentation.notifications.BootReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false">-->
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
+<!--            </intent-filter>-->
+
+<!--        </receiver>-->
     </application>
 
 </manifest>

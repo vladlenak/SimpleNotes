@@ -86,6 +86,7 @@ class NoteDetailFragment : Fragment() {
         }
 
         binding.setDueDateChip.setOnClickListener {
+            // TODO Вынести в PickerHelper
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.set_due_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -99,6 +100,7 @@ class NoteDetailFragment : Fragment() {
             }
         }
 
+        // TODO Вынести в PickerHelper
         binding.setDueTimeChip.setOnClickListener {
             val timePicker = MaterialTimePicker.Builder()
                 .setTitleText(R.string.set_due_time)

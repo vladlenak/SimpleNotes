@@ -37,4 +37,8 @@ class NoteViewModel @Inject constructor(
     fun setNotes() = viewModelScope.launch {
         _notes.value = getNoteListUseCase.execute()
     }
+
+    fun getNoteListUseCase(): GetNoteListUseCase{
+        return getNoteListUseCase
+    }
 }
