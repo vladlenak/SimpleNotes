@@ -11,16 +11,18 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
-// TODO тут тоже константы для NotificationConstants
-const val NOTIFICATION_ID = 1
-const val CHANNEL_ID = "chanel_id"
-
-// TODO дубль EXTRA
-private const val TITLE_EXTRA_ID = "title_id"
-private const val DESC_EXTRA_ID = "desc_id"
-private const val ID_EXTRA_ID = "id_id"
 
 class AlarmReceiver : BroadcastReceiver() {
+
+    companion object {
+        const val TITLE_EXTRA_ID = "title_id"
+        const val DESC_EXTRA_ID = "desc_id"
+        const val ID_EXTRA_ID = "id_id"
+
+        const val NOTIFICATION_ID = 1
+        const val CHANNEL_ID = "chanel_id"
+    }
+
     /**
      * sends notification when receives alarm
      * and then reschedule the reminder again
@@ -59,6 +61,7 @@ class AlarmReceiver : BroadcastReceiver() {
 //        RemindersManager.startReminder(context.applicationContext)
     }
 
+    // TODO перенести код в NotificationHelper
     private fun NotificationManager.sendReminderNotification(
         applicationContext: Context,
         channelId: String,

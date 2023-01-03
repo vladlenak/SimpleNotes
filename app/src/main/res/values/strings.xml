@@ -21,10 +21,4 @@
     <string name="delete_note">Delete note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-
-    <string name="channel_name">Channel Name</string>
-    <string name="channel_description">channel_description</string>
-
-    <string name="click_to_restart">click_to_restart</string>
-    <string name="download_complete">download_complete</string>
 </resources>

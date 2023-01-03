@@ -2,8 +2,6 @@ package akhtemov.vladlen.simplenotes.utility
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.presentation.MainActivity
-import akhtemov.vladlen.simplenotes.presentation.notelist.NoteListFragment
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -16,15 +14,14 @@ import androidx.core.content.ContextCompat
 
 class NotificationHelper {
     companion object {
-        private const val TAG = "NotificationHelper"
+        private const val DEFAULT_CHANEL_ID = "default_chanel_id"
+        private const val DEFAULT_CHANEL_NAME = "default_chanel_name"
+        private const val DEFAULT_NOTIFICATION_ID = 101
 
         fun createNotificationsChannels(context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // TODO вывести константы в отдельный класс так как используются в нескольких классах
                 val channel = NotificationChannel(
-                    NoteListFragment.CHANNEL_ID,
-                    NoteListFragment.CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
+                    DEFAULT_CHANEL_ID, DEFAULT_CHANEL_NAME, NotificationManager.IMPORTANCE_HIGH
                 )
                 ContextCompat.getSystemService(context, NotificationManager::class.java)
                     ?.createNotificationChannel(channel)
@@ -46,7 +43,7 @@ class NotificationHelper {
             val pendingIntent: PendingIntent =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-            val builder = NotificationCompat.Builder(context, NoteListFragment.CHANNEL_ID)
+            val builder = NotificationCompat.Builder(context, DEFAULT_CHANEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(desc)
@@ -57,24 +54,7 @@ class NotificationHelper {
 
             with(NotificationManagerCompat.from(context)) {
                 // notificationId is a unique int for each notification that you must define
-                notify(NoteListFragment.NOTIFICATION_ID, builder.build())
-            }
-        }
-
-        fun createNotificationChannel(activity: Activity) {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val name = activity.getString(R.string.channel_name)
-                val descriptionText = activity.getString(R.string.channel_description)
-                val importance = NotificationManager.IMPORTANCE_DEFAULT
-                val channel = NotificationChannel(NoteListFragment.CHANNEL_ID, name, importance).apply {
-                    description = descriptionText
-                }
-                // Register the channel with the system
-                val notificationManager: NotificationManager =
-                    activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.createNotificationChannel(channel)
+                notify(DEFAULT_NOTIFICATION_ID, builder.build())
             }
         }
     }

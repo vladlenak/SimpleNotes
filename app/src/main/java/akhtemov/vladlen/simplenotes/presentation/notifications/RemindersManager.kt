@@ -9,18 +9,12 @@ import java.util.*
 
 object RemindersManager {
 
-    private const val REMINDER_NOTIFICATION_REQUEST_CODE = 123
-
-    // TODO дубль EXTRA
-    private const val TITLE_EXTRA_ID = "title_id"
-    private const val DESC_EXTRA_ID = "desc_id"
-
     fun startReminder(
         context: Context,
         reminderTitle: String,
         reminderDesc: String,
         reminderTime: String,
-        reminderId: Int = REMINDER_NOTIFICATION_REQUEST_CODE
+        reminderId: Int
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -29,8 +23,9 @@ object RemindersManager {
 
         val intent =
             Intent(context.applicationContext, AlarmReceiver::class.java).let { intent ->
-                intent.putExtra(TITLE_EXTRA_ID, reminderTitle)
-                intent.putExtra(DESC_EXTRA_ID, reminderDesc)
+                intent.putExtra(AlarmReceiver.ID_EXTRA_ID, reminderId)
+                intent.putExtra(AlarmReceiver.TITLE_EXTRA_ID, reminderTitle)
+                intent.putExtra(AlarmReceiver.DESC_EXTRA_ID, reminderDesc)
 
                 PendingIntent.getBroadcast(
                     context.applicationContext,
@@ -63,7 +58,7 @@ object RemindersManager {
 
     fun stopReminder(
         context: Context,
-        reminderId: Int = REMINDER_NOTIFICATION_REQUEST_CODE
+        reminderId: Int
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).let { intent ->

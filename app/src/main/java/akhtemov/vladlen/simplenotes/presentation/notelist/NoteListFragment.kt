@@ -27,12 +27,6 @@ import java.util.*
 @AndroidEntryPoint
 class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
-    companion object {
-        const val NOTIFICATION_ID = 1
-        const val CHANNEL_ID = "chanel_id"
-        const val CHANNEL_NAME = "chanel_name"
-    }
-
     private lateinit var binding: FragmentNoteListBinding
     private val viewModel: NoteViewModel by viewModels()
     private val noteAdapter = NoteAdapter(mutableListOf())
@@ -136,15 +130,18 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     private fun addNotesWithTimeToAlarmReceiver(noteList: List<NoteModel>) {
         // RemindersManager.stopReminder(requireContext())
         val dateToday = DateHelper.getDateNow()
+        var i = 1
         for (note in noteList) {
             if (dateToday == note.date) {
                 if (note.time.isNotEmpty()) {
                     RemindersManager.startReminder(
-                        requireContext(),
-                        note.title,
-                        note.desc,
-                        note.time
+                        context = requireContext(),
+                        reminderTitle = note.title,
+                        reminderDesc = note.desc,
+                        reminderTime = note.time,
+                        reminderId = i
                     )
+                    i++
                 }
             }
         }
