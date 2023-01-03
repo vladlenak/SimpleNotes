@@ -64,12 +64,12 @@
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:padding="8dp"
-            app:layout_constraintEnd_toStartOf="@id/create_note"
+            app:layout_constraintEnd_toStartOf="@id/saveNote"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/create_note"
+            android:id="@+id/saveNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/roundcorner"
