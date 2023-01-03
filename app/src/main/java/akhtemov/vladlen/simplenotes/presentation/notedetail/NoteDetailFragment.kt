@@ -5,7 +5,6 @@ import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.PickersHelper
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,7 @@ class NoteDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentNoteDetailBinding
     private val viewModel: NoteDetailViewModel by viewModels()
+    private var noteId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +38,10 @@ class NoteDetailFragment : Fragment() {
 
     private fun init() {
         val arguments = arguments
-        val noteId = arguments?.getString("noteId")
+        noteId = arguments?.getString("noteId")
 
         if (noteId != null) {
-            viewModel.getNote(noteId)
+            viewModel.getNote(noteId!!)
         }
     }
 
@@ -107,57 +107,44 @@ class NoteDetailFragment : Fragment() {
         }
 
         binding.setDueTimeChip.setOnCloseIconClickListener {
-            binding.setDueTimeChip.apply {
-                text = getString(R.string.set_due_time)
-                isCloseIconVisible = false
-            }
+            binding.setDueTimeChip.text = getString(R.string.set_due_time)
+            binding.setDueTimeChip.isCloseIconVisible = false
         }
     }
 
-    // TODO сохранение модели, сократить код
     private fun onClickSaveNoteButton() {
-        val newTitle = binding.title.text.toString()
-        val newDesc = binding.description.text.toString()
-        val newDate = binding.setDueDateChip.text.toString()
-        val newTime = binding.setDueTimeChip.text.toString()
-
-        viewModel.note.value?.let { note ->
-            if (TextUtils.isEmpty(binding.title.text.toString())) {
-                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
-            } else if (newTitle != note.title || newDesc != note.desc || newDate != note.date || newTime != note.time) {
-                if (note.id != null && note.title != null && note.desc != null && note.date != null && note.time != null) {
-                    val note = NoteModel(
-                        id = note.id,
-                        title = newTitle,
-                        desc = newDesc,
-                        date = newDate,
-                        time = newTime
-                    )
-
-                    if (note.date == getString(R.string.set_due_date)) {
-                        note.date = ""
-                    }
-
-                    if (note.time == getString(R.string.set_due_time)) {
-                        note.time = ""
-                    }
-
-                    if (note.time.isNotEmpty()) {
-                        if (note.date.isNotEmpty()) {
-                            viewModel.saveNote(note)
-                            findNavController().navigateUp()
-                        } else {
-                            Toast.makeText(context, R.string.date_cannot_be_empty, Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        viewModel.saveNote(note)
-                        findNavController().navigateUp()
-                    }
-                }
-            } else if (newTitle == note.title && newDesc == note.desc && newDate == note.date && newTime == note.time) {
-                findNavController().navigateUp()
-            }
+        createNoteModel()?.let { noteModel ->
+            viewModel.updateNote(noteModel)
+            findNavController().navigateUp()
         }
+    }
+
+    private fun createNoteModel(): NoteModel? {
+        noteId?.let { noteId ->
+            val noteModel = NoteModel(
+                id = noteId,
+                title = binding.title.text.toString(),
+                desc = binding.description.text.toString()
+            )
+            val noteDate = binding.setDueDateChip.text.toString()
+            val noteTime = binding.setDueTimeChip.text.toString()
+
+            if (noteDate != getString(R.string.set_due_date)) noteModel.date = noteDate
+            if (noteTime != getString(R.string.set_due_time)) noteModel.time = noteTime
+
+            if(noteModel.title.isEmpty()) {
+                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                return null
+            }
+            if (noteModel.time.isNotEmpty() && noteModel.date.isEmpty()) {
+                Toast.makeText(context, R.string.date_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                return null
+            }
+
+            return noteModel
+        }
+
+        return null
     }
 
     private fun onClickDeleteNoteButton() {

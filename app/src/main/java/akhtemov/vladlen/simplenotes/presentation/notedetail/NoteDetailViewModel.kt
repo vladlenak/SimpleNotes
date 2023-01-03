@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.octopus.inc.domain.models.NoteModel
 import com.octopus.inc.domain.usecases.GetNoteUseCase
-import com.octopus.inc.domain.usecases.SaveNoteUseCase
 import com.octopus.inc.domain.usecases.UpdateNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,13 +20,11 @@ class NoteDetailViewModel @Inject constructor(
     private val _note = MutableLiveData<NoteModel>()
     val note: LiveData<NoteModel> = _note
 
-    val isDueDateEmpty = MutableLiveData<Boolean>()
-
     fun getNote(noteId: String) = viewModelScope.launch {
         _note.value = getNoteUseCase.execute(noteId)
     }
 
-    fun saveNote(note: NoteModel) = viewModelScope.launch {
+    fun updateNote(note: NoteModel) = viewModelScope.launch {
         updateNoteUseCase.execute(note)
     }
 }
