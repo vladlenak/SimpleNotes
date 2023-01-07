@@ -58,8 +58,8 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         viewModel.setNotes()
     }
 
-    override fun onClickDeleteDialogYes(position: Int) {
-        viewModel.deleteNoteByPosition(position)
+    override fun onClickDeleteDialogYes(note: NoteModel) {
+        viewModel.deleteNoteByPosition(note)
     }
 
     override fun onClickDeleteDialogNo() {
@@ -97,17 +97,12 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
+            ): Boolean = false
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val notePosition = viewHolder.adapterPosition
-                DeleteDialog.showDeleteDialog(
-                    notePosition,
-                    this@NoteListFragment,
-                    childFragmentManager
-                )
+                viewModel.notes.value?.get(notePosition)?.let { note ->
+                    DeleteDialog.showDeleteDialog(note, this@NoteListFragment, childFragmentManager)
+                }
             }
         })
     }

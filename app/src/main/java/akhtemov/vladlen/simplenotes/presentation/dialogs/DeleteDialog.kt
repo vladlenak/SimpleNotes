@@ -7,26 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.octopus.inc.domain.models.NoteModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeleteDialog : DialogFragment() {
 
     companion object {
-        const val TAG = "delete_dialog_tag"
-        const val POSITION_KEY = "position_key"
+        private const val TAG = "delete_dialog_tag"
 
         fun showDeleteDialog(
-            position: Int,
+            note: NoteModel,
             callbacks: DeleteDialogCallbacks,
             fragmentManager: FragmentManager
         ) {
-//            val bundle = Bundle()
-//            bundle.putString(POSITION_KEY, position)
-
             DeleteDialog().apply {
                 isCancelable = false
+                setNote(note)
                 setCallbacks(callbacks)
-                setPosition(position)
-//                arguments = bundle
                 show(fragmentManager, TAG)
             }
         }
@@ -34,7 +32,7 @@ class DeleteDialog : DialogFragment() {
 
     private lateinit var binding: DialogDeleteBinding
     private var deleteDialogCallbacks: DeleteDialogCallbacks? = null
-    private var position: Int? = null
+    private var note: NoteModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +42,8 @@ class DeleteDialog : DialogFragment() {
         binding = DialogDeleteBinding.inflate(inflater, container, false)
 
         binding.yesBtn.setOnClickListener {
-            if (position != null) {
-                deleteDialogCallbacks?.onClickDeleteDialogYes(position!!)
+            note?.let { note ->
+                deleteDialogCallbacks?.onClickDeleteDialogYes(note)
                 dismiss()
             }
         }
@@ -62,7 +60,7 @@ class DeleteDialog : DialogFragment() {
         this.deleteDialogCallbacks = callbacks
     }
 
-    fun setPosition(position: Int) {
-        this.position = position
+    fun setNote(note: NoteModel) {
+        this.note = note
     }
 }

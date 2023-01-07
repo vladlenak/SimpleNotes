@@ -24,13 +24,8 @@ class NoteViewModel @Inject constructor(
         setNotes()
     }
 
-    fun deleteNoteByPosition(position: Int) = viewModelScope.launch {
-        val note = _notes.value?.get(position)
-
-        if (note != null) {
-            deleteNoteUseCase.execute(note)
-        }
-
+    fun deleteNoteByPosition(note: NoteModel) = viewModelScope.launch {
+        deleteNoteUseCase.execute(note)
         setNotes()
     }
 

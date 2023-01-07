@@ -2,6 +2,8 @@ package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
+import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
+import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.PickersHelper
 import android.os.Bundle
@@ -16,7 +18,7 @@ import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NoteDetailFragment : Fragment() {
+class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
 
     private lateinit var binding: FragmentNoteDetailBinding
     private val viewModel: NoteDetailViewModel by viewModels()
@@ -34,6 +36,15 @@ class NoteDetailFragment : Fragment() {
         addListeners()
 
         return binding.root
+    }
+
+    override fun onClickDeleteDialogYes(note: NoteModel) {
+        viewModel.deleteNote()
+        findNavController().navigateUp()
+    }
+
+    override fun onClickDeleteDialogNo() {
+        noteId?.let { noteId -> viewModel.getNote(noteId) }
     }
 
     private fun init() {
@@ -68,6 +79,10 @@ class NoteDetailFragment : Fragment() {
             when (it.itemId) {
                 R.id.save_button -> {
                     onClickSaveNoteButton()
+                    true
+                }
+                R.id.delete_note_button -> {
+                    onClickDeleteNoteButton()
                     true
                 }
                 else -> false
@@ -124,7 +139,7 @@ class NoteDetailFragment : Fragment() {
             if (noteDate != getString(R.string.set_due_date)) noteModel.date = noteDate
             if (noteTime != getString(R.string.set_due_time)) noteModel.time = noteTime
 
-            if(noteModel.title.isEmpty()) {
+            if (noteModel.title.isEmpty()) {
                 Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
                 return null
             }
@@ -138,4 +153,12 @@ class NoteDetailFragment : Fragment() {
 
         return null
     }
+
+    private fun onClickDeleteNoteButton() {
+        viewModel.note.value?.let { note ->
+            DeleteDialog.showDeleteDialog(note, this, childFragmentManager)
+        }
+    }
+
+
 }

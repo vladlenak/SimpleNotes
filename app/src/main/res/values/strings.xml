@@ -21,4 +21,7 @@
     <string name="delete_note">Delete note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    // top_app_bar.xml
+    <string name="delete">Delete</string>
 </resources>

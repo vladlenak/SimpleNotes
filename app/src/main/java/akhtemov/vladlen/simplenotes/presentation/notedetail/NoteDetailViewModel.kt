@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.octopus.inc.domain.models.NoteModel
+import com.octopus.inc.domain.usecases.DeleteNoteUseCase
 import com.octopus.inc.domain.usecases.GetNoteUseCase
 import com.octopus.inc.domain.usecases.UpdateNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
     private val getNoteUseCase: GetNoteUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase
+    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
     private val _note = MutableLiveData<NoteModel>()
@@ -26,5 +28,9 @@ class NoteDetailViewModel @Inject constructor(
 
     fun updateNote(note: NoteModel) = viewModelScope.launch {
         updateNoteUseCase.execute(note)
+    }
+
+    fun deleteNote() = viewModelScope.launch {
+        note.value?.let { note -> deleteNoteUseCase.execute(note) }
     }
 }

@@ -18,7 +18,11 @@
     <string name="delete_due_date">Выдаліць тэрмін выканання</string>
     <string name="show_note_creation_container">Паказаць кантэйнер для стварэння нататак</string>
 
+    // dialog_delete
     <string name="delete_note">Выдаліць нататку?</string>
     <string name="yes">Так</string>
     <string name="no">Не</string>
+
+    // top_app_bar.xml
+    <string name="delete">Выдаліць</string>
 </resources>

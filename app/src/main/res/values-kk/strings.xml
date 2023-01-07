@@ -18,7 +18,11 @@
     <string name="delete_due_date">Аяқталу күнін жою</string>
     <string name="show_note_creation_container">Жазбаны жасау контейнерін көрсету</string>
 
+    // dialog_delete
     <string name="delete_note">Жазбаны жою керек пе?</string>
     <string name="yes">Иә</string>
     <string name="no">Жоқ</string>
+
+    // top_app_bar.xml
+    <string name="delete">Жою</string>
 </resources>

@@ -18,7 +18,11 @@
     <string name="delete_due_date">Удалить дату выполнения</string>
     <string name="show_note_creation_container">Показать контейнер для создания заметок</string>
 
+    // dialog_delete
     <string name="delete_note">Удалить заметку?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+
+    // top_app_bar.xml
+    <string name="delete">Удалить</string>
 </resources>
