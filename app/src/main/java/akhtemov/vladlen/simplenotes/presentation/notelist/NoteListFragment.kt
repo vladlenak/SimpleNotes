@@ -128,21 +128,22 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     }
 
     private fun addNotesWithTimeToAlarmReceiver(noteList: List<NoteModel>) {
-        // RemindersManager.stopReminder(requireContext())
-        val dateToday = DateHelper.getDateNow()
         var i = 1
         for (note in noteList) {
-            if (dateToday == note.date) {
-                if (note.time.isNotEmpty()) {
-                    RemindersManager.startReminder(
-                        context = requireContext(),
-                        reminderTitle = note.title,
-                        reminderDesc = note.desc,
-                        reminderTime = note.time,
-                        reminderId = i
-                    )
-                    i++
-                }
+            if (note.time.isNotEmpty() && note.date.isNotEmpty()) {
+                RemindersManager.stopReminder(
+                    context = requireContext(),
+                    reminderId = i
+                )
+                RemindersManager.startReminder(
+                    context = requireContext(),
+                    reminderTitle = note.title,
+                    reminderDesc = note.desc,
+                    reminderDate = note.date,
+                    reminderTime = note.time,
+                    reminderId = i
+                )
+                i++
             }
         }
     }

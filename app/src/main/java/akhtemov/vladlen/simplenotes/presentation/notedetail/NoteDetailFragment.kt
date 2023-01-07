@@ -39,10 +39,7 @@ class NoteDetailFragment : Fragment() {
     private fun init() {
         val arguments = arguments
         noteId = arguments?.getString("noteId")
-
-        if (noteId != null) {
-            viewModel.getNote(noteId!!)
-        }
+        if (noteId != null) viewModel.getNote(noteId!!)
     }
 
     private fun addObservers() {
@@ -73,11 +70,6 @@ class NoteDetailFragment : Fragment() {
                     onClickSaveNoteButton()
                     true
                 }
-
-//                R.id.delete_note_button -> {
-//                    onClickDeleteNoteButton()
-//                    true
-//                }
                 else -> false
             }
         }
@@ -145,9 +137,5 @@ class NoteDetailFragment : Fragment() {
         }
 
         return null
-    }
-
-    private fun onClickDeleteNoteButton() {
-        // TODO deleteNote fun
     }
 }

@@ -13,14 +13,13 @@ object RemindersManager {
         context: Context,
         reminderTitle: String,
         reminderDesc: String,
+        reminderDate: String,
         reminderTime: String,
         reminderId: Int
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        // TODO сохранить образец кода
         val (hours, min) = reminderTime.split(":").map { it.toInt() }
-
+        val (year, month, day) = reminderDate.split("-").map { it.toInt() }
         val intent =
             Intent(context.applicationContext, AlarmReceiver::class.java).let { intent ->
                 intent.putExtra(AlarmReceiver.ID_EXTRA_ID, reminderId)
@@ -34,10 +33,14 @@ object RemindersManager {
                     NotificationHelper.getCorrectlyFlag()
                 )
             }
-
-        val calendar: Calendar = Calendar.getInstance(Locale.ENGLISH).apply {
+        val calendar: Calendar = Calendar.getInstance(Locale.ENGLISH)
+            calendar.timeInMillis = System.currentTimeMillis()
+            calendar.apply {
             set(Calendar.HOUR_OF_DAY, hours)
             set(Calendar.MINUTE, min)
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month-1)
+            set(Calendar.DAY_OF_MONTH, day)
         }
 
         // If the trigger time you specify is in the past, the alarm triggers immediately.
@@ -63,10 +66,10 @@ object RemindersManager {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(
-                context,
+                context.applicationContext,
                 reminderId,
                 intent,
-                0
+                NotificationHelper.getCorrectlyFlag()
             )
         }
         alarmManager.cancel(intent)

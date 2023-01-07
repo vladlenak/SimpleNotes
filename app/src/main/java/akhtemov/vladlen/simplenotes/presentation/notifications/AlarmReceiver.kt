@@ -11,7 +11,6 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
-
 class AlarmReceiver : BroadcastReceiver() {
 
     companion object {
@@ -33,7 +32,7 @@ class AlarmReceiver : BroadcastReceiver() {
             NotificationManager::class.java
         ) as NotificationManager
 
-        val id = intent.getStringExtra(ID_EXTRA_ID)
+        val id = intent.getIntExtra(ID_EXTRA_ID, NOTIFICATION_ID)
         val title = intent.getStringExtra(TITLE_EXTRA_ID)
         val desc = intent.getStringExtra(DESC_EXTRA_ID)
 
@@ -42,7 +41,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 notificationManager.sendReminderNotification(
                     applicationContext = context,
                     channelId = CHANNEL_ID,
-                    notificationId = id?.toInt(),
+                    notificationId = id,
                     title = title,
                     desc = desc
                 )
@@ -50,7 +49,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 notificationManager.sendReminderNotification(
                     applicationContext = context,
                     channelId = CHANNEL_ID,
-                    notificationId = id?.toInt(),
+                    notificationId = id,
                     title = title,
                     desc = ""
                 )
@@ -61,11 +60,10 @@ class AlarmReceiver : BroadcastReceiver() {
 //        RemindersManager.startReminder(context.applicationContext)
     }
 
-    // TODO перенести код в NotificationHelper
     private fun NotificationManager.sendReminderNotification(
         applicationContext: Context,
         channelId: String,
-        notificationId: Int?,
+        notificationId: Int,
         title: String,
         desc: String
     ) {
@@ -73,7 +71,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
-            1,
+            notificationId,
             contentIntent,
             NotificationHelper.getCorrectlyFlag()
         )
@@ -88,7 +86,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
-        notify(notificationId ?: NOTIFICATION_ID, builder.build())
+        notify(notificationId, builder.build())
     }
 }
 

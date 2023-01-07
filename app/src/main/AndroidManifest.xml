@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="akhtemov.vladlen.simplenotes">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,30 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".presentation.notifications.NoteNotificationService" />
-
-        <receiver
-            android:name=".presentation.notifications.CheckNotificationBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="APP_SPECIFIC_BROADCAST" />
-            </intent-filter>
-        </receiver>
 
         <receiver
             android:name=".presentation.notifications.AlarmReceiver"
             android:enabled="true" />
-
-<!--        <receiver-->
-<!--            android:name=".presentation.notifications.BootReceiver"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="false">-->
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
-<!--            </intent-filter>-->
-
-<!--        </receiver>-->
     </application>
 
 </manifest>
