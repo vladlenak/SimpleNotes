@@ -1,15 +1,37 @@
-package akhtemov.vladlen.simplenotes.presentation.notifications
+package akhtemov.vladlen.simplenotes.notifications
 
 import akhtemov.vladlen.simplenotes.utility.NotificationHelper
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.octopus.inc.domain.models.NoteModel
 import java.util.*
 
-object RemindersManager {
+object NotificationManager {
 
-    fun startReminder(
+    fun start(context: Context, noteList: List<NoteModel>) {
+        var i = 1
+        for (note in noteList) {
+            if (note.time.isNotEmpty() && note.date.isNotEmpty()) {
+                stopReminder(
+                    context = context,
+                    reminderId = i
+                )
+                startReminder(
+                    context = context,
+                    reminderTitle = note.title,
+                    reminderDesc = note.desc,
+                    reminderDate = note.date,
+                    reminderTime = note.time,
+                    reminderId = i
+                )
+                i++
+            }
+        }
+    }
+
+    private fun startReminder(
         context: Context,
         reminderTitle: String,
         reminderDesc: String,
@@ -21,10 +43,13 @@ object RemindersManager {
         val (hours, min) = reminderTime.split(":").map { it.toInt() }
         val (year, month, day) = reminderDate.split("-").map { it.toInt() }
         val intent =
-            Intent(context.applicationContext, AlarmReceiver::class.java).let { intent ->
-                intent.putExtra(AlarmReceiver.ID_EXTRA_ID, reminderId)
-                intent.putExtra(AlarmReceiver.TITLE_EXTRA_ID, reminderTitle)
-                intent.putExtra(AlarmReceiver.DESC_EXTRA_ID, reminderDesc)
+            Intent(
+                context.applicationContext,
+                NotificationBroadcastReceiver::class.java
+            ).let { intent ->
+                intent.putExtra(NotificationBroadcastReceiver.ID_EXTRA_ID, reminderId)
+                intent.putExtra(NotificationBroadcastReceiver.TITLE_EXTRA_ID, reminderTitle)
+                intent.putExtra(NotificationBroadcastReceiver.DESC_EXTRA_ID, reminderDesc)
 
                 PendingIntent.getBroadcast(
                     context.applicationContext,
@@ -34,12 +59,12 @@ object RemindersManager {
                 )
             }
         val calendar: Calendar = Calendar.getInstance(Locale.ENGLISH)
-            calendar.timeInMillis = System.currentTimeMillis()
-            calendar.apply {
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.apply {
             set(Calendar.HOUR_OF_DAY, hours)
             set(Calendar.MINUTE, min)
             set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month-1)
+            set(Calendar.MONTH, month - 1)
             set(Calendar.DAY_OF_MONTH, day)
         }
 
@@ -59,12 +84,12 @@ object RemindersManager {
         )
     }
 
-    fun stopReminder(
+    private fun stopReminder(
         context: Context,
         reminderId: Int
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AlarmReceiver::class.java).let { intent ->
+        val intent = Intent(context, NotificationBroadcastReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(
                 context.applicationContext,
                 reminderId,

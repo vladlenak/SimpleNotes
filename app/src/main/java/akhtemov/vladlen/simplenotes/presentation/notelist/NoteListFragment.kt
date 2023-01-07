@@ -6,7 +6,7 @@ import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
-import akhtemov.vladlen.simplenotes.presentation.notifications.RemindersManager
+import akhtemov.vladlen.simplenotes.notifications.NotificationManager
 import akhtemov.vladlen.simplenotes.utility.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -67,7 +67,6 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     }
 
 
-
     private fun init() {
         noteAdapter.setNoteCallbacks(this)
 
@@ -114,11 +113,10 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     }
 
 
-
     private fun addObservers() {
         viewModel.notes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.addNotes(sortListByDateThenTime(notes.toMutableList()))
-            addNotesWithTimeToAlarmReceiver(notes)
+            NotificationManager.start(requireContext(), notes)
         }
     }
 
@@ -126,28 +124,6 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         list.toMutableList().sortWith(compareBy<NoteModel> { it.date }.thenBy { it.time })
         return list
     }
-
-    private fun addNotesWithTimeToAlarmReceiver(noteList: List<NoteModel>) {
-        var i = 1
-        for (note in noteList) {
-            if (note.time.isNotEmpty() && note.date.isNotEmpty()) {
-                RemindersManager.stopReminder(
-                    context = requireContext(),
-                    reminderId = i
-                )
-                RemindersManager.startReminder(
-                    context = requireContext(),
-                    reminderTitle = note.title,
-                    reminderDesc = note.desc,
-                    reminderDate = note.date,
-                    reminderTime = note.time,
-                    reminderId = i
-                )
-                i++
-            }
-        }
-    }
-
 
 
     private fun addListeners() {
@@ -217,7 +193,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         if (noteDate != getString(R.string.set_due_date)) noteModel.date = noteDate
         if (noteTime != getString(R.string.set_due_time)) noteModel.time = noteTime
 
-        if(noteModel.title.isEmpty()) {
+        if (noteModel.title.isEmpty()) {
             Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
             return null
         }

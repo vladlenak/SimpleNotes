@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.presentation.notifications
+package akhtemov.vladlen.simplenotes.notifications
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.presentation.MainActivity
@@ -11,7 +11,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
-class AlarmReceiver : BroadcastReceiver() {
+class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val TITLE_EXTRA_ID = "title_id"
