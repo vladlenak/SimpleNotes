@@ -29,18 +29,19 @@ class DataModule {
     }
 
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): NoteRoomDatabase {
-        return Room.databaseBuilder(
-            context,
-            NoteRoomDatabase::class.java,
-            "note_database"
-        )
-            .addMigrations(NoteRoomDatabase.migration_1_2)
-            .build()
+    fun provideNoteDao(noteRoomDatabase: NoteRoomDatabase): NoteDao {
+        return noteRoomDatabase.noteDao()
     }
 
     @Provides
-    fun provideNoteDao(noteRoomDatabase: NoteRoomDatabase): NoteDao {
-        return noteRoomDatabase.noteDao()
+    fun provideDatabase(@ApplicationContext context: Context): NoteRoomDatabase {
+        return Room
+            .databaseBuilder(
+                context,
+                NoteRoomDatabase::class.java,
+                NoteRoomDatabase.NOTE_ROOM_DATABASE_NAME
+            )
+            .addMigrations(NoteRoomDatabase.migration_1_2)
+            .build()
     }
 }

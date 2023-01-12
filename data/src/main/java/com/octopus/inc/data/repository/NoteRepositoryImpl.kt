@@ -3,8 +3,10 @@ package com.octopus.inc.data.repository
 import com.octopus.inc.data.room.NoteRoomImpl
 import com.octopus.inc.domain.models.NoteModel
 import com.octopus.inc.domain.repository.NoteRepository
+import javax.inject.Inject
 
-class NoteRepositoryImpl(private val noteRoomImpl: NoteRoomImpl): NoteRepository {
+class NoteRepositoryImpl @Inject constructor(private val noteRoomImpl: NoteRoomImpl) :
+    NoteRepository {
 
     override suspend fun getNotes(): List<NoteModel> {
         return noteRoomImpl.getNotes()

@@ -6,7 +6,8 @@ import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
-import akhtemov.vladlen.simplenotes.notifications.NotificationManager
+import akhtemov.vladlen.simplenotes.notificationreceiver.NotificationBroadcastReceiver
+import akhtemov.vladlen.simplenotes.notificationreceiver.NotificationManager
 import akhtemov.vladlen.simplenotes.utility.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,7 +40,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         binding = FragmentNoteListBinding.inflate(inflater, container, false)
 
         PermissionHelper.checkPermission(requireContext(), requireActivity())
-        NotificationHelper.createNotificationsChannels(requireContext())
+        NotificationBroadcastReceiver.createNotificationsChannels(requireContext())
 
         init()
         addObservers()
@@ -111,7 +112,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     private fun addObservers() {
         viewModel.notes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.addNotes(sortListByDateThenTime(notes.toMutableList()))
-            NotificationManager.start(requireContext(), notes)
+            NotificationManager.restartReminders(requireContext(), notes)
         }
     }
 

@@ -32,7 +32,7 @@
         </activity>
 
         <receiver
-            android:name=".notifications.NotificationBroadcastReceiver"
+            android:name=".notificationreceiver.NotificationBroadcastReceiver"
             android:enabled="true" />
     </application>
 
