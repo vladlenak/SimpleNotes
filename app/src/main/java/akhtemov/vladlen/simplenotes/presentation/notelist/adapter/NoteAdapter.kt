@@ -33,6 +33,7 @@ class NoteAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<N
     fun addNotes(notes: List<NoteModel>) {
         noteList.clear()
         noteList.addAll(notes)
+        // TODO добавить DiffUtil
         notifyDataSetChanged()
     }
 }

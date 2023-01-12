@@ -59,11 +59,11 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         viewModel.setNotes()
     }
 
-    override fun onClickDeleteDialogYes(note: NoteModel) {
+    override fun onClickYesOnDeleteDialog(note: NoteModel) {
         viewModel.deleteNoteByPosition(note)
     }
 
-    override fun onClickDeleteDialogNo() {
+    override fun onClickNoOnDeleteDialog() {
         viewModel.setNotes()
     }
 

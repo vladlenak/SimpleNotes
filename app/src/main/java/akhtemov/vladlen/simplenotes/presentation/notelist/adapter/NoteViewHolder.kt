@@ -13,7 +13,7 @@ class NoteViewHolder(private val binding: ListItemNoteBinding) :
     fun bind(note: NoteModel) {
         binding.titleTextView.text = note.title
 
-        if (note.desc == "") {
+        if (note.desc.isEmpty()) {
             binding.descriptionTextView.visibility = View.GONE
         } else {
             binding.descriptionTextView.visibility = View.VISIBLE

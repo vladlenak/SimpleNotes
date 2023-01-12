@@ -38,14 +38,12 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
         return binding.root
     }
 
-    override fun onClickDeleteDialogYes(note: NoteModel) {
+    override fun onClickYesOnDeleteDialog(note: NoteModel) {
         viewModel.deleteNote()
         findNavController().navigateUp()
     }
 
-    override fun onClickDeleteDialogNo() {
-        noteId?.let { noteId -> viewModel.getNote(noteId) }
-    }
+    override fun onClickNoOnDeleteDialog() {}
 
     private fun init() {
         val arguments = arguments
@@ -91,17 +89,18 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
 
         binding.setDueDateChip.setOnClickListener {
             PickersHelper.getDatePicker(childFragmentManager).addOnPositiveButtonClickListener {
-                binding.setDueDateChip.text = CalendarHelper().getDateFromMilliseconds(it)
-                binding.setDueDateChip.isCloseIconVisible = true
+                binding.setDueDateChip.apply {
+                    text = CalendarHelper().getDateFromMilliseconds(it)
+                    isCloseIconVisible = true
+                }
             }
         }
 
         binding.setDueTimeChip.setOnClickListener {
             val timePicker = PickersHelper.getTimePicker(childFragmentManager)
             timePicker.addOnPositiveButtonClickListener {
+                val time = "${timePicker.hour}:${timePicker.minute}"
                 binding.setDueTimeChip.apply {
-                    val time = "${timePicker.hour}:${timePicker.minute}"
-
                     text = time
                     isCloseIconVisible = true
                 }
@@ -109,13 +108,17 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
         }
 
         binding.setDueDateChip.setOnCloseIconClickListener {
-            binding.setDueDateChip.text = getString(R.string.set_due_date)
-            binding.setDueDateChip.isCloseIconVisible = false
+            binding.setDueDateChip.apply {
+                text = getString(R.string.set_due_date)
+                isCloseIconVisible = false
+            }
         }
 
         binding.setDueTimeChip.setOnCloseIconClickListener {
-            binding.setDueTimeChip.text = getString(R.string.set_due_time)
-            binding.setDueTimeChip.isCloseIconVisible = false
+            binding.setDueTimeChip.apply {
+                text = getString(R.string.set_due_time)
+                isCloseIconVisible = false
+            }
         }
     }
 

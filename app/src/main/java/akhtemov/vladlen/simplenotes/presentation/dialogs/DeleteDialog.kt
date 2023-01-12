@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DeleteDialog : DialogFragment() {
 
     companion object {
-        private const val TAG = "delete_dialog_tag"
+        private const val DELETE_DIALOG_TAG = "delete_dialog_tag"
 
         fun showDeleteDialog(
             note: NoteModel,
@@ -25,7 +25,7 @@ class DeleteDialog : DialogFragment() {
                 isCancelable = false
                 setNote(note)
                 setCallbacks(callbacks)
-                show(fragmentManager, TAG)
+                show(fragmentManager, DELETE_DIALOG_TAG)
             }
         }
     }
@@ -43,13 +43,12 @@ class DeleteDialog : DialogFragment() {
 
         binding.yesBtn.setOnClickListener {
             note?.let { note ->
-                deleteDialogCallbacks?.onClickDeleteDialogYes(note)
+                deleteDialogCallbacks?.onClickYesOnDeleteDialog(note)
                 dismiss()
             }
         }
 
         binding.noBtn.setOnClickListener {
-            deleteDialogCallbacks?.onClickDeleteDialogNo()
             dismiss()
         }
 
