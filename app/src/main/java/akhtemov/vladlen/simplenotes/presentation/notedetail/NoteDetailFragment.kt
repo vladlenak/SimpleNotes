@@ -39,7 +39,7 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
     }
 
     override fun onClickYesOnDeleteDialog(note: NoteModel) {
-        viewModel.deleteNote()
+        viewModel.send(DeleteNoteEvent())
         findNavController().navigateUp()
     }
 
@@ -48,26 +48,28 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
     private fun init() {
         val arguments = arguments
         noteId = arguments?.getString("noteId")
-        if (noteId != null) viewModel.getNote(noteId!!)
+        noteId?.let { viewModel.send(SetNotesEvent(it)) }
     }
 
     private fun addObservers() {
-        viewModel.note.observe(viewLifecycleOwner) { note ->
-            binding.title.setText(note.title)
-            binding.description.setText(note.desc)
+        viewModel.noteDetailState.observe(viewLifecycleOwner) { noteDetailState ->
+            noteDetailState.noteModel.let { note ->
+                binding.title.setText(note.title)
+                binding.description.setText(note.desc)
 
-            if (note.date.isEmpty()) {
-                binding.setDueDateChip.text = getString(R.string.set_due_date)
-            } else {
-                binding.setDueDateChip.text = note.date
-                binding.setDueDateChip.isCloseIconVisible = true
-            }
+                if (note.date.isEmpty()) {
+                    binding.setDueDateChip.text = getString(R.string.set_due_date)
+                } else {
+                    binding.setDueDateChip.text = note.date
+                    binding.setDueDateChip.isCloseIconVisible = true
+                }
 
-            if (note.time.isEmpty()) {
-                binding.setDueTimeChip.text = getString(R.string.set_due_time)
-            } else {
-                binding.setDueTimeChip.text = note.time
-                binding.setDueTimeChip.isCloseIconVisible = true
+                if (note.time.isEmpty()) {
+                    binding.setDueTimeChip.text = getString(R.string.set_due_time)
+                } else {
+                    binding.setDueTimeChip.text = note.time
+                    binding.setDueTimeChip.isCloseIconVisible = true
+                }
             }
         }
     }
@@ -124,7 +126,7 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
 
     private fun onClickSaveNoteButton() {
         createNoteModel()?.let { noteModel ->
-            viewModel.updateNote(noteModel)
+            viewModel.send(UpdateNoteEvent(noteModel))
             findNavController().navigateUp()
         }
     }
@@ -158,10 +160,12 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
     }
 
     private fun onClickDeleteNoteButton() {
-        viewModel.note.value?.let { note ->
-            DeleteDialog.showDeleteDialog(note, this, childFragmentManager)
+        viewModel.noteDetailState.value?.noteModel?.let { note ->
+            DeleteDialog.showDeleteDialog(
+                note = note,
+                callbacks = this,
+                fragmentManager = childFragmentManager
+            )
         }
     }
-
-
 }

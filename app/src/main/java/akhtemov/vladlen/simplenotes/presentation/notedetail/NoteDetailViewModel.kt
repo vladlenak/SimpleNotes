@@ -19,18 +19,32 @@ class NoteDetailViewModel @Inject constructor(
     private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
-    private val _note = MutableLiveData<NoteModel>()
-    val note: LiveData<NoteModel> = _note
+    private val _noteDetailState = MutableLiveData<NoteDetailState>()
+    val noteDetailState: LiveData<NoteDetailState> = _noteDetailState
 
-    fun getNote(noteId: String) = viewModelScope.launch {
-        _note.value = getNoteUseCase.execute(noteId)
+    fun send(event: NoteDetailEvent) {
+        when(event) {
+            is SetNotesEvent -> {
+                setNote(event.noteId)
+            }
+            is UpdateNoteEvent -> {
+                updateNote(event.noteModel)
+            }
+            is DeleteNoteEvent -> {
+                deleteNote()
+            }
+        }
     }
 
-    fun updateNote(note: NoteModel) = viewModelScope.launch {
+    private fun setNote(noteId: String) = viewModelScope.launch {
+        _noteDetailState.value = NoteDetailState(getNoteUseCase.execute(noteId))
+    }
+
+    private fun updateNote(note: NoteModel) = viewModelScope.launch {
         updateNoteUseCase.execute(note)
     }
 
-    fun deleteNote() = viewModelScope.launch {
-        note.value?.let { note -> deleteNoteUseCase.execute(note) }
+    private fun deleteNote() = viewModelScope.launch {
+        noteDetailState.value?.noteModel?.let { note -> deleteNoteUseCase.execute(note) }
     }
 }
