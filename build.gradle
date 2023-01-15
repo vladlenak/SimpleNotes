@@ -2,15 +2,16 @@
 buildscript {
     ext.kotlin_version = '1.6.10'
     ext.navigationVersion = '2.5.3'
-    ext.activityVersion = '1.6.1'
     ext.roomVersion = '2.5.0'
+    ext.hiltVersion = '2.44'
+    ext.fragmentVersion = '1.5.5'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.44"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
 
