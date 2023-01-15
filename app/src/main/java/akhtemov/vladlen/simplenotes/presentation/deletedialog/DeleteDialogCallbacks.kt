@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.presentation.dialogs
+package akhtemov.vladlen.simplenotes.presentation.deletedialog
 
 import com.octopus.inc.domain.models.NoteModel
 

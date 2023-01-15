@@ -1,7 +1,7 @@
-package akhtemov.vladlen.simplenotes.notificationreceiver
+package akhtemov.vladlen.simplenotes.presentation.notenotification
 
 import akhtemov.vladlen.simplenotes.R
-import akhtemov.vladlen.simplenotes.presentation.MainActivity
+import akhtemov.vladlen.simplenotes.presentation.main.MainActivity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,7 +12,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
-class NotificationBroadcastReceiver : BroadcastReceiver() {
+class NoteNotificationBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val NOTIFICATION_ID_EXTRA_ID = "notification_id_extra_id"

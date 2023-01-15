@@ -2,8 +2,8 @@ package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
-import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
-import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
+import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
+import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.PickersHelper
 import android.os.Bundle

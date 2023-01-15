@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.presentation.dialogs
+package akhtemov.vladlen.simplenotes.presentation.deletedialog
 
 import akhtemov.vladlen.simplenotes.databinding.DialogDeleteBinding
 import android.os.Bundle

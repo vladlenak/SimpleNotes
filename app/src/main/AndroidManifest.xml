@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleNotes">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         </activity>
 
         <receiver
-            android:name=".notificationreceiver.NotificationBroadcastReceiver"
+            android:name=".presentation.notenotification.NoteNotificationBroadcastReceiver"
             android:enabled="true" />
     </application>
 

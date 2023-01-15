@@ -8,7 +8,7 @@ import com.octopus.inc.domain.models.NoteModel
 class NoteViewHolder(private val binding: ListItemNoteBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    private var noteCallbacks: NoteCallbacks? = null
+    private var noteCallbacks: NoteListCallbacks? = null
 
     fun bind(note: NoteModel) {
         binding.titleTextView.text = note.title
@@ -28,7 +28,7 @@ class NoteViewHolder(private val binding: ListItemNoteBinding) :
         }
     }
 
-    fun setNoteCallbacks(noteCallbacks: NoteCallbacks) {
+    fun setNoteCallbacks(noteCallbacks: NoteListCallbacks) {
         this.noteCallbacks = noteCallbacks
     }
 }

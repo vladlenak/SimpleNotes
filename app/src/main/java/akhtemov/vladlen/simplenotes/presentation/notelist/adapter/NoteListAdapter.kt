@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octopus.inc.domain.models.NoteModel
 
-class NoteAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<NoteViewHolder>() {
+class NoteListAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<NoteViewHolder>() {
 
-    private var noteCallbacks: NoteCallbacks? = null
+    private var noteCallbacks: NoteListCallbacks? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,7 +26,7 @@ class NoteAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<N
 
     override fun getItemCount() = noteList.size
 
-    fun setNoteCallbacks(noteCallbacks: NoteCallbacks) {
+    fun setNoteCallbacks(noteCallbacks: NoteListCallbacks) {
         this.noteCallbacks = noteCallbacks
     }
 

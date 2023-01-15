@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.presentation
+package akhtemov.vladlen.simplenotes.presentation.main
 
 import akhtemov.vladlen.simplenotes.databinding.ActivityMainBinding
 import android.os.Bundle

@@ -2,12 +2,12 @@ package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
-import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialog
-import akhtemov.vladlen.simplenotes.presentation.dialogs.DeleteDialogCallbacks
-import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteAdapter
-import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteCallbacks
-import akhtemov.vladlen.simplenotes.notificationreceiver.NotificationBroadcastReceiver
-import akhtemov.vladlen.simplenotes.notificationreceiver.NotificationManager
+import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
+import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
+import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteListAdapter
+import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteListCallbacks
+import akhtemov.vladlen.simplenotes.presentation.notenotification.NoteNotificationBroadcastReceiver
+import akhtemov.vladlen.simplenotes.presentation.notenotification.NoteNotificationManager
 import akhtemov.vladlen.simplenotes.utility.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,11 +26,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
+class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
 
     private lateinit var binding: FragmentNoteListBinding
     private val viewModel: NoteListViewModel by viewModels()
-    private val noteAdapter = NoteAdapter(mutableListOf())
+    private val noteAdapter = NoteListAdapter(mutableListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +40,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
         binding = FragmentNoteListBinding.inflate(inflater, container, false)
 
         PermissionHelper.checkPermission(requireContext(), requireActivity())
-        NotificationBroadcastReceiver.createNotificationsChannels(requireContext())
+        NoteNotificationBroadcastReceiver.createNotificationsChannels(requireContext())
 
         init()
         addObservers()
@@ -119,7 +119,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     private fun addObservers() {
         viewModel.noteListState.observe(viewLifecycleOwner) { noteListState ->
             noteAdapter.addNotes(sortListByDateThenTime(noteListState.noteModelList.toMutableList()))
-            NotificationManager.restartReminders(
+            NoteNotificationManager.restartReminders(
                 context = requireContext(),
                 noteList = noteListState.noteModelList
             )

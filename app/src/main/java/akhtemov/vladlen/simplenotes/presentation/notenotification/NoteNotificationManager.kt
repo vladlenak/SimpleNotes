@@ -1,4 +1,4 @@
-package akhtemov.vladlen.simplenotes.notificationreceiver
+package akhtemov.vladlen.simplenotes.presentation.notenotification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -7,7 +7,7 @@ import android.content.Intent
 import com.octopus.inc.domain.models.NoteModel
 import java.util.*
 
-object NotificationManager {
+object NoteNotificationManager {
 
     fun restartReminders(context: Context, noteList: List<NoteModel>) {
         var i = 1
@@ -34,17 +34,17 @@ object NotificationManager {
         }
         val intent = Intent(
             context.applicationContext,
-            NotificationBroadcastReceiver::class.java
+            NoteNotificationBroadcastReceiver::class.java
         ).apply {
-            putExtra(NotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA_ID, reminderId)
-            putExtra(NotificationBroadcastReceiver.NOTIFICATION_TITLE_EXTRA_ID, note.title)
-            putExtra(NotificationBroadcastReceiver.NOTIFICATION_DESC_EXTRA_ID, note.desc)
+            putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA_ID, reminderId)
+            putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_TITLE_EXTRA_ID, note.title)
+            putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_DESC_EXTRA_ID, note.desc)
         }.let {
             PendingIntent.getBroadcast(
                 context.applicationContext,
                 reminderId,
                 it,
-                NotificationBroadcastReceiver.getCorrectlyFlag()
+                NoteNotificationBroadcastReceiver.getCorrectlyFlag()
             )
         }
 
@@ -64,12 +64,12 @@ object NotificationManager {
     }
 
     private fun stopReminder(context: Context, reminderId: Int) {
-        val intent = Intent(context, NotificationBroadcastReceiver::class.java).let { intent ->
+        val intent = Intent(context, NoteNotificationBroadcastReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(
                 context.applicationContext,
                 reminderId,
                 intent,
-                NotificationBroadcastReceiver.getCorrectlyFlag()
+                NoteNotificationBroadcastReceiver.getCorrectlyFlag()
             )
         }
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
