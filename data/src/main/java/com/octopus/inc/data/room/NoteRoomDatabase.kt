@@ -4,9 +4,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.octopus.inc.data.model.Note
+import com.octopus.inc.data.room.model.NoteEntity
 
-@Database(entities = [Note::class], version = 2, exportSchema = true)
+@Database(entities = [NoteEntity::class], version = 2, exportSchema = true)
 abstract class NoteRoomDatabase : RoomDatabase() {
 
     companion object {

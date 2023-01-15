@@ -1,7 +1,7 @@
 package akhtemov.vladlen.simplenotes.presentation.notedetail
 
-import com.octopus.inc.domain.models.NoteModel
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 
 data class NoteDetailState(
-    var noteModel: NoteModel
+    var noteModel: NoteView
 )

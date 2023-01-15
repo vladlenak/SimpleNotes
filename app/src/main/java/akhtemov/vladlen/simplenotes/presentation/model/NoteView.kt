@@ -1,6 +1,6 @@
-package com.octopus.inc.domain.models
+package akhtemov.vladlen.simplenotes.presentation.model
 
-data class NoteModel(
+data class NoteView (
     val id: String,
     val title: String,
     val desc: String = "",

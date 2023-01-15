@@ -2,12 +2,12 @@ package akhtemov.vladlen.simplenotes.presentation.notelist.adapter
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.ListItemNoteBinding
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.octopus.inc.domain.models.NoteModel
 
-class NoteListAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapter<NoteViewHolder>() {
+class NoteListAdapter(var noteList: MutableList<NoteView>) : RecyclerView.Adapter<NoteViewHolder>() {
 
     private var noteCallbacks: NoteListCallbacks? = null
 
@@ -30,7 +30,7 @@ class NoteListAdapter(var noteList: MutableList<NoteModel>) : RecyclerView.Adapt
         this.noteCallbacks = noteCallbacks
     }
 
-    fun addNotes(notes: List<NoteModel>) {
+    fun addNotes(notes: List<NoteView>) {
         noteList.clear()
         noteList.addAll(notes)
         // TODO добавить DiffUtil

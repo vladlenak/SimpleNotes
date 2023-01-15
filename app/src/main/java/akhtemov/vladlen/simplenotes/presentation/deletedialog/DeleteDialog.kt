@@ -1,13 +1,13 @@
 package akhtemov.vladlen.simplenotes.presentation.deletedialog
 
 import akhtemov.vladlen.simplenotes.databinding.DialogDeleteBinding
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +17,7 @@ class DeleteDialog : DialogFragment() {
         private const val DELETE_DIALOG_TAG = "delete_dialog_tag"
 
         fun showDeleteDialog(
-            note: NoteModel,
+            note: NoteView,
             callbacks: DeleteDialogCallbacks,
             fragmentManager: FragmentManager
         ) {
@@ -32,7 +32,7 @@ class DeleteDialog : DialogFragment() {
 
     private lateinit var binding: DialogDeleteBinding
     private var deleteDialogCallbacks: DeleteDialogCallbacks? = null
-    private var note: NoteModel? = null
+    private var note: NoteView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +59,7 @@ class DeleteDialog : DialogFragment() {
         this.deleteDialogCallbacks = callbacks
     }
 
-    fun setNote(note: NoteModel) {
+    fun setNote(note: NoteView) {
         this.note = note
     }
 }

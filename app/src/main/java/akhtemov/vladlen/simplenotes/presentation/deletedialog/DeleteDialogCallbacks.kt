@@ -1,8 +1,8 @@
 package akhtemov.vladlen.simplenotes.presentation.deletedialog
 
-import com.octopus.inc.domain.models.NoteModel
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 
 interface DeleteDialogCallbacks {
-    fun onClickYesOnDeleteDialog(note: NoteModel)
+    fun onClickYesOnDeleteDialog(note: NoteView)
     fun onClickNoOnDeleteDialog()
 }

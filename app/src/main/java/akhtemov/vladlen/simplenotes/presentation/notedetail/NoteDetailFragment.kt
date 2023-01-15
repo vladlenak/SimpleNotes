@@ -4,6 +4,7 @@ import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import akhtemov.vladlen.simplenotes.utility.CalendarHelper
 import akhtemov.vladlen.simplenotes.utility.PickersHelper
 import android.os.Bundle
@@ -14,7 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.octopus.inc.domain.models.NoteModel
+import com.octopus.inc.domain.models.Note
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +39,7 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
         return binding.root
     }
 
-    override fun onClickYesOnDeleteDialog(note: NoteModel) {
+    override fun onClickYesOnDeleteDialog(note: NoteView) {
         viewModel.send(DeleteNoteEvent())
         findNavController().navigateUp()
     }
@@ -131,9 +132,9 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
         }
     }
 
-    private fun createNoteModel(): NoteModel? {
+    private fun createNoteModel(): Note? {
         noteId?.let { noteId ->
-            val noteModel = NoteModel(
+            val noteModel = Note(
                 id = noteId,
                 title = binding.title.text.toString(),
                 desc = binding.description.text.toString()

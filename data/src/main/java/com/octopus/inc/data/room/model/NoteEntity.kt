@@ -1,4 +1,4 @@
-package com.octopus.inc.data.model
+package com.octopus.inc.data.room.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "note_table")
-data class Note(
+data class NoteEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String = UUID.randomUUID().toString(),

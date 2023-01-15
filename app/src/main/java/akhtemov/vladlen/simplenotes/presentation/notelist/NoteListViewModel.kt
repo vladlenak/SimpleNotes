@@ -1,7 +1,11 @@
 package akhtemov.vladlen.simplenotes.presentation.notelist
 
-import androidx.lifecycle.*
-import com.octopus.inc.domain.models.NoteModel
+import akhtemov.vladlen.simplenotes.presentation.mapper.NoteMapper
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.octopus.inc.domain.usecases.DeleteNoteUseCase
 import com.octopus.inc.domain.usecases.GetNoteListUseCase
 import com.octopus.inc.domain.usecases.SaveNoteUseCase
@@ -13,7 +17,8 @@ import javax.inject.Inject
 class NoteListViewModel @Inject constructor(
     private val saveNoteUseCase: SaveNoteUseCase,
     private val getNoteListUseCase: GetNoteListUseCase,
-    private val deleteNoteUseCase: DeleteNoteUseCase
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val noteMapper: NoteMapper
 ) : ViewModel() {
 
     private val _noteListState = MutableLiveData<NoteListState>()
@@ -33,17 +38,18 @@ class NoteListViewModel @Inject constructor(
         }
     }
 
-    private fun  insertNote(note: NoteModel) = viewModelScope.launch {
-        saveNoteUseCase.execute(note)
+    private fun insertNote(note: NoteView) = viewModelScope.launch {
+        saveNoteUseCase.execute(noteMapper.mapFromView(note))
         setNotes()
     }
 
-    private fun deleteNoteByPosition(note: NoteModel) = viewModelScope.launch {
-        deleteNoteUseCase.execute(note)
+    private fun deleteNoteByPosition(note: NoteView) = viewModelScope.launch {
+        deleteNoteUseCase.execute(noteMapper.mapFromView(note))
         setNotes()
     }
 
     private fun setNotes() = viewModelScope.launch {
-        _noteListState.value = NoteListState(getNoteListUseCase.execute())
+        _noteListState.value =
+            NoteListState(getNoteListUseCase.execute().map { noteMapper.mapToView(it) })
     }
 }

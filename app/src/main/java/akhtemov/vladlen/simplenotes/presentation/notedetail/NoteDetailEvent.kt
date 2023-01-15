@@ -1,11 +1,11 @@
 package akhtemov.vladlen.simplenotes.presentation.notedetail
 
-import com.octopus.inc.domain.models.NoteModel
+import com.octopus.inc.domain.models.Note
 
 interface NoteDetailEvent
 
 class SetNotesEvent(val noteId: String) : NoteDetailEvent
 
-class UpdateNoteEvent(val noteModel: NoteModel) : NoteDetailEvent
+class UpdateNoteEvent(val noteModel: Note) : NoteDetailEvent
 
 class DeleteNoteEvent() : NoteDetailEvent

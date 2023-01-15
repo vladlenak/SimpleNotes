@@ -1,11 +1,11 @@
 package com.octopus.inc.data.room
 
-import com.octopus.inc.domain.models.NoteModel
+import com.octopus.inc.domain.models.Note
 
 interface NoteRoom {
-    suspend fun insertNote(note: NoteModel)
-    suspend fun getNotes(): List<NoteModel>
-    suspend fun getNote(noteId: String): NoteModel
-    suspend fun updateNote(note: NoteModel)
-    suspend fun deleteNote(note: NoteModel)
+    suspend fun insertNote(note: Note)
+    suspend fun getNotes(): List<Note>
+    suspend fun getNote(noteId: String): Note
+    suspend fun updateNote(note: Note)
+    suspend fun deleteNote(note: Note)
 }

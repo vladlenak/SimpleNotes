@@ -2,6 +2,7 @@ package akhtemov.vladlen.simplenotes.di
 
 import android.content.Context
 import androidx.room.Room
+import com.octopus.inc.data.mapper.NoteMapper
 import com.octopus.inc.data.repository.NoteRepositoryImpl
 import com.octopus.inc.data.room.NoteDao
 import com.octopus.inc.data.room.NoteRoom
@@ -24,8 +25,8 @@ class DataModule {
     }
 
     @Provides
-    fun provideNoteRoomImpl(noteDao: NoteDao): NoteRoom {
-        return NoteRoomImpl(noteDao)
+    fun provideNoteRoomImpl(noteDao: NoteDao, noteMapper: NoteMapper): NoteRoom {
+        return NoteRoomImpl(noteDao, noteMapper)
     }
 
     @Provides
@@ -43,5 +44,10 @@ class DataModule {
             )
             .addMigrations(NoteRoomDatabase.migration_1_2)
             .build()
+    }
+
+    @Provides
+    fun provideNoteMapper(): NoteMapper {
+        return NoteMapper()
     }
 }

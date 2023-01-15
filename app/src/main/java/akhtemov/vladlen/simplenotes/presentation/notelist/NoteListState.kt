@@ -1,7 +1,7 @@
 package akhtemov.vladlen.simplenotes.presentation.notelist
 
-import com.octopus.inc.domain.models.NoteModel
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 
 data class NoteListState(
-    val noteModelList: List<NoteModel>
+    val noteModelList: List<NoteView>
 )

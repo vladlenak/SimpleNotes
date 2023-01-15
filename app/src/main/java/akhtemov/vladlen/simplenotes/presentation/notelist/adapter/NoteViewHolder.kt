@@ -1,16 +1,16 @@
 package akhtemov.vladlen.simplenotes.presentation.notelist.adapter
 
 import akhtemov.vladlen.simplenotes.databinding.ListItemNoteBinding
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.octopus.inc.domain.models.NoteModel
 
 class NoteViewHolder(private val binding: ListItemNoteBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     private var noteCallbacks: NoteListCallbacks? = null
 
-    fun bind(note: NoteModel) {
+    fun bind(note: NoteView) {
         binding.titleTextView.text = note.title
 
         if (note.desc.isEmpty()) {

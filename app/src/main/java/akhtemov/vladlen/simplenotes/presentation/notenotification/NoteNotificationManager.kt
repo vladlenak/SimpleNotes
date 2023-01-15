@@ -1,15 +1,15 @@
 package akhtemov.vladlen.simplenotes.presentation.notenotification
 
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.octopus.inc.domain.models.NoteModel
 import java.util.*
 
 object NoteNotificationManager {
 
-    fun restartReminders(context: Context, noteList: List<NoteModel>) {
+    fun restartReminders(context: Context, noteList: List<NoteView>) {
         var i = 1
         noteList.forEach { note ->
             if (note.time.isNotEmpty() && note.date.isNotEmpty()) {
@@ -20,7 +20,7 @@ object NoteNotificationManager {
         }
     }
 
-    private fun startReminder(context: Context, reminderId: Int, note: NoteModel) {
+    private fun startReminder(context: Context, reminderId: Int, note: NoteView) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val (hours, min) = note.time.split(":").map { it.toInt() }
         val (year, month, day) = note.date.split("-").map { it.toInt() }

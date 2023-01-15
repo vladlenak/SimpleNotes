@@ -4,6 +4,7 @@ import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
+import akhtemov.vladlen.simplenotes.presentation.model.NoteView
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteListAdapter
 import akhtemov.vladlen.simplenotes.presentation.notelist.adapter.NoteListCallbacks
 import akhtemov.vladlen.simplenotes.presentation.notenotification.NoteNotificationBroadcastReceiver
@@ -21,7 +22,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.octopus.inc.domain.models.NoteModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -49,7 +49,7 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
         return binding.root
     }
 
-    override fun onClickNoteContainer(note: NoteModel) {
+    override fun onClickNoteContainer(note: NoteView) {
         val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note.id)
         findNavController().navigate(action)
     }
@@ -59,7 +59,7 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
         viewModel.send(SetNotesEvent())
     }
 
-    override fun onClickYesOnDeleteDialog(note: NoteModel) {
+    override fun onClickYesOnDeleteDialog(note: NoteView) {
         viewModel.send(DeleteNoteEvent(note))
     }
 
@@ -126,8 +126,8 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
         }
     }
 
-    private fun sortListByDateThenTime(list: MutableList<NoteModel>): List<NoteModel> {
-        list.toMutableList().sortWith(compareBy<NoteModel> { it.date }.thenBy { it.time })
+    private fun sortListByDateThenTime(list: MutableList<NoteView>): List<NoteView> {
+        list.toMutableList().sortWith(compareBy<NoteView> { it.date }.thenBy { it.time })
         return list
     }
 
@@ -188,8 +188,8 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
         }
     }
 
-    private fun createNoteModel(): NoteModel? {
-        val noteModel = NoteModel(
+    private fun createNoteModel(): NoteView? {
+        val noteModel = NoteView(
             id = UUID.randomUUID().toString(),
             title = binding.noteTitle.text.toString()
         )
