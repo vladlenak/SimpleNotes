@@ -2,6 +2,7 @@ package akhtemov.vladlen.simplenotes.presentation.notedetail
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteDetailBinding
+import akhtemov.vladlen.simplenotes.extension.showToast
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.model.NoteView
@@ -11,7 +12,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -146,11 +146,11 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
             if (noteTime != getString(R.string.set_due_time)) noteModel.time = noteTime
 
             if (noteModel.title.isEmpty()) {
-                Toast.makeText(context, R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                context?.showToast(getString(R.string.title_cannot_be_empty))
                 return null
             }
             if (noteModel.time.isNotEmpty() && noteModel.date.isEmpty()) {
-                Toast.makeText(context, R.string.date_cannot_be_empty, Toast.LENGTH_SHORT).show()
+                context?.showToast(getString(R.string.date_cannot_be_empty))
                 return null
             }
 
