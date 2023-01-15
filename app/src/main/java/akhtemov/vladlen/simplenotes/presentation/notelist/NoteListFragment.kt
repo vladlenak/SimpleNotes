@@ -29,7 +29,7 @@ import java.util.*
 class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
     private lateinit var binding: FragmentNoteListBinding
-    private val viewModel: NoteViewModel by viewModels()
+    private val viewModel: NoteListViewModel by viewModels()
     private val noteAdapter = NoteAdapter(mutableListOf())
 
     override fun onCreateView(
@@ -56,15 +56,15 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setNotes()
+        viewModel.send(SetNotesEvent())
     }
 
     override fun onClickYesOnDeleteDialog(note: NoteModel) {
-        viewModel.deleteNoteByPosition(note)
+        viewModel.send(DeleteNoteEvent(note))
     }
 
     override fun onClickNoOnDeleteDialog() {
-        viewModel.setNotes()
+        viewModel.send(SetNotesEvent())
     }
 
 
@@ -93,26 +93,36 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     }
 
     private fun getSwapMg(): ItemTouchHelper {
-        return ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean = false
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val notePosition = viewHolder.adapterPosition
-                viewModel.notes.value?.get(notePosition)?.let { note ->
-                    DeleteDialog.showDeleteDialog(note, this@NoteListFragment, childFragmentManager)
+        return ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean = false
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val notePosition = viewHolder.adapterPosition
+                    viewModel.noteListState.value?.noteModelList?.get(notePosition)?.let { note ->
+                        DeleteDialog.showDeleteDialog(
+                            note = note,
+                            callbacks = this@NoteListFragment,
+                            fragmentManager = childFragmentManager
+                        )
+                    }
                 }
             }
-        })
+        )
     }
 
 
     private fun addObservers() {
-        viewModel.notes.observe(viewLifecycleOwner) { notes ->
-            noteAdapter.addNotes(sortListByDateThenTime(notes.toMutableList()))
-            NotificationManager.restartReminders(requireContext(), notes)
+        viewModel.noteListState.observe(viewLifecycleOwner) { noteListState ->
+            noteAdapter.addNotes(sortListByDateThenTime(noteListState.noteModelList.toMutableList()))
+            NotificationManager.restartReminders(
+                context = requireContext(),
+                noteList = noteListState.noteModelList
+            )
         }
     }
 
@@ -173,7 +183,7 @@ class NoteListFragment : Fragment(), NoteCallbacks, DeleteDialogCallbacks {
     private fun saveNote() {
         createNoteModel()?.let { noteModel ->
             hideKeyboard()
-            viewModel.insertNote(noteModel)
+            viewModel.send(InsertNoteEvent(noteModel))
             hideAddNoteContainer()
         }
     }
