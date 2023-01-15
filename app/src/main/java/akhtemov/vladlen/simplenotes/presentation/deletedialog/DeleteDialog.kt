@@ -49,6 +49,7 @@ class DeleteDialog : DialogFragment() {
         }
 
         binding.noBtn.setOnClickListener {
+            deleteDialogCallbacks?.onClickNoOnDeleteDialog()
             dismiss()
         }
 

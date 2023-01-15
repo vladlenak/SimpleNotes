@@ -26,7 +26,7 @@ class NoteDetailViewModel @Inject constructor(
 
     fun send(event: NoteDetailEvent) {
         when(event) {
-            is SetNotesEvent -> {
+            is SetNoteEvent -> {
                 setNote(event.noteId)
             }
             is UpdateNoteEvent -> {

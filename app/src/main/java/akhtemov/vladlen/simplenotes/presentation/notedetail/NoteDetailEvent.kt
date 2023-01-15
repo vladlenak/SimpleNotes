@@ -4,7 +4,7 @@ import com.octopus.inc.domain.models.Note
 
 interface NoteDetailEvent
 
-class SetNotesEvent(val noteId: String) : NoteDetailEvent
+class SetNoteEvent(val noteId: String) : NoteDetailEvent
 
 class UpdateNoteEvent(val noteModel: Note) : NoteDetailEvent
 

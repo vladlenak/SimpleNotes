@@ -49,7 +49,7 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
     private fun init() {
         val arguments = arguments
         noteId = arguments?.getString("noteId")
-        noteId?.let { viewModel.send(SetNotesEvent(it)) }
+        noteId?.let { viewModel.send(SetNoteEvent(it)) }
     }
 
     private fun addObservers() {
