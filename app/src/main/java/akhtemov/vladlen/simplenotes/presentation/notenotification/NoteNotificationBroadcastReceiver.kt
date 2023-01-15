@@ -57,7 +57,6 @@ class NoteNotificationBroadcastReceiver : BroadcastReceiver() {
                 notificationDesc = notificationDesc ?: ""
             )
         }
-
     }
 
     private fun NotificationManager.sendReminderNotification(
@@ -73,7 +72,7 @@ class NoteNotificationBroadcastReceiver : BroadcastReceiver() {
             .Builder(context, DEFAULT_CHANNEL_ID)
             .setContentTitle(notificationTitle)
             .setContentText(notificationDesc)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.event_note)
             .setStyle(NotificationCompat.BigTextStyle().bigText(notificationDesc))
             .setContentIntent(intent)
             .setAutoCancel(true)
