@@ -151,18 +151,26 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
         binding.setDueTimeChip.setOnClickListener {
             val timePicker = PickersHelper.getTimePicker(childFragmentManager)
             timePicker.addOnPositiveButtonClickListener {
+                val time = "${timePicker.hour}:${timePicker.minute}"
                 binding.setDueTimeChip.apply {
-                    val time = "${timePicker.hour}:${timePicker.minute}"
-
                     text = time
                     isCloseIconVisible = true
+                }
+                binding.setDueDateChip.apply {
+                    text = CalendarHelper().getDateFromMilliseconds(Date().time)
                 }
             }
         }
 
         binding.setDueDateChip.setOnCloseIconClickListener {
-            binding.setDueDateChip.text = getString(R.string.set_due_date)
-            binding.setDueDateChip.isCloseIconVisible = false
+            binding.setDueDateChip.apply {
+                text = getString(R.string.set_due_date)
+                isCloseIconVisible = false
+            }
+            binding.setDueTimeChip.apply {
+                text = getString(R.string.set_due_time)
+                isCloseIconVisible = false
+            }
         }
 
         binding.setDueTimeChip.setOnCloseIconClickListener {

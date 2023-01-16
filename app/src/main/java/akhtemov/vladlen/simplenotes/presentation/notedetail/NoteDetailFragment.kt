@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.octopus.inc.domain.models.Note
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
@@ -107,12 +108,19 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
                     text = time
                     isCloseIconVisible = true
                 }
+                binding.setDueDateChip.apply {
+                    text = CalendarHelper().getDateFromMilliseconds(Date().time)
+                }
             }
         }
 
         binding.setDueDateChip.setOnCloseIconClickListener {
             binding.setDueDateChip.apply {
                 text = getString(R.string.set_due_date)
+                isCloseIconVisible = false
+            }
+            binding.setDueTimeChip.apply {
+                text = getString(R.string.set_due_time)
                 isCloseIconVisible = false
             }
         }
