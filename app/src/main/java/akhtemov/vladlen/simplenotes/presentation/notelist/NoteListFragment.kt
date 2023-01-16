@@ -158,6 +158,7 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
                 }
                 binding.setDueDateChip.apply {
                     text = CalendarHelper().getDateFromMilliseconds(Date().time)
+                    isCloseIconVisible = true
                 }
             }
         }

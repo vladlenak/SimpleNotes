@@ -110,6 +110,7 @@ class NoteDetailFragment : Fragment(), DeleteDialogCallbacks {
                 }
                 binding.setDueDateChip.apply {
                     text = CalendarHelper().getDateFromMilliseconds(Date().time)
+                    isCloseIconVisible = true
                 }
             }
         }
