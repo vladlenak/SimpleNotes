@@ -2,9 +2,7 @@ package akhtemov.vladlen.simplenotes.presentation.notelist
 
 import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
-import akhtemov.vladlen.simplenotes.extension.gone
-import akhtemov.vladlen.simplenotes.extension.showToast
-import akhtemov.vladlen.simplenotes.extension.visible
+import akhtemov.vladlen.simplenotes.extension.*
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.deletedialog.DeleteDialogCallbacks
 import akhtemov.vladlen.simplenotes.presentation.model.NoteView
