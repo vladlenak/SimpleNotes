@@ -5,7 +5,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import java.util.*
+import android.os.Build
+import java.util.Calendar
+import java.util.Locale
 
 object NoteNotificationManager {
 
@@ -39,40 +41,51 @@ object NoteNotificationManager {
             putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA_ID, reminderId)
             putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_TITLE_EXTRA_ID, note.title)
             putExtra(NoteNotificationBroadcastReceiver.NOTIFICATION_DESC_EXTRA_ID, note.desc)
-        }.let {
-            PendingIntent.getBroadcast(
-                context.applicationContext,
-                reminderId,
-                it,
-                NoteNotificationBroadcastReceiver.getCorrectlyFlag()
-            )
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context.applicationContext,
+            reminderId,
+            intent,
+            NoteNotificationBroadcastReceiver.getCorrectlyFlag()
+        )
+
+        if (calendar.timeInMillis < System.currentTimeMillis()) {
+            calendar.add(Calendar.DATE, 1)
         }
 
-        // If the trigger time you specify is in the past, the alarm triggers immediately.
-        // if soo just add one day to required calendar
-        // Note: i'm also adding one min cuz if the user clicked on the notification as soon as
-        // he receive it it will reschedule the alarm to fire another notification immediately
-        if (Calendar.getInstance(Locale.ENGLISH)
-                .apply { add(Calendar.MINUTE, 1) }
-                .timeInMillis - calendar.timeInMillis > 0
-        ) calendar.add(Calendar.DATE, 1)
-
-        alarmManager.setAlarmClock(
-            AlarmManager.AlarmClockInfo(calendar.timeInMillis, intent),
-            intent
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setAlarmClock(
+                    AlarmManager.AlarmClockInfo(calendar.timeInMillis, pendingIntent),
+                    pendingIntent
+                )
+            } else {
+                requestExactAlarmPermission(context)
+            }
+        } else {
+            alarmManager.setAlarmClock(
+                AlarmManager.AlarmClockInfo(calendar.timeInMillis, pendingIntent),
+                pendingIntent
+            )
+        }
     }
 
     private fun stopReminder(context: Context, reminderId: Int) {
-        val intent = Intent(context, NoteNotificationBroadcastReceiver::class.java).let { intent ->
-            PendingIntent.getBroadcast(
-                context.applicationContext,
-                reminderId,
-                intent,
-                NoteNotificationBroadcastReceiver.getCorrectlyFlag()
-            )
-        }
+        val intent = Intent(context, NoteNotificationBroadcastReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context.applicationContext,
+            reminderId,
+            intent,
+            NoteNotificationBroadcastReceiver.getCorrectlyFlag()
+        )
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(intent)
+        alarmManager.cancel(pendingIntent)
+    }
+
+    private fun requestExactAlarmPermission(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val intent = Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+            context.startActivity(intent)
+        }
     }
 }
