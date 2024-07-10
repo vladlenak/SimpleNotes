@@ -13,8 +13,8 @@ abstract class NoteRoomDatabase : RoomDatabase() {
         const val NOTE_ROOM_DATABASE_NAME = "note_database"
 
         val migration_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE note_table ADD COLUMN time TEXT NOT NULL DEFAULT ''")
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE note_table ADD COLUMN time TEXT NOT NULL DEFAULT ''")
             }
         }
     }

@@ -14,7 +14,7 @@ Kotlin + MVVM + MVI + Room + Clean Architecture + Hilt + Navigation + Fragment +
 
 ## Links
 
-<p align="left">
+<p style="text-align: left;">
 <a href="https://play.google.com/store/apps/details?id=akhtemov.vladlen.simplenotes">
     <img alt="Get it on Google Play"
         height="80"

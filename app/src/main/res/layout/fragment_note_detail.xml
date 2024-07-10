@@ -42,42 +42,6 @@
             android:inputType="textAutoComplete" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:id="@+id/due_date_container"-->
-    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="8dp"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:hint="@string/set_due_date"-->
-    <!--        app:layout_constraintEnd_toStartOf="@id/clearDueDate"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_container">-->
-
-    <!--        <com.google.android.material.textfield.TextInputEditText-->
-    <!--            android:id="@+id/due_date"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:cursorVisible="false"-->
-    <!--            android:focusableInTouchMode="false" />-->
-    <!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--    <ImageButton-->
-    <!--        android:id="@+id/clearDueDate"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:background="@null"-->
-    <!--        android:padding="16dp"-->
-    <!--        android:src="@drawable/ic_clear"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/description_container"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@id/due_date_container"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/title_container"-->
-    <!--        android:contentDescription="@string/delete_due_date" />-->
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/description_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

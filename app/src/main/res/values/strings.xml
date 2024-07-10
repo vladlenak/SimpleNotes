@@ -8,20 +8,18 @@
     <string name="title_cannot_be_empty">Title cannot be empty</string>
     <string name="date_cannot_be_empty">Date cannot be empty</string>
 
-    <string name="edit_due_date">Edit date</string>
     <string name="note">Note</string>
 
     <string name="set_due_date">Set Due Date</string>
     <string name="set_due_time">Set Due Time</string>
 
-    <string name="delete_due_date">Delete Due Date</string>
     <string name="show_note_creation_container">Show note creation container</string>
 
-    // dialog_delete
+    <!-- dialog_delete.xml -->
     <string name="delete_note">Delete note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    // top_app_bar.xml
+    <!-- top_app_bar.xml -->
     <string name="delete">Delete</string>
 </resources>

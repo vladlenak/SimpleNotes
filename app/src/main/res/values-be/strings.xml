@@ -9,13 +9,11 @@
     <string name="title_cannot_be_empty">Загаловак не можа быць пустым</string>
     <string name="date_cannot_be_empty">Дата не можа быць пустой</string>
 
-    <string name="edit_due_date">Рэдагаваць дату</string>
     <string name="note">Нататка</string>
 
     <string name="set_due_date">Дата выканання</string>
     <string name="set_due_time">Належны час</string>
 
-    <string name="delete_due_date">Выдаліць тэрмін выканання</string>
     <string name="show_note_creation_container">Паказаць кантэйнер для стварэння нататак</string>
 
     // dialog_delete

@@ -50,4 +50,5 @@ class DataModule {
     fun provideNoteMapper(): NoteMapper {
         return NoteMapper()
     }
+
 }

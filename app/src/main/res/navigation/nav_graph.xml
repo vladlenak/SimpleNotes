@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/noteListFragment"
-        android:name="akhtemov.vladlen.simplenotes.presentation.notelist.NoteListFragment"
+        android:name="akhtemov.vladlen.simplenotes.presentation.fragments.notelist.NoteListFragment"
         tools:layout="@layout/fragment_note_list">
 
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/noteDetailFragment"
-        android:name="akhtemov.vladlen.simplenotes.presentation.notedetail.NoteDetailFragment"
+        android:name="akhtemov.vladlen.simplenotes.presentation.fragments.notedetail.NoteDetailFragment"
         tools:layout="@layout/fragment_note_detail">
 
     </fragment>

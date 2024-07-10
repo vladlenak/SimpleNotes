@@ -35,4 +35,5 @@ class DomainModule {
     fun provideUpdateNoteUseCase(noteRepository: NoteRepository): UpdateNoteUseCase {
         return UpdateNoteUseCase(noteRepository = noteRepository)
     }
+
 }
