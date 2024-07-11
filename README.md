@@ -4,15 +4,15 @@ With a simple swipe, you can quickly remove unwanted entries.
 Stay on top of your to-do list with built-in reminders to complete tasks.
 
 ## Features
-- Create tasks and notes
-- Detailed note description
-- Removal with a simple swipe
-- Reminder to complete a task
+- Create tasks and notes.
+- Detailed note description.
+- Removal with a simple swipe.
+- Reminder to complete a task.
 
 ## Stack
 - Language: Kotlin.
 - UI: Fragment, Navigation, DataBinding, LiveData.
-- Architecture: Clean Architecture, MVVM, MVI.
+- Architecture: Clean Architecture, MVVM, MVI, Multi Module.
 - Database: Room.
 - Dependency injection: Hilt.
 - Multithreading: Coroutines.
