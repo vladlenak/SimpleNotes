@@ -1,13 +1,14 @@
-package com.octopus.inc.data.room
+package com.octopus.inc.data.repository
 
 import com.octopus.inc.data.mapper.NoteMapper
+import com.octopus.inc.data.room.NoteDao
 import com.octopus.inc.domain.models.Note
 import javax.inject.Inject
 
-class NoteRoomImpl @Inject constructor(
+class NoteLocalDataSourceImpl @Inject constructor(
     private val noteDao: NoteDao,
     private val noteMapper: NoteMapper
-) : NoteRoom {
+) : NoteLocalDataSource {
 
     override suspend fun insertNote(note: Note) {
         noteDao.insert(noteMapper.mapToEntity(note))
@@ -35,4 +36,5 @@ class NoteRoomImpl @Inject constructor(
     override suspend fun deleteNote(note: Note) {
         noteDao.deleteNote(noteMapper.mapToEntity(note))
     }
+
 }

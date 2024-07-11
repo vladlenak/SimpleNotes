@@ -1,10 +1,11 @@
 package com.octopus.inc.data.mapper
 
-import com.octopus.inc.data.room.model.NoteEntity
+import com.octopus.inc.data.model.NoteEntity
 import com.octopus.inc.domain.models.Note
 import javax.inject.Inject
 
-class NoteMapper @Inject constructor(): Mapper<NoteEntity, Note> {
+class NoteMapper @Inject constructor() : Mapper<NoteEntity, Note> {
+
     override fun mapFromEntity(type: NoteEntity): Note {
         return Note(
             id = type.id,
@@ -24,4 +25,5 @@ class NoteMapper @Inject constructor(): Mapper<NoteEntity, Note> {
             time = type.time
         )
     }
+
 }

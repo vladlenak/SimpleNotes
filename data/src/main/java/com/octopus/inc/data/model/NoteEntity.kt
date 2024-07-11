@@ -1,4 +1,4 @@
-package com.octopus.inc.data.room.model
+package com.octopus.inc.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

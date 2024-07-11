@@ -6,4 +6,4 @@
 -dontwarn com.octopus.inc.data.repository.NoteRepositoryImpl
 -dontwarn com.octopus.inc.data.room.NoteDao
 -dontwarn com.octopus.inc.data.room.NoteRoomDatabase$Companion
--dontwarn com.octopus.inc.data.room.NoteRoomImpl
+-dontwarn com.octopus.inc.data.repository.NoteRoomImpl

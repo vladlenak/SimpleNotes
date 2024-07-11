@@ -4,13 +4,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.octopus.inc.data.room.model.NoteEntity
+import com.octopus.inc.data.model.NoteEntity
 
-@Database(entities = [NoteEntity::class], version = 2, exportSchema = true)
-abstract class NoteRoomDatabase : RoomDatabase() {
+@Database(entities = [NoteEntity::class], version = 2, exportSchema = false)
+abstract class NoteDatabase : RoomDatabase() {
 
     companion object {
-        const val NOTE_ROOM_DATABASE_NAME = "note_database"
+        const val NOTE_DATABASE_NAME = "note_database"
 
         val migration_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
@@ -20,4 +20,5 @@ abstract class NoteRoomDatabase : RoomDatabase() {
     }
 
     abstract fun noteDao(): NoteDao
+
 }

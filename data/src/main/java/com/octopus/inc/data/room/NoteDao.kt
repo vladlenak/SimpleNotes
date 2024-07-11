@@ -1,7 +1,7 @@
 package com.octopus.inc.data.room
 
 import androidx.room.*
-import com.octopus.inc.data.room.model.NoteEntity
+import com.octopus.inc.data.model.NoteEntity
 
 @Dao
 interface NoteDao {
