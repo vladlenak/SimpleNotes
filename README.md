@@ -10,11 +10,12 @@ Stay on top of your to-do list with built-in reminders to complete tasks.
 - Reminder to complete a task
 
 ## Stack
-Language - Kotlin
-UI - Fragment + Navigation + DataBinding + LiveData
-Architecture - Clean Architecture + MVVM + MVI
-Database - Room
-Dependency injection - Hilt
+- Language: Kotlin.
+- UI: Fragment, Navigation, DataBinding, LiveData.
+- Architecture: Clean Architecture, MVVM, MVI.
+- Database: Room.
+- Dependency injection: Hilt.
+- Multithreading: Coroutines.
 
 ## Link
 <p style="text-align: left;">
