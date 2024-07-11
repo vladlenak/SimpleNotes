@@ -15,16 +15,14 @@
             app:destination="@id/noteDetailFragment">
             <argument
                 android:name="noteId"
-                app:argType="string"
-                android:defaultValue="" />
+                android:defaultValue=""
+                app:argType="string" />
         </action>
     </fragment>
 
     <fragment
         android:id="@+id/noteDetailFragment"
         android:name="akhtemov.vladlen.simplenotes.presentation.fragments.notedetail.NoteDetailFragment"
-        tools:layout="@layout/fragment_note_detail">
-
-    </fragment>
+        tools:layout="@layout/fragment_note_detail" />
 
 </navigation>

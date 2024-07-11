@@ -4,6 +4,7 @@ import akhtemov.vladlen.simplenotes.R
 import akhtemov.vladlen.simplenotes.databinding.FragmentNoteListBinding
 import akhtemov.vladlen.simplenotes.presentation.dialogs.delete.DeleteDialog
 import akhtemov.vladlen.simplenotes.presentation.dialogs.delete.DeleteDialogCallbacks
+import akhtemov.vladlen.simplenotes.presentation.ext.goToNoteDetail
 import akhtemov.vladlen.simplenotes.presentation.ext.hideKeyboard
 import akhtemov.vladlen.simplenotes.presentation.ext.showKeyboard
 import akhtemov.vladlen.simplenotes.presentation.ext.showToast
@@ -55,8 +56,7 @@ class NoteListFragment : Fragment(), NoteListCallbacks, DeleteDialogCallbacks {
     }
 
     override fun onClickNoteContainer(note: NoteView) {
-        val action = NoteListFragmentDirections.actionNoteListFragmentToNoteDetailFragment(note.id)
-        findNavController().navigate(action)
+        goToNoteDetail(note.id)
     }
 
     override fun onResume() {
