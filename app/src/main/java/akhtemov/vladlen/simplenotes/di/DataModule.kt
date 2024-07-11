@@ -17,7 +17,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataModule {
+object DataModule {
 
     @Provides
     fun provideNoteRepositoryImpl(noteRoomImpl: NoteRoomImpl): NoteRepository {
