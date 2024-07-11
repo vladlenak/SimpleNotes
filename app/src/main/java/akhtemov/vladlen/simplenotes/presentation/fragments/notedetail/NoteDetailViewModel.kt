@@ -10,6 +10,7 @@ import com.octopus.inc.domain.usecases.DeleteNoteUseCase
 import com.octopus.inc.domain.usecases.GetNoteUseCase
 import com.octopus.inc.domain.usecases.UpdateNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,15 +39,15 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    private fun setNote(noteId: String) = viewModelScope.launch {
-        _noteDetailState.value = NoteDetailState(noteMapper.mapToView(getNoteUseCase.execute(noteId)))
+    private fun setNote(noteId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _noteDetailState.postValue(NoteDetailState(noteMapper.mapToView(getNoteUseCase.execute(noteId))))
     }
 
-    private fun updateNote(note: Note) = viewModelScope.launch {
+    private fun updateNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         updateNoteUseCase.execute(note)
     }
 
-    private fun deleteNote() = viewModelScope.launch {
+    private fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
         noteDetailState.value?.noteModel?.let { note -> deleteNoteUseCase.execute(noteMapper.mapFromView(note)) }
     }
 }
