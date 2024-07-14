@@ -12,7 +12,7 @@ Stay on top of your to-do list with built-in reminders to complete tasks.
 ## Stack
 - Language: Kotlin.
 - UI: Fragment, Navigation, DataBinding, LiveData.
-- Architecture: Clean Architecture, MVVM, MVI, Multi Module.
+- Architecture: Clean Architecture, MVVM, MVI, Multi Module, Single Activity.
 - Database: Room.
 - Dependency injection: Hilt.
 - Multithreading: Coroutines.
